@@ -31,9 +31,16 @@ model User {
   confirmPassword String
   followers Followers @relation(fields: [followersId], references: [id])
   followersId String
+  following Following @relation(fields: [followingId], references: [id])
+  followingId String
 }
 
 model Followers {
- id String @id @default(ulid())
+ id String @id @default(uuid())
  followersUsers User[]
+}
+
+model Following {
+  id String @id @default(uuid())
+  followingUsers User[]
 }
