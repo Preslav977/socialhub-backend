@@ -32,6 +32,8 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
+const userRouter = require("./routes/userRouter");
+
 app.use(
   session({
     cookie: {
@@ -117,6 +119,8 @@ app.get(
     });
   }),
 );
+
+app.use("/users", userRouter);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
