@@ -23,12 +23,15 @@ enum Role {
 model User {
   id              Int       @id @default(autoincrement())
   username        String
-  displayName     String
+  display_name     String
   bio             String
   website         String
   github          String
   password        String
-  confirmPassword String
+  confirm_password String
+  profile_picture String
+  background_picture String
+  role Role @default(USER)
   followers       Followers @relation(fields: [followersId], references: [id])
   followersId     String
   following       Following @relation(fields: [followingId], references: [id])
@@ -38,6 +41,8 @@ model User {
   postAuthor      Post[]
   commentOnPost Comments @relation(fields: [commentId], references: [id])
   commentId Int
+  senderChat Chat[] @relation("senderChat")
+  receiverChat Chat[] @relation("receiverChat")
 
   @@map("user")
 }
@@ -63,6 +68,7 @@ model Post {
   tag      String
   like     Int
   comments Int
+  createdAt DateTime @default(now())
   // likedPostByUsers User[]
   author   User   @relation(fields: [authorId], references: [id])
   authorId Int
@@ -73,8 +79,21 @@ model Post {
 
 model Comments {
   id Int @id @default(autoincrement())
-  content String
-  comments User[]
-  post Post @relation(fields: [postId], references: [id])
+  comment_content String
+  commentsBy User[]
+  createdAt DateTime @default(now())
+  commentsOnPost Post @relation(fields: [postId], references: [id])
   postId Int
+
+  @@map("comments")
+}
+
+model Chat {
+  id String @id @default(uuid())
+  senderChatId Int
+  senderChat User @relation("senderChat", fields: [senderChatId], references: [id])
+  receiverChatId Int
+  receiverChat User @relation("receiverChat", fields: [receiverChatId], references: [id])
+
+  @@map("chat")
 }
