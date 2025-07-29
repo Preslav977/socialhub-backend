@@ -20,3 +20,13 @@ enum Role {
   GUEST
 }
 
+model User {
+  id              Int    @id @default(autoincrement())
+  username        String
+  displayName     String
+  bio             String
+  website         String
+  github          String
+  password        String
+  confirmPassword String
+}
