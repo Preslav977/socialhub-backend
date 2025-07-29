@@ -21,7 +21,7 @@ enum Role {
 }
 
 model User {
-  id              Int    @id @default(autoincrement())
+  id              Int       @id @default(autoincrement())
   username        String
   displayName     String
   bio             String
@@ -29,18 +29,40 @@ model User {
   github          String
   password        String
   confirmPassword String
-  followers Followers @relation(fields: [followersId], references: [id])
-  followersId String
-  following Following @relation(fields: [followingId], references: [id])
-  followingId String
+  followers       Followers @relation(fields: [followersId], references: [id])
+  followersId     String
+  following       Following @relation(fields: [followingId], references: [id])
+  followingId     String
+  // likedPostByUsers Post @relation(fields: [likedPostByUsersId], references: [id])
+  // likedPostByUsersId Int
+  postAuthor      Post[]
+
+  @@map("user")
 }
 
 model Followers {
- id String @id @default(uuid())
- followersUsers User[]
+  id             String @id @default(uuid())
+  followersUsers User[]
+
+  @@map("followers")
 }
 
 model Following {
-  id String @id @default(uuid())
+  id             String @id @default(uuid())
   followingUsers User[]
+
+  @@map("following")
+}
+
+model Post {
+  id       Int    @id @default(autoincrement())
+  content  String
+  imageURL String
+  tag      String
+  like     Int
+  // likedPostByUsers User[]
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId Int
+
+  @@map("post")
 }
