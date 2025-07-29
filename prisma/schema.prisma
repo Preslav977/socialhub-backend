@@ -43,6 +43,8 @@ model User {
   commentId Int
   senderChat Chat[] @relation("senderChat")
   receiverChat Chat[] @relation("receiverChat")
+  senderMessage Messages[] @relation("senderMessage")
+  receiverMessage Messages[] @relation("receiverMessage")
 
   @@map("user")
 }
@@ -94,6 +96,25 @@ model Chat {
   senderChat User @relation("senderChat", fields: [senderChatId], references: [id])
   receiverChatId Int
   receiverChat User @relation("receiverChat", fields: [receiverChatId], references: [id])
+  messages Messages[]
 
   @@map("chat")
+}
+
+model Messages {
+  id Int @id @default(autoincrement())
+  message_text String
+  message_imageName String
+  message_imageURL String
+  message_imageType String
+  message_imageSize String
+  createdAt DateTime @default(now())
+  senderMessageId Int
+  senderMessage User @relation("senderMessage", fields: [senderMessageId], references: [id])
+  receiverMessageId Int
+  receiverMessage User @relation("receiverMessage",fields: [receiverMessageId], references: [id])
+  chat Chat @relation(fields: [chatId], references: [id])
+  chatId String
+
+  @@map("messages")
 }
