@@ -29,4 +29,11 @@ model User {
   github          String
   password        String
   confirmPassword String
+  followers Followers @relation(fields: [followersId], references: [id])
+  followersId String
+}
+
+model Followers {
+ id String @id @default(ulid())
+ followersUsers User[]
 }
