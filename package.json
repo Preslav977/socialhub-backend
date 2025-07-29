@@ -1,0 +1,54 @@
+{
+  "name": "socialhub-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --watch app.js",
+    "populate": "node db/populatedb.js",
+    "format": "npx prisma format",
+    "dev": "NODE_ENV=development && node --watch listen.js",
+    "test": "NODE_ENV=test && clear && jest",
+    "test_env": "NODE_ENV=test && node --watch listen.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Preslav977/socialhub-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Preslav977/socialhub-backend/issues"
+  },
+  "homepage": "https://github.com/Preslav977/socialhub-backend#readme",
+  "devDependencies": {
+    "@eslint/js": "^9.32.0",
+    "eslint": "^9.32.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^16.3.0",
+    "jest": "^30.0.5",
+    "prettier": "3.6.2",
+    "prisma": "^6.12.0",
+    "supertest": "^7.1.4"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.12.0",
+    "@quixo3/prisma-session-store": "^3.1.13",
+    "@supabase/supabase-js": "^2.53.0",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "express-async-handler": "^1.2.0",
+    "express-session": "^1.18.2",
+    "express-validator": "^7.2.1",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "passport-local": "^1.0.0",
+    "pg": "^8.16.3"
+  }
+}
