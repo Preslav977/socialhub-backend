@@ -36,6 +36,8 @@ model User {
   // likedPostByUsers Post @relation(fields: [likedPostByUsersId], references: [id])
   // likedPostByUsersId Int
   postAuthor      Post[]
+  commentOnPost Comments @relation(fields: [commentId], references: [id])
+  commentId Int
 
   @@map("user")
 }
@@ -60,9 +62,19 @@ model Post {
   imageURL String
   tag      String
   like     Int
+  comments Int
   // likedPostByUsers User[]
   author   User   @relation(fields: [authorId], references: [id])
   authorId Int
+  commentsOnPost Comments[]
 
   @@map("post")
+}
+
+model Comments {
+  id Int @id @default(autoincrement())
+  content String
+  comments User[]
+  post Post @relation(fields: [postId], references: [id])
+  postId Int
 }
