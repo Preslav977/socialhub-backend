@@ -120,9 +120,100 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  username: 'username',
+  display_name: 'display_name',
+  bio: 'bio',
+  website: 'website',
+  github: 'github',
+  password: 'password',
+  confirm_password: 'confirm_password',
+  profile_picture: 'profile_picture',
+  background_picture: 'background_picture',
+  role: 'role',
+  followersId: 'followersId',
+  followingId: 'followingId',
+  likedPostByUserId: 'likedPostByUserId',
+  commentId: 'commentId'
+};
+
+exports.Prisma.FollowersScalarFieldEnum = {
+  id: 'id'
+};
+
+exports.Prisma.FollowingScalarFieldEnum = {
+  id: 'id'
+};
+
+exports.Prisma.PostScalarFieldEnum = {
+  id: 'id',
+  post_content: 'post_content',
+  post_imageURL: 'post_imageURL',
+  post_tag: 'post_tag',
+  post_likes: 'post_likes',
+  post_comments: 'post_comments',
+  createdAt: 'createdAt',
+  post_authorId: 'post_authorId'
+};
+
+exports.Prisma.CommentsScalarFieldEnum = {
+  id: 'id',
+  comment_text: 'comment_text',
+  createdAt: 'createdAt',
+  postId: 'postId'
+};
+
+exports.Prisma.ChatScalarFieldEnum = {
+  id: 'id',
+  senderChatId: 'senderChatId',
+  receiverChatId: 'receiverChatId'
+};
+
+exports.Prisma.MessagesScalarFieldEnum = {
+  id: 'id',
+  message_text: 'message_text',
+  message_imageName: 'message_imageName',
+  message_imageURL: 'message_imageURL',
+  message_imageType: 'message_imageType',
+  message_imageSize: 'message_imageSize',
+  createdAt: 'createdAt',
+  senderMessageId: 'senderMessageId',
+  receiverMessageId: 'receiverMessageId',
+  chatId: 'chatId'
+};
+
+exports.Prisma.SessionScalarFieldEnum = {
+  id: 'id',
+  sid: 'sid',
+  data: 'data',
+  expiresAt: 'expiresAt'
+};
+
+exports.Prisma.SortOrder = {
+  asc: 'asc',
+  desc: 'desc'
+};
+
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+};
+exports.Role = exports.$Enums.Role = {
+  USER: 'USER',
+  ADMIN: 'ADMIN',
+  GUEST: 'GUEST'
+};
 
 exports.Prisma.ModelName = {
-
+  User: 'User',
+  Followers: 'Followers',
+  Following: 'Following',
+  Post: 'Post',
+  Comments: 'Comments',
+  Chat: 'Chat',
+  Messages: 'Messages',
+  Session: 'Session'
 };
 
 /**

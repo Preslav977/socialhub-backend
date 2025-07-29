@@ -19,3 +19,109 @@ enum Role {
   ADMIN
   GUEST
 }
+
+model User {
+  id                    Int        @id @default(autoincrement())
+  username              String
+  display_name          String
+  bio                   String
+  website               String
+  github                String
+  password              String
+  confirm_password      String
+  profile_picture       String
+  background_picture    String
+  role                  Role       @default(USER)
+  followers             Followers  @relation(fields: [followersId], references: [id])
+  followersId           String
+  following             Following  @relation(fields: [followingId], references: [id])
+  followingId           String
+  likedPostByUser       Post       @relation("likedPostsByUser", fields: [likedPostByUserId], references: [id])
+  likedPostByUserId     Int
+  postsCreatedByUsers   Post[]
+  commentsCreatedByUser Comments   @relation(fields: [commentId], references: [id])
+  commentId             Int
+  senderChat            Chat[]     @relation("senderChat")
+  receiverChat          Chat[]     @relation("receiverChat")
+  senderMessage         Messages[] @relation("senderMessage")
+  receiverMessage       Messages[] @relation("receiverMessage")
+
+  @@map("user")
+}
+
+model Followers {
+  id             String @id @default(uuid())
+  followersUsers User[]
+
+  @@map("followers")
+}
+
+model Following {
+  id             String @id @default(uuid())
+  followingUsers User[]
+
+  @@map("following")
+}
+
+model Post {
+  id                   Int        @id @default(autoincrement())
+  post_content         String
+  post_imageURL        String
+  post_tag             String
+  post_likes           Int
+  post_comments        Int
+  createdAt            DateTime   @default(now())
+  likedPostByUsers     User[]     @relation("likedPostsByUser")
+  post_author          User       @relation(fields: [post_authorId], references: [id])
+  post_authorId        Int
+  post_commentsByUsers Comments[]
+
+  @@map("post")
+}
+
+model Comments {
+  id              Int      @id @default(autoincrement())
+  comment_text    String
+  commentsByUsers User[]
+  createdAt       DateTime @default(now())
+  commented_post  Post     @relation(fields: [postId], references: [id])
+  postId          Int
+
+  @@map("comments")
+}
+
+model Chat {
+  id             String     @id @default(uuid())
+  senderChatId   Int
+  senderChat     User       @relation("senderChat", fields: [senderChatId], references: [id])
+  receiverChatId Int
+  receiverChat   User       @relation("receiverChat", fields: [receiverChatId], references: [id])
+  messages       Messages[]
+
+  @@map("chat")
+}
+
+model Messages {
+  id                Int      @id @default(autoincrement())
+  message_text      String
+  message_imageName String
+  message_imageURL  String
+  message_imageType String
+  message_imageSize String
+  createdAt         DateTime @default(now())
+  senderMessageId   Int
+  senderMessage     User     @relation("senderMessage", fields: [senderMessageId], references: [id])
+  receiverMessageId Int
+  receiverMessage   User     @relation("receiverMessage", fields: [receiverMessageId], references: [id])
+  chat              Chat     @relation(fields: [chatId], references: [id])
+  chatId            String
+
+  @@map("messages")
+}
+
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String
+  expiresAt DateTime
+}

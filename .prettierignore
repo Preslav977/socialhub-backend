@@ -3,3 +3,7 @@ build
 coverage
 package-lock.json
 package.json
+build
+.DS_Store
+CVS
+Thumbs.db
