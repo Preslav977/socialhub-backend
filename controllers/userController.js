@@ -19,8 +19,6 @@ exports.user_signup = [
 
     const { username, display_name, password, confirm_password } = req.body;
 
-    console.log(username, display_name, password, confirm_password);
-
     bcrypt.hash(password, 10, async (error, hashedPassword) => {
       if (error) {
         console.error("Failed to hash the password", error);
@@ -98,6 +96,42 @@ exports.user_get_by_id = [
       });
     } else {
       res.json(getUserById);
+    }
+  }),
+];
+
+exports.user_update_profile = [
+  // userSignUp,
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    const { id } = req.params;
+
+    const { username, display_name, bio, website, github } = req.body;
+
+    if (!errors.isEmpty()) {
+      res.status(400).send(errors.array());
+    } else {
+      const updateUserProfile = await prisma.user.update({
+        where: {
+          id: Number(id),
+        },
+        data: {
+          username: username,
+          display_name: display_name,
+          bio: bio,
+          website: website,
+          github: github,
+        },
+      });
+
+      const fetchTheUpdatedUserProfile = await prisma.user.findFirst({
+        where: {
+          id: Number(updateUserProfile.id),
+        },
+      });
+
+      res.json(fetchTheUpdatedUserProfile);
     }
   }),
 ];
