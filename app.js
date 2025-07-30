@@ -32,16 +32,18 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
-const userRouter = require("./routes/userRouter");
+const authRouter = require("./routes/authRouter");
+
+const verifyToken = require("./middlewares/verifyToken");
 
 app.use(
   session({
     cookie: {
-      maxAge: 24 * 60 * 60 * 1000,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     },
     secret: process.env.sessionSecret,
-    resave: false,
-    saveUninitialized: false,
+    resave: true,
+    saveUninitialized: true,
     store: new PrismaSessionStore(prisma, {
       checkPeriod: 2 * 60 * 1000,
       dbRecordIdIsSessionId: true,
@@ -120,9 +122,11 @@ app.get(
   }),
 );
 
-app.get("/", (req, res) => res.send("Hello, world!"));
+app.use("/users", authRouter);
 
-app.use("/users", userRouter);
+app.use(authRouter);
+
+app.use(verifyToken);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
