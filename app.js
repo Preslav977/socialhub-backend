@@ -122,8 +122,6 @@ app.get(
   }),
 );
 
-app.use("/users", authRouter);
-
 app.use(authRouter);
 
 app.use(verifyToken);

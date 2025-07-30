@@ -61,3 +61,23 @@ exports.user_login = [
     });
   }),
 ];
+
+exports.user_login_guest = [
+  passport.authenticate("local", { session: false }),
+  asyncHandler(async (req, res, next) => {
+    const { role } = req.user;
+
+    jwt.sign(
+      { role },
+      process.env.SECRET,
+      { expiresIn: "25m" },
+      (err, token) => {
+        if (role !== "GUEST") {
+          res.json({ error: "Only guests can login!" });
+        } else {
+          res.json({ token });
+        }
+      },
+    );
+  }),
+];
