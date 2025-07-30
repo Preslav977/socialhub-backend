@@ -50,3 +50,14 @@ exports.user_signup = [
     });
   }),
 ];
+
+exports.user_login = [
+  passport.authenticate("local", { session: false }),
+  asyncHandler(async (req, res, next) => {
+    const { id } = req.user;
+
+    jwt.sign({ id }, process.env.SECRET, { expiresIn: "25m" }, (err, token) => {
+      res.json({ token });
+    });
+  }),
+];
