@@ -22,8 +22,8 @@ enum Role {
 
 model User {
   id                    Int        @id @default(autoincrement())
-  username              String
-  display_name          String
+  username              String     @unique
+  display_name          String     @unique
   bio                   String
   website               String
   github                String
@@ -80,12 +80,12 @@ model Post {
 }
 
 model Comments {
-  id              Int      @id @default(autoincrement())
-  comment_text    String
-  commentsByUsers User[]
-  createdAt       DateTime @default(now())
-  commented_post  Post     @relation(fields: [postId], references: [id])
-  postId          Int
+  id               Int      @id @default(autoincrement())
+  comment_text     String
+  commentsByUsers  User[]
+  createdAt        DateTime @default(now())
+  commented_post   Post     @relation(fields: [commented_postId], references: [id])
+  commented_postId Int
 
   @@map("comments")
 }

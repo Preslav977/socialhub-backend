@@ -88,7 +88,7 @@ export const Role: typeof $Enums.Role
  */
 export class PrismaClient<
   ClientOptions extends Prisma.PrismaClientOptions = Prisma.PrismaClientOptions,
-  U = 'log' extends keyof ClientOptions ? ClientOptions['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<ClientOptions['log']> : never : never,
+  const U = 'log' extends keyof ClientOptions ? ClientOptions['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<ClientOptions['log']> : never : never,
   ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs
 > {
   [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['other'] }
@@ -334,8 +334,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.12.0
-   * Query Engine version: 8047c96bbd92db98a2abc7c9323ce77c02c89dbc
+   * Prisma Client JS version: 6.13.0
+   * Query Engine version: 361e86d0ea4987e9f53a565309b3eed797a6bcbd
    */
   export type PrismaVersion = {
     client: string
@@ -1381,16 +1381,24 @@ export namespace Prisma {
     /**
      * @example
      * ```
-     * // Defaults to stdout
+     * // Shorthand for `emit: 'stdout'`
      * log: ['query', 'info', 'warn', 'error']
      * 
-     * // Emit as events
+     * // Emit as events only
      * log: [
-     *   { emit: 'stdout', level: 'query' },
-     *   { emit: 'stdout', level: 'info' },
-     *   { emit: 'stdout', level: 'warn' }
-     *   { emit: 'stdout', level: 'error' }
+     *   { emit: 'event', level: 'query' },
+     *   { emit: 'event', level: 'info' },
+     *   { emit: 'event', level: 'warn' }
+     *   { emit: 'event', level: 'error' }
      * ]
+     * 
+     * / Emit as events and log to stdout
+     * og: [
+     *  { emit: 'stdout', level: 'query' },
+     *  { emit: 'stdout', level: 'info' },
+     *  { emit: 'stdout', level: 'warn' }
+     *  { emit: 'stdout', level: 'error' }
+     * 
      * ```
      * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/logging#the-log-option).
      */
@@ -1439,10 +1447,15 @@ export namespace Prisma {
     emit: 'stdout' | 'event'
   }
 
-  export type GetLogType<T extends LogLevel | LogDefinition> = T extends LogDefinition ? T['emit'] extends 'event' ? T['level'] : never : never
-  export type GetEvents<T extends any> = T extends Array<LogLevel | LogDefinition> ?
-    GetLogType<T[0]> | GetLogType<T[1]> | GetLogType<T[2]> | GetLogType<T[3]>
-    : never
+  export type CheckIsLogLevel<T> = T extends LogLevel ? T : never;
+
+  export type GetLogType<T> = CheckIsLogLevel<
+    T extends LogDefinition ? T['level'] : T
+  >;
+
+  export type GetEvents<T extends any[]> = T extends Array<LogLevel | LogDefinition>
+    ? GetLogType<T[number]>
+    : never;
 
   export type QueryEvent = {
     timestamp: Date
@@ -6401,66 +6414,66 @@ export namespace Prisma {
 
   export type CommentsAvgAggregateOutputType = {
     id: number | null
-    postId: number | null
+    commented_postId: number | null
   }
 
   export type CommentsSumAggregateOutputType = {
     id: number | null
-    postId: number | null
+    commented_postId: number | null
   }
 
   export type CommentsMinAggregateOutputType = {
     id: number | null
     comment_text: string | null
     createdAt: Date | null
-    postId: number | null
+    commented_postId: number | null
   }
 
   export type CommentsMaxAggregateOutputType = {
     id: number | null
     comment_text: string | null
     createdAt: Date | null
-    postId: number | null
+    commented_postId: number | null
   }
 
   export type CommentsCountAggregateOutputType = {
     id: number
     comment_text: number
     createdAt: number
-    postId: number
+    commented_postId: number
     _all: number
   }
 
 
   export type CommentsAvgAggregateInputType = {
     id?: true
-    postId?: true
+    commented_postId?: true
   }
 
   export type CommentsSumAggregateInputType = {
     id?: true
-    postId?: true
+    commented_postId?: true
   }
 
   export type CommentsMinAggregateInputType = {
     id?: true
     comment_text?: true
     createdAt?: true
-    postId?: true
+    commented_postId?: true
   }
 
   export type CommentsMaxAggregateInputType = {
     id?: true
     comment_text?: true
     createdAt?: true
-    postId?: true
+    commented_postId?: true
   }
 
   export type CommentsCountAggregateInputType = {
     id?: true
     comment_text?: true
     createdAt?: true
-    postId?: true
+    commented_postId?: true
     _all?: true
   }
 
@@ -6554,7 +6567,7 @@ export namespace Prisma {
     id: number
     comment_text: string
     createdAt: Date
-    postId: number
+    commented_postId: number
     _count: CommentsCountAggregateOutputType | null
     _avg: CommentsAvgAggregateOutputType | null
     _sum: CommentsSumAggregateOutputType | null
@@ -6580,7 +6593,7 @@ export namespace Prisma {
     id?: boolean
     comment_text?: boolean
     createdAt?: boolean
-    postId?: boolean
+    commented_postId?: boolean
     commentsByUsers?: boolean | Comments$commentsByUsersArgs<ExtArgs>
     commented_post?: boolean | PostDefaultArgs<ExtArgs>
     _count?: boolean | CommentsCountOutputTypeDefaultArgs<ExtArgs>
@@ -6590,7 +6603,7 @@ export namespace Prisma {
     id?: boolean
     comment_text?: boolean
     createdAt?: boolean
-    postId?: boolean
+    commented_postId?: boolean
     commented_post?: boolean | PostDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["comments"]>
 
@@ -6598,7 +6611,7 @@ export namespace Prisma {
     id?: boolean
     comment_text?: boolean
     createdAt?: boolean
-    postId?: boolean
+    commented_postId?: boolean
     commented_post?: boolean | PostDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["comments"]>
 
@@ -6606,10 +6619,10 @@ export namespace Prisma {
     id?: boolean
     comment_text?: boolean
     createdAt?: boolean
-    postId?: boolean
+    commented_postId?: boolean
   }
 
-  export type CommentsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "comment_text" | "createdAt" | "postId", ExtArgs["result"]["comments"]>
+  export type CommentsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "comment_text" | "createdAt" | "commented_postId", ExtArgs["result"]["comments"]>
   export type CommentsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     commentsByUsers?: boolean | Comments$commentsByUsersArgs<ExtArgs>
     commented_post?: boolean | PostDefaultArgs<ExtArgs>
@@ -6632,7 +6645,7 @@ export namespace Prisma {
       id: number
       comment_text: string
       createdAt: Date
-      postId: number
+      commented_postId: number
     }, ExtArgs["result"]["comments"]>
     composites: {}
   }
@@ -7061,7 +7074,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Comments", 'Int'>
     readonly comment_text: FieldRef<"Comments", 'String'>
     readonly createdAt: FieldRef<"Comments", 'DateTime'>
-    readonly postId: FieldRef<"Comments", 'Int'>
+    readonly commented_postId: FieldRef<"Comments", 'Int'>
   }
     
 
@@ -10838,7 +10851,7 @@ export namespace Prisma {
     id: 'id',
     comment_text: 'comment_text',
     createdAt: 'createdAt',
-    postId: 'postId'
+    commented_postId: 'commented_postId'
   };
 
   export type CommentsScalarFieldEnum = (typeof CommentsScalarFieldEnum)[keyof typeof CommentsScalarFieldEnum]
@@ -11032,11 +11045,11 @@ export namespace Prisma {
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    username?: string
+    display_name?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
-    username?: StringFilter<"User"> | string
-    display_name?: StringFilter<"User"> | string
     bio?: StringFilter<"User"> | string
     website?: StringFilter<"User"> | string
     github?: StringFilter<"User"> | string
@@ -11058,7 +11071,7 @@ export namespace Prisma {
     receiverChat?: ChatListRelationFilter
     senderMessage?: MessagesListRelationFilter
     receiverMessage?: MessagesListRelationFilter
-  }, "id">
+  }, "id" | "username" | "display_name">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
@@ -11259,7 +11272,7 @@ export namespace Prisma {
     id?: IntFilter<"Comments"> | number
     comment_text?: StringFilter<"Comments"> | string
     createdAt?: DateTimeFilter<"Comments"> | Date | string
-    postId?: IntFilter<"Comments"> | number
+    commented_postId?: IntFilter<"Comments"> | number
     commentsByUsers?: UserListRelationFilter
     commented_post?: XOR<PostScalarRelationFilter, PostWhereInput>
   }
@@ -11268,7 +11281,7 @@ export namespace Prisma {
     id?: SortOrder
     comment_text?: SortOrder
     createdAt?: SortOrder
-    postId?: SortOrder
+    commented_postId?: SortOrder
     commentsByUsers?: UserOrderByRelationAggregateInput
     commented_post?: PostOrderByWithRelationInput
   }
@@ -11280,7 +11293,7 @@ export namespace Prisma {
     NOT?: CommentsWhereInput | CommentsWhereInput[]
     comment_text?: StringFilter<"Comments"> | string
     createdAt?: DateTimeFilter<"Comments"> | Date | string
-    postId?: IntFilter<"Comments"> | number
+    commented_postId?: IntFilter<"Comments"> | number
     commentsByUsers?: UserListRelationFilter
     commented_post?: XOR<PostScalarRelationFilter, PostWhereInput>
   }, "id">
@@ -11289,7 +11302,7 @@ export namespace Prisma {
     id?: SortOrder
     comment_text?: SortOrder
     createdAt?: SortOrder
-    postId?: SortOrder
+    commented_postId?: SortOrder
     _count?: CommentsCountOrderByAggregateInput
     _avg?: CommentsAvgOrderByAggregateInput
     _max?: CommentsMaxOrderByAggregateInput
@@ -11304,7 +11317,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Comments"> | number
     comment_text?: StringWithAggregatesFilter<"Comments"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Comments"> | Date | string
-    postId?: IntWithAggregatesFilter<"Comments"> | number
+    commented_postId?: IntWithAggregatesFilter<"Comments"> | number
   }
 
   export type ChatWhereInput = {
@@ -11790,7 +11803,7 @@ export namespace Prisma {
     id?: number
     comment_text: string
     createdAt?: Date | string
-    postId: number
+    commented_postId: number
     commentsByUsers?: UserUncheckedCreateNestedManyWithoutCommentsCreatedByUserInput
   }
 
@@ -11805,7 +11818,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     comment_text?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    postId?: IntFieldUpdateOperationsInput | number
+    commented_postId?: IntFieldUpdateOperationsInput | number
     commentsByUsers?: UserUncheckedUpdateManyWithoutCommentsCreatedByUserNestedInput
   }
 
@@ -11813,7 +11826,7 @@ export namespace Prisma {
     id?: number
     comment_text: string
     createdAt?: Date | string
-    postId: number
+    commented_postId: number
   }
 
   export type CommentsUpdateManyMutationInput = {
@@ -11825,7 +11838,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     comment_text?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    postId?: IntFieldUpdateOperationsInput | number
+    commented_postId?: IntFieldUpdateOperationsInput | number
   }
 
   export type ChatCreateInput = {
@@ -12324,31 +12337,31 @@ export namespace Prisma {
     id?: SortOrder
     comment_text?: SortOrder
     createdAt?: SortOrder
-    postId?: SortOrder
+    commented_postId?: SortOrder
   }
 
   export type CommentsAvgOrderByAggregateInput = {
     id?: SortOrder
-    postId?: SortOrder
+    commented_postId?: SortOrder
   }
 
   export type CommentsMaxOrderByAggregateInput = {
     id?: SortOrder
     comment_text?: SortOrder
     createdAt?: SortOrder
-    postId?: SortOrder
+    commented_postId?: SortOrder
   }
 
   export type CommentsMinOrderByAggregateInput = {
     id?: SortOrder
     comment_text?: SortOrder
     createdAt?: SortOrder
-    postId?: SortOrder
+    commented_postId?: SortOrder
   }
 
   export type CommentsSumOrderByAggregateInput = {
     id?: SortOrder
-    postId?: SortOrder
+    commented_postId?: SortOrder
   }
 
   export type ChatCountOrderByAggregateInput = {
@@ -13300,7 +13313,7 @@ export namespace Prisma {
     id?: number
     comment_text: string
     createdAt?: Date | string
-    postId: number
+    commented_postId: number
   }
 
   export type CommentsCreateOrConnectWithoutCommentsByUsersInput = {
@@ -13541,7 +13554,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     comment_text?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    postId?: IntFieldUpdateOperationsInput | number
+    commented_postId?: IntFieldUpdateOperationsInput | number
   }
 
   export type ChatUpsertWithWhereUniqueWithoutSenderChatInput = {
@@ -14009,7 +14022,7 @@ export namespace Prisma {
     id?: IntFilter<"Comments"> | number
     comment_text?: StringFilter<"Comments"> | string
     createdAt?: DateTimeFilter<"Comments"> | Date | string
-    postId?: IntFilter<"Comments"> | number
+    commented_postId?: IntFilter<"Comments"> | number
   }
 
   export type UserCreateWithoutCommentsCreatedByUserInput = {

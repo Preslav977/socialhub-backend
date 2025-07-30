@@ -100,7 +100,7 @@ passport.deserializeUser(async (id, done) => {
 });
 
 app.post(
-  "/login",
+  "users/login",
   passport.authenticate("local", {
     successRedirect: "/",
     failureRedirect: "/",
@@ -108,7 +108,7 @@ app.post(
 );
 
 app.get(
-  "/logout",
+  "users/logout",
   asyncHandler(async (req, res, next) => {
     req.logout((err) => {
       if (err) {
