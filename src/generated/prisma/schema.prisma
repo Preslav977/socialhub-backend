@@ -32,15 +32,15 @@ model User {
   profile_picture       String
   background_picture    String
   role                  Role       @default(USER)
-  followers             Followers  @relation(fields: [followersId], references: [id])
-  followersId           String
-  following             Following  @relation(fields: [followingId], references: [id])
-  followingId           String
-  likedPostByUser       Post       @relation("likedPostsByUser", fields: [likedPostByUserId], references: [id])
-  likedPostByUserId     Int
+  followers             Followers? @relation(fields: [followersId], references: [id])
+  followersId           String?
+  following             Following? @relation(fields: [followingId], references: [id])
+  followingId           String?
+  likedPostByUser       Post?      @relation("likedPostsByUser", fields: [likedPostByUserId], references: [id])
+  likedPostByUserId     Int?
   postsCreatedByUsers   Post[]
-  commentsCreatedByUser Comments   @relation(fields: [commentId], references: [id])
-  commentId             Int
+  commentsCreatedByUser Comments?  @relation(fields: [commentId], references: [id])
+  commentId             Int?
   senderChat            Chat[]     @relation("senderChat")
   receiverChat          Chat[]     @relation("receiverChat")
   senderMessage         Messages[] @relation("senderMessage")

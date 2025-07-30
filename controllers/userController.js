@@ -1,4 +1,4 @@
-const { validationREsult, validationResult } = require("express-validator");
+const { validationResult } = require("express-validator");
 
 const bcrypt = require("bcryptjs");
 
@@ -10,11 +10,16 @@ const asyncHandler = require("express-async-handler");
 
 const prisma = require("../db/client");
 
+const userSignUp = require("../validatingMiddlewares/userSignUp");
+
 exports.user_signup = [
+  userSignUp,
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
 
     const { username, display_name, password, confirm_password } = req.body;
+
+    console.log(username, display_name, password, confirm_password);
 
     bcrypt.hash(password, 10, async (error, hashedPassword) => {
       if (error) {
@@ -30,11 +35,11 @@ exports.user_signup = [
           data: {
             username: username,
             display_name: display_name,
-            password: hashedPassword,
-            confirm_password: hashedPassword,
             bio: "",
             website: "",
             github: "",
+            password: hashedPassword,
+            confirm_password: hashedPassword,
             profile_picture: "",
             background_picture: "",
           },

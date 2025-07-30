@@ -120,6 +120,8 @@ app.get(
   }),
 );
 
+app.get("/", (req, res) => res.send("Hello, world!"));
+
 app.use("/users", userRouter);
 
 app.use((err, req, res, next) => {
@@ -127,3 +129,5 @@ app.use((err, req, res, next) => {
 
   res.status(500).send(err.stack);
 });
+
+module.exports = app;
