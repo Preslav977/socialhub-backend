@@ -81,3 +81,23 @@ exports.user_login_guest = [
     );
   }),
 ];
+
+exports.user_get_by_id = [
+  asyncHandler(async (req, res, next) => {
+    const { id } = req.params;
+
+    const getUserById = await prisma.user.findFirst({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    if (!getUserById) {
+      res.json({
+        message: "Failed to get user information. Please try to login again.",
+      });
+    } else {
+      res.json(getUserById);
+    }
+  }),
+];

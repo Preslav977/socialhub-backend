@@ -34,6 +34,8 @@ app.use(express.urlencoded({ extended: true }));
 
 const authRouter = require("./routes/authRouter");
 
+const userRouter = require("./routes/userRouter");
+
 const verifyToken = require("./middlewares/verifyToken");
 
 app.use(
@@ -125,6 +127,8 @@ app.get(
 app.use(authRouter);
 
 app.use(verifyToken);
+
+app.use("/users", userRouter);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

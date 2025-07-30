@@ -13,15 +13,15 @@ function verifyToken(req, res, next) {
     jwt.verify(req.token, process.env.SECRET, (err, authData) => {
       if (err) {
         res.sendStatus(403);
+      } else {
+        req.authData = authData;
+
+        next();
       }
-
-      req.authData = authData;
-
-      next();
     });
+  } else {
+    res.sendStatus(403);
   }
-
-  res.sendStatus(403);
 }
 
 module.exports = verifyToken;
