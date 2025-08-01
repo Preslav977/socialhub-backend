@@ -12,6 +12,16 @@ const prisma = require("../db/client");
 
 const userSignUp = require("../validatingMiddlewares/userSignUp");
 
+const { createClient } = require("@supabase/supabase-js");
+
+const supabaseUrl = process.env.supabaseUrl;
+
+const supabaseKey = process.env.supabaseAPI;
+
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+const upload = require("../middlewares/multer");
+
 exports.user_signup = [
   userSignUp,
   asyncHandler(async (req, res, next) => {
@@ -102,12 +112,31 @@ exports.user_get_by_id = [
 
 exports.user_update_profile = [
   // userSignUp,
+  upload.single("file"),
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
 
     const { id } = req.params;
 
     const { username, display_name, bio, website, github } = req.body;
+
+    const profile_picture = req.file;
+
+    console.log(req.file, req.body);
+
+    const { data, error } = await supabase.storage
+      .from("socialhub-images")
+      .upload(
+        `public/${profile_picture.originalname}`,
+        profile_picture.buffer,
+        {
+          cacheControl: "3600",
+          upsert: true,
+          contentType: req.file.mimetype,
+        },
+      );
+
+    console.log(data);
 
     if (!errors.isEmpty()) {
       res.status(400).send(errors.array());
