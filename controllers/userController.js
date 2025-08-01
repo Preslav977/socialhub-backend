@@ -157,3 +157,14 @@ exports.users_get = [
     res.json(getUsers);
   }),
 ];
+
+exports.users_search = [
+  asyncHandler(async (req, res, next) => {
+    const { query } = req.query;
+
+    const searchForAUser =
+      await prisma.$queryRaw`SELECT * FROM "user" WHERE username ILIKE CONCAT('%', ${query}, '%') OR display_name ILIKE CONCAT('%', ${query}, '%')`;
+
+    res.json(searchForAUser);
+  }),
+];
