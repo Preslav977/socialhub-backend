@@ -122,9 +122,7 @@ exports.user_update_profile = [
 
     const profile_picture = req.file;
 
-    console.log(req.file, req.body);
-
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from("socialhub-images")
       .upload(
         `public/${profile_picture.originalname}`,
@@ -135,6 +133,16 @@ exports.user_update_profile = [
           contentType: req.file.mimetype,
         },
       );
+
+    if (error) {
+      throw new Error(
+        `You can only upload images ${profile_picture.mimetype},`,
+      );
+    }
+
+    const { data } = supabase.storage
+      .from("socialhub-images")
+      .getPublicUrl(`public/${profile_picture.originalname}`);
 
     console.log(data);
 
@@ -151,6 +159,7 @@ exports.user_update_profile = [
           bio: bio,
           website: website,
           github: github,
+          profile_picture: data.publicUrl,
         },
       });
 
