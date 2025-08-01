@@ -8,4 +8,6 @@ userRouter.get("/:id", userController.user_get_by_id);
 
 userRouter.put("/:id", userController.user_update_profile);
 
+userRouter.get("/", userController.users_get);
+
 module.exports = userRouter;

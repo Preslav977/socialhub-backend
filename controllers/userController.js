@@ -116,8 +116,6 @@ exports.user_update_profile = [
 
     const { username, display_name, bio, website, github } = req.body;
 
-    console.log(username, display_name, bio, website, github);
-
     const profile_picture = await uploadingImage(req.file);
 
     if (!errors.isEmpty()) {
@@ -145,5 +143,17 @@ exports.user_update_profile = [
 
       res.json(fetchTheUpdatedUserProfile);
     }
+  }),
+];
+
+exports.users_get = [
+  asyncHandler(async (req, res, next) => {
+    const getUsers = await prisma.user.findMany({
+      orderBy: {
+        username: "asc",
+      },
+    });
+
+    res.json(getUsers);
   }),
 ];
