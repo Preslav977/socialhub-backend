@@ -30,7 +30,6 @@ model User {
   password              String
   confirm_password      String
   profile_picture       String
-  background_picture    String
   role                  Role       @default(USER)
   followers             Followers?  @relation(fields: [followersId], references: [id])
   followersId           String? 

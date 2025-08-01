@@ -12,15 +12,9 @@ const prisma = require("../db/client");
 
 const userSignUp = require("../validatingMiddlewares/userSignUp");
 
-const { createClient } = require("@supabase/supabase-js");
-
-const supabaseUrl = process.env.supabaseUrl;
-
-const supabaseKey = process.env.supabaseAPI;
-
-const supabase = createClient(supabaseUrl, supabaseKey);
-
 const upload = require("../middlewares/multer");
+
+const uploadingImage = require("../helper/uploadingImage");
 
 exports.user_signup = [
   userSignUp,
@@ -120,31 +114,7 @@ exports.user_update_profile = [
 
     const { username, display_name, bio, website, github } = req.body;
 
-    const profile_picture = req.file;
-
-    const { error } = await supabase.storage
-      .from("socialhub-images")
-      .upload(
-        `public/${profile_picture.originalname}`,
-        profile_picture.buffer,
-        {
-          cacheControl: "3600",
-          upsert: true,
-          contentType: req.file.mimetype,
-        },
-      );
-
-    if (error) {
-      throw new Error(
-        `You can only upload images ${profile_picture.mimetype},`,
-      );
-    }
-
-    const { data } = supabase.storage
-      .from("socialhub-images")
-      .getPublicUrl(`public/${profile_picture.originalname}`);
-
-    console.log(data);
+    const profile_picture = await uploadingImage(req.file);
 
     if (!errors.isEmpty()) {
       res.status(400).send(errors.array());
@@ -159,7 +129,7 @@ exports.user_update_profile = [
           bio: bio,
           website: website,
           github: github,
-          profile_picture: data.publicUrl,
+          profile_picture: profile_picture,
         },
       });
 

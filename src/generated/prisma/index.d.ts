@@ -1801,7 +1801,6 @@ export namespace Prisma {
     password: string | null
     confirm_password: string | null
     profile_picture: string | null
-    background_picture: string | null
     role: $Enums.Role | null
     followersId: string | null
     followingId: string | null
@@ -1819,7 +1818,6 @@ export namespace Prisma {
     password: string | null
     confirm_password: string | null
     profile_picture: string | null
-    background_picture: string | null
     role: $Enums.Role | null
     followersId: string | null
     followingId: string | null
@@ -1837,7 +1835,6 @@ export namespace Prisma {
     password: number
     confirm_password: number
     profile_picture: number
-    background_picture: number
     role: number
     followersId: number
     followingId: number
@@ -1869,7 +1866,6 @@ export namespace Prisma {
     password?: true
     confirm_password?: true
     profile_picture?: true
-    background_picture?: true
     role?: true
     followersId?: true
     followingId?: true
@@ -1887,7 +1883,6 @@ export namespace Prisma {
     password?: true
     confirm_password?: true
     profile_picture?: true
-    background_picture?: true
     role?: true
     followersId?: true
     followingId?: true
@@ -1905,7 +1900,6 @@ export namespace Prisma {
     password?: true
     confirm_password?: true
     profile_picture?: true
-    background_picture?: true
     role?: true
     followersId?: true
     followingId?: true
@@ -2010,7 +2004,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role: $Enums.Role
     followersId: string | null
     followingId: string | null
@@ -2047,7 +2040,6 @@ export namespace Prisma {
     password?: boolean
     confirm_password?: boolean
     profile_picture?: boolean
-    background_picture?: boolean
     role?: boolean
     followersId?: boolean
     followingId?: boolean
@@ -2075,7 +2067,6 @@ export namespace Prisma {
     password?: boolean
     confirm_password?: boolean
     profile_picture?: boolean
-    background_picture?: boolean
     role?: boolean
     followersId?: boolean
     followingId?: boolean
@@ -2097,7 +2088,6 @@ export namespace Prisma {
     password?: boolean
     confirm_password?: boolean
     profile_picture?: boolean
-    background_picture?: boolean
     role?: boolean
     followersId?: boolean
     followingId?: boolean
@@ -2119,7 +2109,6 @@ export namespace Prisma {
     password?: boolean
     confirm_password?: boolean
     profile_picture?: boolean
-    background_picture?: boolean
     role?: boolean
     followersId?: boolean
     followingId?: boolean
@@ -2127,7 +2116,7 @@ export namespace Prisma {
     commentId?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "display_name" | "bio" | "website" | "github" | "password" | "confirm_password" | "profile_picture" | "background_picture" | "role" | "followersId" | "followingId" | "likedPostByUserId" | "commentId", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "display_name" | "bio" | "website" | "github" | "password" | "confirm_password" | "profile_picture" | "role" | "followersId" | "followingId" | "likedPostByUserId" | "commentId", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     followers?: boolean | User$followersArgs<ExtArgs>
     following?: boolean | User$followingArgs<ExtArgs>
@@ -2176,7 +2165,6 @@ export namespace Prisma {
       password: string
       confirm_password: string
       profile_picture: string
-      background_picture: string
       role: $Enums.Role
       followersId: string | null
       followingId: string | null
@@ -2623,7 +2611,6 @@ export namespace Prisma {
     readonly password: FieldRef<"User", 'String'>
     readonly confirm_password: FieldRef<"User", 'String'>
     readonly profile_picture: FieldRef<"User", 'String'>
-    readonly background_picture: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'Role'>
     readonly followersId: FieldRef<"User", 'String'>
     readonly followingId: FieldRef<"User", 'String'>
@@ -10884,7 +10871,6 @@ export namespace Prisma {
     password: 'password',
     confirm_password: 'confirm_password',
     profile_picture: 'profile_picture',
-    background_picture: 'background_picture',
     role: 'role',
     followersId: 'followersId',
     followingId: 'followingId',
@@ -11083,7 +11069,6 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     confirm_password?: StringFilter<"User"> | string
     profile_picture?: StringFilter<"User"> | string
-    background_picture?: StringFilter<"User"> | string
     role?: EnumRoleFilter<"User"> | $Enums.Role
     followersId?: StringNullableFilter<"User"> | string | null
     followingId?: StringNullableFilter<"User"> | string | null
@@ -11110,7 +11095,6 @@ export namespace Prisma {
     password?: SortOrder
     confirm_password?: SortOrder
     profile_picture?: SortOrder
-    background_picture?: SortOrder
     role?: SortOrder
     followersId?: SortOrderInput | SortOrder
     followingId?: SortOrderInput | SortOrder
@@ -11140,7 +11124,6 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     confirm_password?: StringFilter<"User"> | string
     profile_picture?: StringFilter<"User"> | string
-    background_picture?: StringFilter<"User"> | string
     role?: EnumRoleFilter<"User"> | $Enums.Role
     followersId?: StringNullableFilter<"User"> | string | null
     followingId?: StringNullableFilter<"User"> | string | null
@@ -11167,7 +11150,6 @@ export namespace Prisma {
     password?: SortOrder
     confirm_password?: SortOrder
     profile_picture?: SortOrder
-    background_picture?: SortOrder
     role?: SortOrder
     followersId?: SortOrderInput | SortOrder
     followingId?: SortOrderInput | SortOrder
@@ -11193,7 +11175,6 @@ export namespace Prisma {
     password?: StringWithAggregatesFilter<"User"> | string
     confirm_password?: StringWithAggregatesFilter<"User"> | string
     profile_picture?: StringWithAggregatesFilter<"User"> | string
-    background_picture?: StringWithAggregatesFilter<"User"> | string
     role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
     followersId?: StringNullableWithAggregatesFilter<"User"> | string | null
     followingId?: StringNullableWithAggregatesFilter<"User"> | string | null
@@ -11601,7 +11582,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     followers?: FollowersCreateNestedOneWithoutFollowersUsersInput
     following?: FollowingCreateNestedOneWithoutFollowingUsersInput
@@ -11624,7 +11604,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     followersId?: string | null
     followingId?: string | null
@@ -11646,7 +11625,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     followers?: FollowersUpdateOneWithoutFollowersUsersNestedInput
     following?: FollowingUpdateOneWithoutFollowingUsersNestedInput
@@ -11669,7 +11647,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     followersId?: NullableStringFieldUpdateOperationsInput | string | null
     followingId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -11692,7 +11669,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     followersId?: string | null
     followingId?: string | null
@@ -11709,7 +11685,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
   }
 
@@ -11723,7 +11698,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     followersId?: NullableStringFieldUpdateOperationsInput | string | null
     followingId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -12227,7 +12201,6 @@ export namespace Prisma {
     password?: SortOrder
     confirm_password?: SortOrder
     profile_picture?: SortOrder
-    background_picture?: SortOrder
     role?: SortOrder
     followersId?: SortOrder
     followingId?: SortOrder
@@ -12251,7 +12224,6 @@ export namespace Prisma {
     password?: SortOrder
     confirm_password?: SortOrder
     profile_picture?: SortOrder
-    background_picture?: SortOrder
     role?: SortOrder
     followersId?: SortOrder
     followingId?: SortOrder
@@ -12269,7 +12241,6 @@ export namespace Prisma {
     password?: SortOrder
     confirm_password?: SortOrder
     profile_picture?: SortOrder
-    background_picture?: SortOrder
     role?: SortOrder
     followersId?: SortOrder
     followingId?: SortOrder
@@ -13898,7 +13869,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     following?: FollowingCreateNestedOneWithoutFollowingUsersInput
     likedPostByUser?: PostCreateNestedOneWithoutLikedPostByUsersInput
@@ -13920,7 +13890,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     followingId?: string | null
     likedPostByUserId?: number | null
@@ -13971,7 +13940,6 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     confirm_password?: StringFilter<"User"> | string
     profile_picture?: StringFilter<"User"> | string
-    background_picture?: StringFilter<"User"> | string
     role?: EnumRoleFilter<"User"> | $Enums.Role
     followersId?: StringNullableFilter<"User"> | string | null
     followingId?: StringNullableFilter<"User"> | string | null
@@ -13988,7 +13956,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     followers?: FollowersCreateNestedOneWithoutFollowersUsersInput
     likedPostByUser?: PostCreateNestedOneWithoutLikedPostByUsersInput
@@ -14010,7 +13977,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     followersId?: string | null
     likedPostByUserId?: number | null
@@ -14057,7 +14023,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     followers?: FollowersCreateNestedOneWithoutFollowersUsersInput
     following?: FollowingCreateNestedOneWithoutFollowingUsersInput
@@ -14079,7 +14044,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     followersId?: string | null
     followingId?: string | null
@@ -14110,7 +14074,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     followers?: FollowersCreateNestedOneWithoutFollowersUsersInput
     following?: FollowingCreateNestedOneWithoutFollowingUsersInput
@@ -14132,7 +14095,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     followersId?: string | null
     followingId?: string | null
@@ -14208,7 +14170,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     followers?: FollowersUpdateOneWithoutFollowersUsersNestedInput
     following?: FollowingUpdateOneWithoutFollowingUsersNestedInput
@@ -14230,7 +14191,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     followersId?: NullableStringFieldUpdateOperationsInput | string | null
     followingId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14277,7 +14237,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     followers?: FollowersCreateNestedOneWithoutFollowersUsersInput
     following?: FollowingCreateNestedOneWithoutFollowingUsersInput
@@ -14299,7 +14258,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     followersId?: string | null
     followingId?: string | null
@@ -14408,7 +14366,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     followers?: FollowersCreateNestedOneWithoutFollowersUsersInput
     following?: FollowingCreateNestedOneWithoutFollowingUsersInput
@@ -14430,7 +14387,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     followersId?: string | null
     followingId?: string | null
@@ -14456,7 +14412,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     followers?: FollowersCreateNestedOneWithoutFollowersUsersInput
     following?: FollowingCreateNestedOneWithoutFollowingUsersInput
@@ -14478,7 +14433,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     followersId?: string | null
     followingId?: string | null
@@ -14548,7 +14502,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     followers?: FollowersUpdateOneWithoutFollowersUsersNestedInput
     following?: FollowingUpdateOneWithoutFollowingUsersNestedInput
@@ -14570,7 +14523,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     followersId?: NullableStringFieldUpdateOperationsInput | string | null
     followingId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14602,7 +14554,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     followers?: FollowersUpdateOneWithoutFollowersUsersNestedInput
     following?: FollowingUpdateOneWithoutFollowingUsersNestedInput
@@ -14624,7 +14575,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     followersId?: NullableStringFieldUpdateOperationsInput | string | null
     followingId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14661,7 +14611,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     followers?: FollowersCreateNestedOneWithoutFollowersUsersInput
     following?: FollowingCreateNestedOneWithoutFollowingUsersInput
@@ -14683,7 +14632,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     followersId?: string | null
     followingId?: string | null
@@ -14709,7 +14657,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     followers?: FollowersCreateNestedOneWithoutFollowersUsersInput
     following?: FollowingCreateNestedOneWithoutFollowingUsersInput
@@ -14731,7 +14678,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     followersId?: string | null
     followingId?: string | null
@@ -14785,7 +14731,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     followers?: FollowersUpdateOneWithoutFollowersUsersNestedInput
     following?: FollowingUpdateOneWithoutFollowingUsersNestedInput
@@ -14807,7 +14752,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     followersId?: NullableStringFieldUpdateOperationsInput | string | null
     followingId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14839,7 +14783,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     followers?: FollowersUpdateOneWithoutFollowersUsersNestedInput
     following?: FollowingUpdateOneWithoutFollowingUsersNestedInput
@@ -14861,7 +14804,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     followersId?: NullableStringFieldUpdateOperationsInput | string | null
     followingId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15087,7 +15029,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     followingId?: string | null
     likedPostByUserId?: number | null
@@ -15103,7 +15044,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     following?: FollowingUpdateOneWithoutFollowingUsersNestedInput
     likedPostByUser?: PostUpdateOneWithoutLikedPostByUsersNestedInput
@@ -15125,7 +15065,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     followingId?: NullableStringFieldUpdateOperationsInput | string | null
     likedPostByUserId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -15147,7 +15086,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     followingId?: NullableStringFieldUpdateOperationsInput | string | null
     likedPostByUserId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -15164,7 +15102,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     followersId?: string | null
     likedPostByUserId?: number | null
@@ -15180,7 +15117,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     followers?: FollowersUpdateOneWithoutFollowersUsersNestedInput
     likedPostByUser?: PostUpdateOneWithoutLikedPostByUsersNestedInput
@@ -15202,7 +15138,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     followersId?: NullableStringFieldUpdateOperationsInput | string | null
     likedPostByUserId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -15224,7 +15159,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     followersId?: NullableStringFieldUpdateOperationsInput | string | null
     likedPostByUserId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -15241,7 +15175,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     followersId?: string | null
     followingId?: string | null
@@ -15263,7 +15196,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     followers?: FollowersUpdateOneWithoutFollowersUsersNestedInput
     following?: FollowingUpdateOneWithoutFollowingUsersNestedInput
@@ -15285,7 +15217,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     followersId?: NullableStringFieldUpdateOperationsInput | string | null
     followingId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15307,7 +15238,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     followersId?: NullableStringFieldUpdateOperationsInput | string | null
     followingId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15343,7 +15273,6 @@ export namespace Prisma {
     password: string
     confirm_password: string
     profile_picture: string
-    background_picture: string
     role?: $Enums.Role
     followersId?: string | null
     followingId?: string | null
@@ -15359,7 +15288,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     followers?: FollowersUpdateOneWithoutFollowersUsersNestedInput
     following?: FollowingUpdateOneWithoutFollowingUsersNestedInput
@@ -15381,7 +15309,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     followersId?: NullableStringFieldUpdateOperationsInput | string | null
     followingId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15403,7 +15330,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
-    background_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     followersId?: NullableStringFieldUpdateOperationsInput | string | null
     followingId?: NullableStringFieldUpdateOperationsInput | string | null
