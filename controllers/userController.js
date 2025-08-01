@@ -10,11 +10,13 @@ const asyncHandler = require("express-async-handler");
 
 const prisma = require("../db/client");
 
-const userSignUp = require("../validatingMiddlewares/userSignUp");
-
 const upload = require("../middlewares/multer");
 
 const uploadingImage = require("../helper/uploadingImage");
+
+const userSignUp = require("../validatingMiddlewares/userSignUp");
+
+const userUpdateProfile = require("../validatingMiddlewares/userUpdateProfile");
 
 exports.user_signup = [
   userSignUp,
@@ -105,14 +107,16 @@ exports.user_get_by_id = [
 ];
 
 exports.user_update_profile = [
-  // userSignUp,
   upload.single("file"),
+  userUpdateProfile,
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
 
     const { id } = req.params;
 
     const { username, display_name, bio, website, github } = req.body;
+
+    console.log(username, display_name, bio, website, github);
 
     const profile_picture = await uploadingImage(req.file);
 
