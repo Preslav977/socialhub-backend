@@ -4,6 +4,8 @@ const userRouter = Router();
 
 const userController = require("../controllers/userController");
 
+userRouter.put("/followers/:id", userController.user_followers);
+
 userRouter.get("/search", userController.users_search);
 
 userRouter.get("/:id", userController.user_get_by_id);

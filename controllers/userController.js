@@ -33,7 +33,7 @@ exports.user_signup = [
       }
 
       if (!errors.isEmpty()) {
-        res.status(400).send(errors.array());
+        return res.status(400).send(errors.array());
       } else {
         const signupUser = await prisma.user.create({
           data: {
@@ -45,9 +45,13 @@ exports.user_signup = [
             password: hashedPassword,
             confirm_password: hashedPassword,
             profile_picture: "",
-            background_picture: "",
           },
         });
+
+        const userFollowersAndFollowingList =
+          await prisma.followersAndFollowing.create();
+
+        console.log(userFollowersAndFollowingList);
 
         res.json(signupUser);
       }
@@ -94,6 +98,10 @@ exports.user_get_by_id = [
       where: {
         id: Number(id),
       },
+      include: {
+        followers: true,
+        following: true,
+      },
     });
 
     if (!getUserById) {
@@ -119,7 +127,7 @@ exports.user_update_profile = [
     const profile_picture = await uploadingImage(req.file);
 
     if (!errors.isEmpty()) {
-      res.status(400).send(errors.array());
+      return res.status(400).send(errors.array());
     } else {
       const updateUserProfile = await prisma.user.update({
         where: {
@@ -166,5 +174,27 @@ exports.users_search = [
       await prisma.$queryRaw`SELECT * FROM "user" WHERE username ILIKE CONCAT('%', ${query}, '%') OR display_name ILIKE CONCAT('%', ${query}, '%')`;
 
     res.json(searchForAUser);
+  }),
+];
+
+exports.user_followers = [
+  asyncHandler(async (req, res, next) => {
+    const { id } = req.params;
+
+    const getTheFollowedUser = await prisma.user.update({
+      where: {
+        id: Number(id),
+      },
+      include: {
+        followers: true,
+      },
+      data: {
+        followers: {
+          connect: [{ id: req.authData.id }],
+        },
+      },
+    });
+
+    res.json(getTheFollowedUser);
   }),
 ];
