@@ -46,16 +46,6 @@ model User {
   @@map("user")
 }
 
-// model Follows {
-//   id           Int   @id @default(autoincrement())
-//   followedBy   User? @relation("followedBy", fields: [followedById], references: [id])
-//   followedById Int?
-//   following    User? @relation("following", fields: [followingId], references: [id])
-//   followingId  Int?
-
-//   @@map("follows")
-// }
-
 model Post {
   id                   Int        @id @default(autoincrement())
   post_content         String

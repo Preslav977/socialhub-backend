@@ -95,7 +95,7 @@ exports.user_get_by_id = [
       },
       include: {
         followedBy: true,
-        // following: true,
+        following: true,
       },
     });
 
@@ -198,7 +198,7 @@ exports.user_following = [
   asyncHandler(async (req, res, next) => {
     const { id } = req.params;
 
-    const getTheFollowingUser = await prisma.user.update({
+    const followingTheUser = await prisma.user.update({
       where: {
         id: req.authData.id,
       },
@@ -212,6 +212,6 @@ exports.user_following = [
       },
     });
 
-    res.json(getTheFollowingUser);
+    res.json(followingTheUser);
   }),
 ];
