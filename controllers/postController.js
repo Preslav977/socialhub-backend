@@ -47,3 +47,20 @@ exports.posts_get = [
     res.json(getAllPosts);
   }),
 ];
+
+exports.post_get_by_id = [
+  asyncHandler(async (req, res, next) => {
+    const { id } = req.params;
+
+    const getPostById = await prisma.post.findFirst({
+      where: {
+        id: Number(id),
+      },
+      include: {
+        post_author: true,
+      },
+    });
+
+    res.json(getPostById);
+  }),
+];
