@@ -48,11 +48,6 @@ exports.user_signup = [
           },
         });
 
-        const userFollowersAndFollowingList =
-          await prisma.followersAndFollowing.create();
-
-        console.log(userFollowersAndFollowingList);
-
         res.json(signupUser);
       }
     });
@@ -99,8 +94,8 @@ exports.user_get_by_id = [
         id: Number(id),
       },
       include: {
-        followers: true,
-        following: true,
+        followedBy: true,
+        // following: true,
       },
     });
 
@@ -181,20 +176,42 @@ exports.user_followers = [
   asyncHandler(async (req, res, next) => {
     const { id } = req.params;
 
-    const getTheFollowedUser = await prisma.user.update({
+    const followTheUser = await prisma.user.update({
       where: {
         id: Number(id),
       },
       include: {
-        followers: true,
+        followedBy: true,
       },
       data: {
-        followers: {
-          connect: [{ id: req.authData.id }],
+        followedBy: {
+          connect: [{ id: 2 }],
         },
       },
     });
 
-    res.json(getTheFollowedUser);
+    res.json(followTheUser);
+  }),
+];
+
+exports.user_following = [
+  asyncHandler(async (req, res, next) => {
+    const { id } = req.params;
+
+    const getTheFollowingUser = await prisma.user.update({
+      where: {
+        id: req.authData.id,
+      },
+      include: {
+        following: true,
+      },
+      data: {
+        following: {
+          connect: [{ id: Number(id) }],
+        },
+      },
+    });
+
+    res.json(getTheFollowingUser);
   }),
 ];

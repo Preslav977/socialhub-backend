@@ -21,55 +21,40 @@ enum Role {
 }
 
 model User {
-  id                    Int                     @id @default(autoincrement())
-  username              String                  @unique
-  display_name          String                  @unique
+  id                    Int        @id @default(autoincrement())
+  username              String     @unique
+  display_name          String     @unique
   bio                   String
   website               String
   github                String
   password              String
   confirm_password      String
   profile_picture       String
-  role                  Role                    @default(USER)
-  followers             FollowersAndFollowing[] @relation("followers")
-  following             FollowersAndFollowing[] @relation("following")
-  likedPostByUser       Post?                   @relation("likedPostsByUser", fields: [likedPostByUserId], references: [id])
+  role                  Role       @default(USER)
+  followedBy            User[]     @relation("UserFollows")
+  following             User[]     @relation("UserFollows")
+  likedPostByUser       Post?      @relation("likedPostsByUser", fields: [likedPostByUserId], references: [id])
   likedPostByUserId     Int?
   postsCreatedByUsers   Post[]
-  commentsCreatedByUser Comments?               @relation(fields: [commentId], references: [id])
+  commentsCreatedByUser Comments?  @relation(fields: [commentId], references: [id])
   commentId             Int?
-  senderChat            Chat[]                  @relation("senderChat")
-  receiverChat          Chat[]                  @relation("receiverChat")
-  senderMessage         Messages[]              @relation("senderMessage")
-  receiverMessage       Messages[]              @relation("receiverMessage")
+  senderChat            Chat[]     @relation("senderChat")
+  receiverChat          Chat[]     @relation("receiverChat")
+  senderMessage         Messages[] @relation("senderMessage")
+  receiverMessage       Messages[] @relation("receiverMessage")
 
   @@map("user")
 }
 
-// model Followers {
-//   id             Int @id @default(autoincrement())
-//   followersUser User @relation(fields: [followersUserId], references: [id])
-//   followersUserId Int
+// model Follows {
+//   id           Int   @id @default(autoincrement())
+//   followedBy   User? @relation("followedBy", fields: [followedById], references: [id])
+//   followedById Int?
+//   following    User? @relation("following", fields: [followingId], references: [id])
+//   followingId  Int?
 
-//   @@map("followers")
+//   @@map("follows")
 // }
-
-// model Following {
-//   id             String @id @default(uuid())
-//   followingUsers User[]
-
-//   @@map("following")
-// }
-
-model FollowersAndFollowing {
-  id          Int   @id @default(autoincrement())
-  followers   User? @relation("followers", fields: [followersId], references: [id])
-  followersId Int?
-  following   User? @relation("following", fields: [followingId], references: [id])
-  followingId Int?
-
-  @@map("followersandfollowing")
-}
 
 model Post {
   id                   Int        @id @default(autoincrement())

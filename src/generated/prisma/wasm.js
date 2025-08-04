@@ -135,12 +135,6 @@ exports.Prisma.UserScalarFieldEnum = {
   commentId: 'commentId'
 };
 
-exports.Prisma.FollowersAndFollowingScalarFieldEnum = {
-  id: 'id',
-  followersId: 'followersId',
-  followingId: 'followingId'
-};
-
 exports.Prisma.PostScalarFieldEnum = {
   id: 'id',
   post_content: 'post_content',
@@ -207,7 +201,6 @@ exports.Role = exports.$Enums.Role = {
 
 exports.Prisma.ModelName = {
   User: 'User',
-  FollowersAndFollowing: 'FollowersAndFollowing',
   Post: 'Post',
   Comments: 'Comments',
   Chat: 'Chat',
