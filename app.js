@@ -36,6 +36,8 @@ const authRouter = require("./routes/authRouter");
 
 const userRouter = require("./routes/userRouter");
 
+const postRouter = require("./routes/postRouter");
+
 const verifyToken = require("./middlewares/verifyToken");
 
 app.use(
@@ -129,6 +131,8 @@ app.use(authRouter);
 app.use(verifyToken);
 
 app.use("/users", userRouter);
+
+app.use("/posts", postRouter);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
