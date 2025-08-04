@@ -131,8 +131,8 @@ exports.Prisma.UserScalarFieldEnum = {
   confirm_password: 'confirm_password',
   profile_picture: 'profile_picture',
   role: 'role',
-  likedPostByUserId: 'likedPostByUserId',
-  commentId: 'commentId'
+  likedPostId: 'likedPostId',
+  commentOnPostId: 'commentOnPostId'
 };
 
 exports.Prisma.PostScalarFieldEnum = {
