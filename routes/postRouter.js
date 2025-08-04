@@ -10,4 +10,6 @@ postRouter.get("/", postController.posts_get);
 
 postRouter.get("/:id", postController.post_get_by_id);
 
+postRouter.put("/like/:id", postController.post_like);
+
 module.exports = postRouter;

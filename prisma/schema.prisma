@@ -33,8 +33,7 @@ model User {
   role             Role       @default(USER)
   followedBy       User[]     @relation("UserFollows")
   following        User[]     @relation("UserFollows")
-  likedPost        Post?      @relation("likedPostsByUser", fields: [likedPostId], references: [id])
-  likedPostId      Int?
+  likedPost        Post[]     @relation("UserLikedPosts")
   createdPosts     Post[]
   commentsOnPost   Comments?  @relation(fields: [commentOnPostId], references: [id])
   commentOnPostId  Int?
@@ -54,7 +53,7 @@ model Post {
   post_likes           Int
   post_comments        Int
   createdAt            DateTime   @default(now())
-  likedPostByUsers     User[]     @relation("likedPostsByUser")
+  likedPostByUsers     User[]     @relation("UserLikedPosts")
   post_author          User       @relation(fields: [post_authorId], references: [id])
   post_authorId        Int
   post_commentsByUsers Comments[]

@@ -64,3 +64,56 @@ exports.post_get_by_id = [
     res.json(getPostById);
   }),
 ];
+
+exports.post_like = [
+  asyncHandler(async (req, res, next) => {
+    const { id } = req.body;
+
+    const getPostById = await prisma.post.findFirst({
+      where: {
+        id: Number(id),
+      },
+      include: {
+        likedPostByUsers: true,
+      },
+    });
+
+    // const checkIfUserLikedThePost = getPostById.likedPostByUsers.some(
+    //   (post) => {
+    //     if (post. === req.authData.id) {
+    //       return true;
+    //     } else {
+    //       return false;
+    //     }
+    //   },
+    // );
+
+    //     if (checkIfUserLikedThePost) {
+    //       const dislike = await prisma.post.update({
+    //         where: {
+    //           id: Number(id),
+    //         },
+    //         data: {
+    //           post_likes: {
+    //             decrement: 1,
+    //           },
+    //         },
+    //       });
+
+    //       res.json(dislike);
+    //     } else {
+    //       const like = await prisma.post.update({
+    //         where: {
+    //           id: Number(id),
+    //         },
+    //         data: {
+    //           post_likes: {
+    //             increment: 1,
+    //           },
+    //         },
+    //       });
+
+    //       res.json(like);
+    //     }
+  }),
+];

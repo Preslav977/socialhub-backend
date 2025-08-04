@@ -131,7 +131,6 @@ exports.Prisma.UserScalarFieldEnum = {
   confirm_password: 'confirm_password',
   profile_picture: 'profile_picture',
   role: 'role',
-  likedPostId: 'likedPostId',
   commentOnPostId: 'commentOnPostId'
 };
 
