@@ -39,3 +39,11 @@ exports.post_create = [
     }
   }),
 ];
+
+exports.posts_get = [
+  asyncHandler(async (req, res, next) => {
+    const getAllPosts = await prisma.post.findMany();
+
+    res.json(getAllPosts);
+  }),
+];
