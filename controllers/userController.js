@@ -177,21 +177,56 @@ exports.user_followers = [
   asyncHandler(async (req, res, next) => {
     const { id } = req.params;
 
-    const followTheUser = await prisma.user.update({
+    const getUserById = await prisma.user.findFirst({
       where: {
         id: Number(id),
       },
       include: {
         followedBy: true,
       },
-      data: {
-        followedBy: {
-          connect: [{ id: 2 }],
-        },
-      },
     });
 
-    res.json(followTheUser);
+    const checkIfUserHasBeenFollowed = getUserById.followedBy.some(
+      (user) => user.id === req.authData.id,
+    );
+
+    if (!checkIfUserHasBeenFollowed) {
+      const followTheUser = await prisma.user.update({
+        where: {
+          id: getUserById.id,
+        },
+
+        include: {
+          followedBy: true,
+        },
+
+        data: {
+          followedBy: {
+            connect: [{ id: req.authData.id }],
+          },
+        },
+      });
+
+      res.json(followTheUser);
+    } else {
+      const unFollowTheUser = await prisma.user.update({
+        where: {
+          id: getUserById.id,
+        },
+
+        include: {
+          followedBy: true,
+        },
+
+        data: {
+          followedBy: {
+            disconnect: [{ id: req.authData.id }],
+          },
+        },
+      });
+
+      res.json(unFollowTheUser);
+    }
   }),
 ];
 
