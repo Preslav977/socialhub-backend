@@ -53,7 +53,7 @@ model Post {
   post_comments        Int
   createdAt            DateTime   @default(now())
   likedPostByUsers     User[]     @relation("UserLikedPosts")
-  post_author          User       @relation(fields: [post_authorId], references: [id])
+  post_author          User       @relation(fields: [post_authorId], references: [id], onDelete: Cascade)
   post_authorId        Int
   post_commentsByUsers Comments[]
 
@@ -63,12 +63,12 @@ model Post {
 model Comments {
   id                Int        @id @default(autoincrement())
   comment_text      String
-  comments_user     User       @relation(fields: [comments_userId], references: [id])
+  comments_user     User       @relation(fields: [comments_userId], references: [id], onDelete: Cascade)
   comments_userId   Int
   createdAt         DateTime   @default(now())
-  commented_post    Post       @relation(fields: [commented_postId], references: [id])
-  commented_postId  Int
-  parentComment     Comments?  @relation("CommentReply", fields: [parentCommentId], references: [id])
+  commented_post    Post?      @relation(fields: [commented_postId], references: [id], onDelete: Cascade)
+  commented_postId  Int?
+  parentComment     Comments?  @relation("CommentReply", fields: [parentCommentId], references: [id], onDelete: Cascade)
   parentCommentId   Int?
   childCommentReply Comments[] @relation("CommentReply")
 
@@ -95,10 +95,10 @@ model Messages {
   message_imageSize String
   createdAt         DateTime @default(now())
   senderMessageId   Int
-  senderMessage     User     @relation("senderMessage", fields: [senderMessageId], references: [id])
+  senderMessage     User     @relation("senderMessage", fields: [senderMessageId], references: [id], onDelete: Cascade)
   receiverMessageId Int
-  receiverMessage   User     @relation("receiverMessage", fields: [receiverMessageId], references: [id])
-  chat              Chat     @relation(fields: [chatId], references: [id])
+  receiverMessage   User     @relation("receiverMessage", fields: [receiverMessageId], references: [id], onDelete: Cascade)
+  chat              Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
   chatId            String
 
   @@map("messages")

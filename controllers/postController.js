@@ -181,3 +181,18 @@ exports.post_comment_reply = [
     res.json(replyToCommentInPost);
   }),
 ];
+
+exports.post_delete = [
+  asyncHandler(async (req, res, next) => {
+    const { id } = req.params;
+
+    const getPostById = await prisma.post.delete({
+      where: {
+        id: Number(id),
+        post_authorId: req.authData.id,
+      },
+    });
+
+    res.json(getPostById);
+  }),
+];

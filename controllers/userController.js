@@ -97,6 +97,8 @@ exports.user_get_by_id = [
         followedBy: true,
         following: true,
         likedPost: true,
+        createdPosts: true,
+        commentsOnPost: true,
       },
     });
 

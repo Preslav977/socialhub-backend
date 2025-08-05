@@ -16,4 +16,6 @@ postRouter.post("/:id/comment", postController.post_comment);
 
 postRouter.post("/:id/comment/:commentId", postController.post_comment_reply);
 
+postRouter.delete("/:id", postController.post_delete);
+
 module.exports = postRouter;
