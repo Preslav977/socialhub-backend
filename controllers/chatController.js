@@ -130,3 +130,26 @@ exports.chat_send_message = [
     }
   }),
 ];
+
+exports.chat_send_image = [
+  upload.single("file"),
+  asyncHandler(async (req, res, next) => {
+    const { id } = req.params;
+
+    const { receiverId } = req.body;
+
+    const message_image = await uploadImage(req.file);
+
+    const sendingAImage = await prisma.messages.create({
+      data: {
+        message_text: "",
+        message_imageURL: message_image,
+        senderMessageId: req.authData.id,
+        receiverMessageId: Number(receiverId),
+        chatId: id,
+      },
+    });
+
+    res.json(sendingAImage);
+  }),
+];
