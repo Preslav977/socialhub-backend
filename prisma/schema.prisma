@@ -68,6 +68,9 @@ model Comments {
   createdAt        DateTime @default(now())
   commented_post   Post     @relation(fields: [commented_postId], references: [id])
   commented_postId Int
+  parentComment Comments? @relation("CommentReply", fields: [parentCommentId], references: [id])
+  parentCommentId Int?
+  childCommentReply Comments[] @relation("CommentReply")
 
   @@map("comments")
 }

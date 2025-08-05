@@ -149,7 +149,8 @@ exports.Prisma.CommentsScalarFieldEnum = {
   comment_text: 'comment_text',
   comments_userId: 'comments_userId',
   createdAt: 'createdAt',
-  commented_postId: 'commented_postId'
+  commented_postId: 'commented_postId',
+  parentCommentId: 'parentCommentId'
 };
 
 exports.Prisma.ChatScalarFieldEnum = {
@@ -186,6 +187,11 @@ exports.Prisma.SortOrder = {
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
+};
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
 };
 exports.Role = exports.$Enums.Role = {
   USER: 'USER',

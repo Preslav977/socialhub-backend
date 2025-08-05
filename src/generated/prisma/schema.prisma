@@ -61,13 +61,16 @@ model Post {
 }
 
 model Comments {
-  id               Int      @id @default(autoincrement())
-  comment_text     String
-  comments_user    User     @relation(fields: [comments_userId], references: [id])
-  comments_userId  Int
-  createdAt        DateTime @default(now())
-  commented_post   Post     @relation(fields: [commented_postId], references: [id])
-  commented_postId Int
+  id                Int        @id @default(autoincrement())
+  comment_text      String
+  comments_user     User       @relation(fields: [comments_userId], references: [id])
+  comments_userId   Int
+  createdAt         DateTime   @default(now())
+  commented_post    Post       @relation(fields: [commented_postId], references: [id])
+  commented_postId  Int
+  parentComment     Comments?  @relation("CommentReply", fields: [parentCommentId], references: [id])
+  parentCommentId   Int?
+  childCommentReply Comments[] @relation("CommentReply")
 
   @@map("comments")
 }
