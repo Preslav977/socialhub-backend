@@ -140,7 +140,9 @@ exports.post_comment = [
     const { comment_text } = req.body;
 
     const getPostById = await prisma.post.findFirst({
-      where: { id: Number(id) },
+      where: {
+        id: Number(id),
+      },
     });
 
     const commentingOnPost = await prisma.comments.create({
@@ -152,5 +154,30 @@ exports.post_comment = [
     });
 
     res.json(commentingOnPost);
+  }),
+];
+
+exports.post_comment_reply = [
+  asyncHandler(async (req, res, next) => {
+    const { id } = req.params;
+
+    const { comment_text, commentId } = req.body;
+
+    const getPostById = await prisma.post.findFirst({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    const replyToCommentInPost = await prisma.comments.create({
+      data: {
+        comment_text: comment_text,
+        comments_userId: req.authData.id,
+        commented_postId: getPostById.id,
+        parentCommentId: Number(commentId),
+      },
+    });
+
+    res.json(replyToCommentInPost);
   }),
 ];

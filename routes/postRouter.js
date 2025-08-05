@@ -14,4 +14,6 @@ postRouter.put("/like/:id", postController.post_like);
 
 postRouter.post("/:id/comment", postController.post_comment);
 
+postRouter.post("/:id/comment/:commentId", postController.post_comment_reply);
+
 module.exports = postRouter;
