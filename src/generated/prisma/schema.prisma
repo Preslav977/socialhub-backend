@@ -35,8 +35,7 @@ model User {
   following        User[]     @relation("UserFollows")
   likedPost        Post[]     @relation("UserLikedPosts")
   createdPosts     Post[]
-  commentsOnPost   Comments?  @relation(fields: [commentOnPostId], references: [id])
-  commentOnPostId  Int?
+  commentsOnPost   Comments[]
   senderChat       Chat[]     @relation("senderChat")
   receiverChat     Chat[]     @relation("receiverChat")
   senderMessage    Messages[] @relation("senderMessage")
@@ -64,7 +63,8 @@ model Post {
 model Comments {
   id               Int      @id @default(autoincrement())
   comment_text     String
-  commentsByUsers  User[]
+  comments_user    User     @relation(fields: [comments_userId], references: [id])
+  comments_userId  Int
   createdAt        DateTime @default(now())
   commented_post   Post     @relation(fields: [commented_postId], references: [id])
   commented_postId Int

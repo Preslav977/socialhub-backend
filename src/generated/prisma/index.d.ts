@@ -1359,6 +1359,7 @@ export namespace Prisma {
     following: number
     likedPost: number
     createdPosts: number
+    commentsOnPost: number
     senderChat: number
     receiverChat: number
     senderMessage: number
@@ -1370,6 +1371,7 @@ export namespace Prisma {
     following?: boolean | UserCountOutputTypeCountFollowingArgs
     likedPost?: boolean | UserCountOutputTypeCountLikedPostArgs
     createdPosts?: boolean | UserCountOutputTypeCountCreatedPostsArgs
+    commentsOnPost?: boolean | UserCountOutputTypeCountCommentsOnPostArgs
     senderChat?: boolean | UserCountOutputTypeCountSenderChatArgs
     receiverChat?: boolean | UserCountOutputTypeCountReceiverChatArgs
     senderMessage?: boolean | UserCountOutputTypeCountSenderMessageArgs
@@ -1413,6 +1415,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountCreatedPostsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PostWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCommentsOnPostArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CommentsWhereInput
   }
 
   /**
@@ -1485,37 +1494,6 @@ export namespace Prisma {
 
 
   /**
-   * Count Type CommentsCountOutputType
-   */
-
-  export type CommentsCountOutputType = {
-    commentsByUsers: number
-  }
-
-  export type CommentsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    commentsByUsers?: boolean | CommentsCountOutputTypeCountCommentsByUsersArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * CommentsCountOutputType without action
-   */
-  export type CommentsCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommentsCountOutputType
-     */
-    select?: CommentsCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * CommentsCountOutputType without action
-   */
-  export type CommentsCountOutputTypeCountCommentsByUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserWhereInput
-  }
-
-
-  /**
    * Count Type ChatCountOutputType
    */
 
@@ -1564,12 +1542,10 @@ export namespace Prisma {
 
   export type UserAvgAggregateOutputType = {
     id: number | null
-    commentOnPostId: number | null
   }
 
   export type UserSumAggregateOutputType = {
     id: number | null
-    commentOnPostId: number | null
   }
 
   export type UserMinAggregateOutputType = {
@@ -1583,7 +1559,6 @@ export namespace Prisma {
     confirm_password: string | null
     profile_picture: string | null
     role: $Enums.Role | null
-    commentOnPostId: number | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1597,7 +1572,6 @@ export namespace Prisma {
     confirm_password: string | null
     profile_picture: string | null
     role: $Enums.Role | null
-    commentOnPostId: number | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1611,19 +1585,16 @@ export namespace Prisma {
     confirm_password: number
     profile_picture: number
     role: number
-    commentOnPostId: number
     _all: number
   }
 
 
   export type UserAvgAggregateInputType = {
     id?: true
-    commentOnPostId?: true
   }
 
   export type UserSumAggregateInputType = {
     id?: true
-    commentOnPostId?: true
   }
 
   export type UserMinAggregateInputType = {
@@ -1637,7 +1608,6 @@ export namespace Prisma {
     confirm_password?: true
     profile_picture?: true
     role?: true
-    commentOnPostId?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1651,7 +1621,6 @@ export namespace Prisma {
     confirm_password?: true
     profile_picture?: true
     role?: true
-    commentOnPostId?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1665,7 +1634,6 @@ export namespace Prisma {
     confirm_password?: true
     profile_picture?: true
     role?: true
-    commentOnPostId?: true
     _all?: true
   }
 
@@ -1766,7 +1734,6 @@ export namespace Prisma {
     confirm_password: string
     profile_picture: string
     role: $Enums.Role
-    commentOnPostId: number | null
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -1799,7 +1766,6 @@ export namespace Prisma {
     confirm_password?: boolean
     profile_picture?: boolean
     role?: boolean
-    commentOnPostId?: boolean
     followedBy?: boolean | User$followedByArgs<ExtArgs>
     following?: boolean | User$followingArgs<ExtArgs>
     likedPost?: boolean | User$likedPostArgs<ExtArgs>
@@ -1823,8 +1789,6 @@ export namespace Prisma {
     confirm_password?: boolean
     profile_picture?: boolean
     role?: boolean
-    commentOnPostId?: boolean
-    commentsOnPost?: boolean | User$commentsOnPostArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1838,8 +1802,6 @@ export namespace Prisma {
     confirm_password?: boolean
     profile_picture?: boolean
     role?: boolean
-    commentOnPostId?: boolean
-    commentsOnPost?: boolean | User$commentsOnPostArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -1853,10 +1815,9 @@ export namespace Prisma {
     confirm_password?: boolean
     profile_picture?: boolean
     role?: boolean
-    commentOnPostId?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "display_name" | "bio" | "website" | "github" | "password" | "confirm_password" | "profile_picture" | "role" | "commentOnPostId", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "display_name" | "bio" | "website" | "github" | "password" | "confirm_password" | "profile_picture" | "role", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     followedBy?: boolean | User$followedByArgs<ExtArgs>
     following?: boolean | User$followingArgs<ExtArgs>
@@ -1869,12 +1830,8 @@ export namespace Prisma {
     receiverMessage?: boolean | User$receiverMessageArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    commentsOnPost?: boolean | User$commentsOnPostArgs<ExtArgs>
-  }
-  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    commentsOnPost?: boolean | User$commentsOnPostArgs<ExtArgs>
-  }
+  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
@@ -1883,7 +1840,7 @@ export namespace Prisma {
       following: Prisma.$UserPayload<ExtArgs>[]
       likedPost: Prisma.$PostPayload<ExtArgs>[]
       createdPosts: Prisma.$PostPayload<ExtArgs>[]
-      commentsOnPost: Prisma.$CommentsPayload<ExtArgs> | null
+      commentsOnPost: Prisma.$CommentsPayload<ExtArgs>[]
       senderChat: Prisma.$ChatPayload<ExtArgs>[]
       receiverChat: Prisma.$ChatPayload<ExtArgs>[]
       senderMessage: Prisma.$MessagesPayload<ExtArgs>[]
@@ -1900,7 +1857,6 @@ export namespace Prisma {
       confirm_password: string
       profile_picture: string
       role: $Enums.Role
-      commentOnPostId: number | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -2299,7 +2255,7 @@ export namespace Prisma {
     following<T extends User$followingArgs<ExtArgs> = {}>(args?: Subset<T, User$followingArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     likedPost<T extends User$likedPostArgs<ExtArgs> = {}>(args?: Subset<T, User$likedPostArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     createdPosts<T extends User$createdPostsArgs<ExtArgs> = {}>(args?: Subset<T, User$createdPostsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    commentsOnPost<T extends User$commentsOnPostArgs<ExtArgs> = {}>(args?: Subset<T, User$commentsOnPostArgs<ExtArgs>>): Prisma__CommentsClient<$Result.GetResult<Prisma.$CommentsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    commentsOnPost<T extends User$commentsOnPostArgs<ExtArgs> = {}>(args?: Subset<T, User$commentsOnPostArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     senderChat<T extends User$senderChatArgs<ExtArgs> = {}>(args?: Subset<T, User$senderChatArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     receiverChat<T extends User$receiverChatArgs<ExtArgs> = {}>(args?: Subset<T, User$receiverChatArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     senderMessage<T extends User$senderMessageArgs<ExtArgs> = {}>(args?: Subset<T, User$senderMessageArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2343,7 +2299,6 @@ export namespace Prisma {
     readonly confirm_password: FieldRef<"User", 'String'>
     readonly profile_picture: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'Role'>
-    readonly commentOnPostId: FieldRef<"User", 'Int'>
   }
     
 
@@ -2593,10 +2548,6 @@ export namespace Prisma {
      */
     data: UserCreateManyInput | UserCreateManyInput[]
     skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -2667,10 +2618,6 @@ export namespace Prisma {
      * Limit how many Users to update.
      */
     limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -2852,6 +2799,11 @@ export namespace Prisma {
      */
     include?: CommentsInclude<ExtArgs> | null
     where?: CommentsWhereInput
+    orderBy?: CommentsOrderByWithRelationInput | CommentsOrderByWithRelationInput[]
+    cursor?: CommentsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CommentsScalarFieldEnum | CommentsScalarFieldEnum[]
   }
 
   /**
@@ -4184,17 +4136,20 @@ export namespace Prisma {
 
   export type CommentsAvgAggregateOutputType = {
     id: number | null
+    comments_userId: number | null
     commented_postId: number | null
   }
 
   export type CommentsSumAggregateOutputType = {
     id: number | null
+    comments_userId: number | null
     commented_postId: number | null
   }
 
   export type CommentsMinAggregateOutputType = {
     id: number | null
     comment_text: string | null
+    comments_userId: number | null
     createdAt: Date | null
     commented_postId: number | null
   }
@@ -4202,6 +4157,7 @@ export namespace Prisma {
   export type CommentsMaxAggregateOutputType = {
     id: number | null
     comment_text: string | null
+    comments_userId: number | null
     createdAt: Date | null
     commented_postId: number | null
   }
@@ -4209,6 +4165,7 @@ export namespace Prisma {
   export type CommentsCountAggregateOutputType = {
     id: number
     comment_text: number
+    comments_userId: number
     createdAt: number
     commented_postId: number
     _all: number
@@ -4217,17 +4174,20 @@ export namespace Prisma {
 
   export type CommentsAvgAggregateInputType = {
     id?: true
+    comments_userId?: true
     commented_postId?: true
   }
 
   export type CommentsSumAggregateInputType = {
     id?: true
+    comments_userId?: true
     commented_postId?: true
   }
 
   export type CommentsMinAggregateInputType = {
     id?: true
     comment_text?: true
+    comments_userId?: true
     createdAt?: true
     commented_postId?: true
   }
@@ -4235,6 +4195,7 @@ export namespace Prisma {
   export type CommentsMaxAggregateInputType = {
     id?: true
     comment_text?: true
+    comments_userId?: true
     createdAt?: true
     commented_postId?: true
   }
@@ -4242,6 +4203,7 @@ export namespace Prisma {
   export type CommentsCountAggregateInputType = {
     id?: true
     comment_text?: true
+    comments_userId?: true
     createdAt?: true
     commented_postId?: true
     _all?: true
@@ -4336,6 +4298,7 @@ export namespace Prisma {
   export type CommentsGroupByOutputType = {
     id: number
     comment_text: string
+    comments_userId: number
     createdAt: Date
     commented_postId: number
     _count: CommentsCountAggregateOutputType | null
@@ -4362,58 +4325,65 @@ export namespace Prisma {
   export type CommentsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     comment_text?: boolean
+    comments_userId?: boolean
     createdAt?: boolean
     commented_postId?: boolean
-    commentsByUsers?: boolean | Comments$commentsByUsersArgs<ExtArgs>
+    comments_user?: boolean | UserDefaultArgs<ExtArgs>
     commented_post?: boolean | PostDefaultArgs<ExtArgs>
-    _count?: boolean | CommentsCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["comments"]>
 
   export type CommentsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     comment_text?: boolean
+    comments_userId?: boolean
     createdAt?: boolean
     commented_postId?: boolean
+    comments_user?: boolean | UserDefaultArgs<ExtArgs>
     commented_post?: boolean | PostDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["comments"]>
 
   export type CommentsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     comment_text?: boolean
+    comments_userId?: boolean
     createdAt?: boolean
     commented_postId?: boolean
+    comments_user?: boolean | UserDefaultArgs<ExtArgs>
     commented_post?: boolean | PostDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["comments"]>
 
   export type CommentsSelectScalar = {
     id?: boolean
     comment_text?: boolean
+    comments_userId?: boolean
     createdAt?: boolean
     commented_postId?: boolean
   }
 
-  export type CommentsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "comment_text" | "createdAt" | "commented_postId", ExtArgs["result"]["comments"]>
+  export type CommentsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "comment_text" | "comments_userId" | "createdAt" | "commented_postId", ExtArgs["result"]["comments"]>
   export type CommentsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    commentsByUsers?: boolean | Comments$commentsByUsersArgs<ExtArgs>
+    comments_user?: boolean | UserDefaultArgs<ExtArgs>
     commented_post?: boolean | PostDefaultArgs<ExtArgs>
-    _count?: boolean | CommentsCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CommentsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    comments_user?: boolean | UserDefaultArgs<ExtArgs>
     commented_post?: boolean | PostDefaultArgs<ExtArgs>
   }
   export type CommentsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    comments_user?: boolean | UserDefaultArgs<ExtArgs>
     commented_post?: boolean | PostDefaultArgs<ExtArgs>
   }
 
   export type $CommentsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Comments"
     objects: {
-      commentsByUsers: Prisma.$UserPayload<ExtArgs>[]
+      comments_user: Prisma.$UserPayload<ExtArgs>
       commented_post: Prisma.$PostPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       comment_text: string
+      comments_userId: number
       createdAt: Date
       commented_postId: number
     }, ExtArgs["result"]["comments"]>
@@ -4810,7 +4780,7 @@ export namespace Prisma {
    */
   export interface Prisma__CommentsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    commentsByUsers<T extends Comments$commentsByUsersArgs<ExtArgs> = {}>(args?: Subset<T, Comments$commentsByUsersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    comments_user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     commented_post<T extends PostDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PostDefaultArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -4843,6 +4813,7 @@ export namespace Prisma {
   interface CommentsFieldRefs {
     readonly id: FieldRef<"Comments", 'Int'>
     readonly comment_text: FieldRef<"Comments", 'String'>
+    readonly comments_userId: FieldRef<"Comments", 'Int'>
     readonly createdAt: FieldRef<"Comments", 'DateTime'>
     readonly commented_postId: FieldRef<"Comments", 'Int'>
   }
@@ -5238,30 +5209,6 @@ export namespace Prisma {
      * Limit how many Comments to delete.
      */
     limit?: number
-  }
-
-  /**
-   * Comments.commentsByUsers
-   */
-  export type Comments$commentsByUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    where?: UserWhereInput
-    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
-    cursor?: UserWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
   }
 
   /**
@@ -8578,8 +8525,7 @@ export namespace Prisma {
     password: 'password',
     confirm_password: 'confirm_password',
     profile_picture: 'profile_picture',
-    role: 'role',
-    commentOnPostId: 'commentOnPostId'
+    role: 'role'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -8602,6 +8548,7 @@ export namespace Prisma {
   export const CommentsScalarFieldEnum: {
     id: 'id',
     comment_text: 'comment_text',
+    comments_userId: 'comments_userId',
     createdAt: 'createdAt',
     commented_postId: 'commented_postId'
   };
@@ -8658,14 +8605,6 @@ export namespace Prisma {
   };
 
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
-
-
-  export const NullsOrder: {
-    first: 'first',
-    last: 'last'
-  };
-
-  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
   /**
@@ -8760,12 +8699,11 @@ export namespace Prisma {
     confirm_password?: StringFilter<"User"> | string
     profile_picture?: StringFilter<"User"> | string
     role?: EnumRoleFilter<"User"> | $Enums.Role
-    commentOnPostId?: IntNullableFilter<"User"> | number | null
     followedBy?: UserListRelationFilter
     following?: UserListRelationFilter
     likedPost?: PostListRelationFilter
     createdPosts?: PostListRelationFilter
-    commentsOnPost?: XOR<CommentsNullableScalarRelationFilter, CommentsWhereInput> | null
+    commentsOnPost?: CommentsListRelationFilter
     senderChat?: ChatListRelationFilter
     receiverChat?: ChatListRelationFilter
     senderMessage?: MessagesListRelationFilter
@@ -8783,12 +8721,11 @@ export namespace Prisma {
     confirm_password?: SortOrder
     profile_picture?: SortOrder
     role?: SortOrder
-    commentOnPostId?: SortOrderInput | SortOrder
     followedBy?: UserOrderByRelationAggregateInput
     following?: UserOrderByRelationAggregateInput
     likedPost?: PostOrderByRelationAggregateInput
     createdPosts?: PostOrderByRelationAggregateInput
-    commentsOnPost?: CommentsOrderByWithRelationInput
+    commentsOnPost?: CommentsOrderByRelationAggregateInput
     senderChat?: ChatOrderByRelationAggregateInput
     receiverChat?: ChatOrderByRelationAggregateInput
     senderMessage?: MessagesOrderByRelationAggregateInput
@@ -8809,12 +8746,11 @@ export namespace Prisma {
     confirm_password?: StringFilter<"User"> | string
     profile_picture?: StringFilter<"User"> | string
     role?: EnumRoleFilter<"User"> | $Enums.Role
-    commentOnPostId?: IntNullableFilter<"User"> | number | null
     followedBy?: UserListRelationFilter
     following?: UserListRelationFilter
     likedPost?: PostListRelationFilter
     createdPosts?: PostListRelationFilter
-    commentsOnPost?: XOR<CommentsNullableScalarRelationFilter, CommentsWhereInput> | null
+    commentsOnPost?: CommentsListRelationFilter
     senderChat?: ChatListRelationFilter
     receiverChat?: ChatListRelationFilter
     senderMessage?: MessagesListRelationFilter
@@ -8832,7 +8768,6 @@ export namespace Prisma {
     confirm_password?: SortOrder
     profile_picture?: SortOrder
     role?: SortOrder
-    commentOnPostId?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -8854,7 +8789,6 @@ export namespace Prisma {
     confirm_password?: StringWithAggregatesFilter<"User"> | string
     profile_picture?: StringWithAggregatesFilter<"User"> | string
     role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
-    commentOnPostId?: IntNullableWithAggregatesFilter<"User"> | number | null
   }
 
   export type PostWhereInput = {
@@ -8941,18 +8875,20 @@ export namespace Prisma {
     NOT?: CommentsWhereInput | CommentsWhereInput[]
     id?: IntFilter<"Comments"> | number
     comment_text?: StringFilter<"Comments"> | string
+    comments_userId?: IntFilter<"Comments"> | number
     createdAt?: DateTimeFilter<"Comments"> | Date | string
     commented_postId?: IntFilter<"Comments"> | number
-    commentsByUsers?: UserListRelationFilter
+    comments_user?: XOR<UserScalarRelationFilter, UserWhereInput>
     commented_post?: XOR<PostScalarRelationFilter, PostWhereInput>
   }
 
   export type CommentsOrderByWithRelationInput = {
     id?: SortOrder
     comment_text?: SortOrder
+    comments_userId?: SortOrder
     createdAt?: SortOrder
     commented_postId?: SortOrder
-    commentsByUsers?: UserOrderByRelationAggregateInput
+    comments_user?: UserOrderByWithRelationInput
     commented_post?: PostOrderByWithRelationInput
   }
 
@@ -8962,15 +8898,17 @@ export namespace Prisma {
     OR?: CommentsWhereInput[]
     NOT?: CommentsWhereInput | CommentsWhereInput[]
     comment_text?: StringFilter<"Comments"> | string
+    comments_userId?: IntFilter<"Comments"> | number
     createdAt?: DateTimeFilter<"Comments"> | Date | string
     commented_postId?: IntFilter<"Comments"> | number
-    commentsByUsers?: UserListRelationFilter
+    comments_user?: XOR<UserScalarRelationFilter, UserWhereInput>
     commented_post?: XOR<PostScalarRelationFilter, PostWhereInput>
   }, "id">
 
   export type CommentsOrderByWithAggregationInput = {
     id?: SortOrder
     comment_text?: SortOrder
+    comments_userId?: SortOrder
     createdAt?: SortOrder
     commented_postId?: SortOrder
     _count?: CommentsCountOrderByAggregateInput
@@ -8986,6 +8924,7 @@ export namespace Prisma {
     NOT?: CommentsScalarWhereWithAggregatesInput | CommentsScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Comments"> | number
     comment_text?: StringWithAggregatesFilter<"Comments"> | string
+    comments_userId?: IntWithAggregatesFilter<"Comments"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Comments"> | Date | string
     commented_postId?: IntWithAggregatesFilter<"Comments"> | number
   }
@@ -9192,7 +9131,7 @@ export namespace Prisma {
     following?: UserCreateNestedManyWithoutFollowedByInput
     likedPost?: PostCreateNestedManyWithoutLikedPostByUsersInput
     createdPosts?: PostCreateNestedManyWithoutPost_authorInput
-    commentsOnPost?: CommentsCreateNestedOneWithoutCommentsByUsersInput
+    commentsOnPost?: CommentsCreateNestedManyWithoutComments_userInput
     senderChat?: ChatCreateNestedManyWithoutSenderChatInput
     receiverChat?: ChatCreateNestedManyWithoutReceiverChatInput
     senderMessage?: MessagesCreateNestedManyWithoutSenderMessageInput
@@ -9210,11 +9149,11 @@ export namespace Prisma {
     confirm_password: string
     profile_picture: string
     role?: $Enums.Role
-    commentOnPostId?: number | null
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     likedPost?: PostUncheckedCreateNestedManyWithoutLikedPostByUsersInput
     createdPosts?: PostUncheckedCreateNestedManyWithoutPost_authorInput
+    commentsOnPost?: CommentsUncheckedCreateNestedManyWithoutComments_userInput
     senderChat?: ChatUncheckedCreateNestedManyWithoutSenderChatInput
     receiverChat?: ChatUncheckedCreateNestedManyWithoutReceiverChatInput
     senderMessage?: MessagesUncheckedCreateNestedManyWithoutSenderMessageInput
@@ -9235,7 +9174,7 @@ export namespace Prisma {
     following?: UserUpdateManyWithoutFollowedByNestedInput
     likedPost?: PostUpdateManyWithoutLikedPostByUsersNestedInput
     createdPosts?: PostUpdateManyWithoutPost_authorNestedInput
-    commentsOnPost?: CommentsUpdateOneWithoutCommentsByUsersNestedInput
+    commentsOnPost?: CommentsUpdateManyWithoutComments_userNestedInput
     senderChat?: ChatUpdateManyWithoutSenderChatNestedInput
     receiverChat?: ChatUpdateManyWithoutReceiverChatNestedInput
     senderMessage?: MessagesUpdateManyWithoutSenderMessageNestedInput
@@ -9253,11 +9192,11 @@ export namespace Prisma {
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    commentOnPostId?: NullableIntFieldUpdateOperationsInput | number | null
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     likedPost?: PostUncheckedUpdateManyWithoutLikedPostByUsersNestedInput
     createdPosts?: PostUncheckedUpdateManyWithoutPost_authorNestedInput
+    commentsOnPost?: CommentsUncheckedUpdateManyWithoutComments_userNestedInput
     senderChat?: ChatUncheckedUpdateManyWithoutSenderChatNestedInput
     receiverChat?: ChatUncheckedUpdateManyWithoutReceiverChatNestedInput
     senderMessage?: MessagesUncheckedUpdateManyWithoutSenderMessageNestedInput
@@ -9275,7 +9214,6 @@ export namespace Prisma {
     confirm_password: string
     profile_picture: string
     role?: $Enums.Role
-    commentOnPostId?: number | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -9301,7 +9239,6 @@ export namespace Prisma {
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    commentOnPostId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type PostCreateInput = {
@@ -9388,36 +9325,37 @@ export namespace Prisma {
   export type CommentsCreateInput = {
     comment_text: string
     createdAt?: Date | string
-    commentsByUsers?: UserCreateNestedManyWithoutCommentsOnPostInput
+    comments_user: UserCreateNestedOneWithoutCommentsOnPostInput
     commented_post: PostCreateNestedOneWithoutPost_commentsByUsersInput
   }
 
   export type CommentsUncheckedCreateInput = {
     id?: number
     comment_text: string
+    comments_userId: number
     createdAt?: Date | string
     commented_postId: number
-    commentsByUsers?: UserUncheckedCreateNestedManyWithoutCommentsOnPostInput
   }
 
   export type CommentsUpdateInput = {
     comment_text?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    commentsByUsers?: UserUpdateManyWithoutCommentsOnPostNestedInput
+    comments_user?: UserUpdateOneRequiredWithoutCommentsOnPostNestedInput
     commented_post?: PostUpdateOneRequiredWithoutPost_commentsByUsersNestedInput
   }
 
   export type CommentsUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     comment_text?: StringFieldUpdateOperationsInput | string
+    comments_userId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     commented_postId?: IntFieldUpdateOperationsInput | number
-    commentsByUsers?: UserUncheckedUpdateManyWithoutCommentsOnPostNestedInput
   }
 
   export type CommentsCreateManyInput = {
     id?: number
     comment_text: string
+    comments_userId: number
     createdAt?: Date | string
     commented_postId: number
   }
@@ -9430,6 +9368,7 @@ export namespace Prisma {
   export type CommentsUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     comment_text?: StringFieldUpdateOperationsInput | string
+    comments_userId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     commented_postId?: IntFieldUpdateOperationsInput | number
   }
@@ -9645,17 +9584,6 @@ export namespace Prisma {
     not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
   }
 
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
   export type UserListRelationFilter = {
     every?: UserWhereInput
     some?: UserWhereInput
@@ -9668,9 +9596,10 @@ export namespace Prisma {
     none?: PostWhereInput
   }
 
-  export type CommentsNullableScalarRelationFilter = {
-    is?: CommentsWhereInput | null
-    isNot?: CommentsWhereInput | null
+  export type CommentsListRelationFilter = {
+    every?: CommentsWhereInput
+    some?: CommentsWhereInput
+    none?: CommentsWhereInput
   }
 
   export type ChatListRelationFilter = {
@@ -9685,16 +9614,15 @@ export namespace Prisma {
     none?: MessagesWhereInput
   }
 
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
-  }
-
   export type UserOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type PostOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CommentsOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -9717,12 +9645,10 @@ export namespace Prisma {
     confirm_password?: SortOrder
     profile_picture?: SortOrder
     role?: SortOrder
-    commentOnPostId?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
     id?: SortOrder
-    commentOnPostId?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -9736,7 +9662,6 @@ export namespace Prisma {
     confirm_password?: SortOrder
     profile_picture?: SortOrder
     role?: SortOrder
-    commentOnPostId?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -9750,12 +9675,10 @@ export namespace Prisma {
     confirm_password?: SortOrder
     profile_picture?: SortOrder
     role?: SortOrder
-    commentOnPostId?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
     id?: SortOrder
-    commentOnPostId?: SortOrder
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -9802,22 +9725,6 @@ export namespace Prisma {
     _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -9832,16 +9739,6 @@ export namespace Prisma {
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
-  }
-
-  export type CommentsListRelationFilter = {
-    every?: CommentsWhereInput
-    some?: CommentsWhereInput
-    none?: CommentsWhereInput
-  }
-
-  export type CommentsOrderByRelationAggregateInput = {
-    _count?: SortOrder
   }
 
   export type PostCountOrderByAggregateInput = {
@@ -9913,18 +9810,21 @@ export namespace Prisma {
   export type CommentsCountOrderByAggregateInput = {
     id?: SortOrder
     comment_text?: SortOrder
+    comments_userId?: SortOrder
     createdAt?: SortOrder
     commented_postId?: SortOrder
   }
 
   export type CommentsAvgOrderByAggregateInput = {
     id?: SortOrder
+    comments_userId?: SortOrder
     commented_postId?: SortOrder
   }
 
   export type CommentsMaxOrderByAggregateInput = {
     id?: SortOrder
     comment_text?: SortOrder
+    comments_userId?: SortOrder
     createdAt?: SortOrder
     commented_postId?: SortOrder
   }
@@ -9932,12 +9832,14 @@ export namespace Prisma {
   export type CommentsMinOrderByAggregateInput = {
     id?: SortOrder
     comment_text?: SortOrder
+    comments_userId?: SortOrder
     createdAt?: SortOrder
     commented_postId?: SortOrder
   }
 
   export type CommentsSumOrderByAggregateInput = {
     id?: SortOrder
+    comments_userId?: SortOrder
     commented_postId?: SortOrder
   }
 
@@ -10071,10 +9973,11 @@ export namespace Prisma {
     connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
   }
 
-  export type CommentsCreateNestedOneWithoutCommentsByUsersInput = {
-    create?: XOR<CommentsCreateWithoutCommentsByUsersInput, CommentsUncheckedCreateWithoutCommentsByUsersInput>
-    connectOrCreate?: CommentsCreateOrConnectWithoutCommentsByUsersInput
-    connect?: CommentsWhereUniqueInput
+  export type CommentsCreateNestedManyWithoutComments_userInput = {
+    create?: XOR<CommentsCreateWithoutComments_userInput, CommentsUncheckedCreateWithoutComments_userInput> | CommentsCreateWithoutComments_userInput[] | CommentsUncheckedCreateWithoutComments_userInput[]
+    connectOrCreate?: CommentsCreateOrConnectWithoutComments_userInput | CommentsCreateOrConnectWithoutComments_userInput[]
+    createMany?: CommentsCreateManyComments_userInputEnvelope
+    connect?: CommentsWhereUniqueInput | CommentsWhereUniqueInput[]
   }
 
   export type ChatCreateNestedManyWithoutSenderChatInput = {
@@ -10128,6 +10031,13 @@ export namespace Prisma {
     connectOrCreate?: PostCreateOrConnectWithoutPost_authorInput | PostCreateOrConnectWithoutPost_authorInput[]
     createMany?: PostCreateManyPost_authorInputEnvelope
     connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+  }
+
+  export type CommentsUncheckedCreateNestedManyWithoutComments_userInput = {
+    create?: XOR<CommentsCreateWithoutComments_userInput, CommentsUncheckedCreateWithoutComments_userInput> | CommentsCreateWithoutComments_userInput[] | CommentsUncheckedCreateWithoutComments_userInput[]
+    connectOrCreate?: CommentsCreateOrConnectWithoutComments_userInput | CommentsCreateOrConnectWithoutComments_userInput[]
+    createMany?: CommentsCreateManyComments_userInputEnvelope
+    connect?: CommentsWhereUniqueInput | CommentsWhereUniqueInput[]
   }
 
   export type ChatUncheckedCreateNestedManyWithoutSenderChatInput = {
@@ -10219,14 +10129,18 @@ export namespace Prisma {
     deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
   }
 
-  export type CommentsUpdateOneWithoutCommentsByUsersNestedInput = {
-    create?: XOR<CommentsCreateWithoutCommentsByUsersInput, CommentsUncheckedCreateWithoutCommentsByUsersInput>
-    connectOrCreate?: CommentsCreateOrConnectWithoutCommentsByUsersInput
-    upsert?: CommentsUpsertWithoutCommentsByUsersInput
-    disconnect?: CommentsWhereInput | boolean
-    delete?: CommentsWhereInput | boolean
-    connect?: CommentsWhereUniqueInput
-    update?: XOR<XOR<CommentsUpdateToOneWithWhereWithoutCommentsByUsersInput, CommentsUpdateWithoutCommentsByUsersInput>, CommentsUncheckedUpdateWithoutCommentsByUsersInput>
+  export type CommentsUpdateManyWithoutComments_userNestedInput = {
+    create?: XOR<CommentsCreateWithoutComments_userInput, CommentsUncheckedCreateWithoutComments_userInput> | CommentsCreateWithoutComments_userInput[] | CommentsUncheckedCreateWithoutComments_userInput[]
+    connectOrCreate?: CommentsCreateOrConnectWithoutComments_userInput | CommentsCreateOrConnectWithoutComments_userInput[]
+    upsert?: CommentsUpsertWithWhereUniqueWithoutComments_userInput | CommentsUpsertWithWhereUniqueWithoutComments_userInput[]
+    createMany?: CommentsCreateManyComments_userInputEnvelope
+    set?: CommentsWhereUniqueInput | CommentsWhereUniqueInput[]
+    disconnect?: CommentsWhereUniqueInput | CommentsWhereUniqueInput[]
+    delete?: CommentsWhereUniqueInput | CommentsWhereUniqueInput[]
+    connect?: CommentsWhereUniqueInput | CommentsWhereUniqueInput[]
+    update?: CommentsUpdateWithWhereUniqueWithoutComments_userInput | CommentsUpdateWithWhereUniqueWithoutComments_userInput[]
+    updateMany?: CommentsUpdateManyWithWhereWithoutComments_userInput | CommentsUpdateManyWithWhereWithoutComments_userInput[]
+    deleteMany?: CommentsScalarWhereInput | CommentsScalarWhereInput[]
   }
 
   export type ChatUpdateManyWithoutSenderChatNestedInput = {
@@ -10293,14 +10207,6 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
   export type UserUncheckedUpdateManyWithoutFollowingNestedInput = {
     create?: XOR<UserCreateWithoutFollowingInput, UserUncheckedCreateWithoutFollowingInput> | UserCreateWithoutFollowingInput[] | UserUncheckedCreateWithoutFollowingInput[]
     connectOrCreate?: UserCreateOrConnectWithoutFollowingInput | UserCreateOrConnectWithoutFollowingInput[]
@@ -10352,6 +10258,20 @@ export namespace Prisma {
     update?: PostUpdateWithWhereUniqueWithoutPost_authorInput | PostUpdateWithWhereUniqueWithoutPost_authorInput[]
     updateMany?: PostUpdateManyWithWhereWithoutPost_authorInput | PostUpdateManyWithWhereWithoutPost_authorInput[]
     deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
+  }
+
+  export type CommentsUncheckedUpdateManyWithoutComments_userNestedInput = {
+    create?: XOR<CommentsCreateWithoutComments_userInput, CommentsUncheckedCreateWithoutComments_userInput> | CommentsCreateWithoutComments_userInput[] | CommentsUncheckedCreateWithoutComments_userInput[]
+    connectOrCreate?: CommentsCreateOrConnectWithoutComments_userInput | CommentsCreateOrConnectWithoutComments_userInput[]
+    upsert?: CommentsUpsertWithWhereUniqueWithoutComments_userInput | CommentsUpsertWithWhereUniqueWithoutComments_userInput[]
+    createMany?: CommentsCreateManyComments_userInputEnvelope
+    set?: CommentsWhereUniqueInput | CommentsWhereUniqueInput[]
+    disconnect?: CommentsWhereUniqueInput | CommentsWhereUniqueInput[]
+    delete?: CommentsWhereUniqueInput | CommentsWhereUniqueInput[]
+    connect?: CommentsWhereUniqueInput | CommentsWhereUniqueInput[]
+    update?: CommentsUpdateWithWhereUniqueWithoutComments_userInput | CommentsUpdateWithWhereUniqueWithoutComments_userInput[]
+    updateMany?: CommentsUpdateManyWithWhereWithoutComments_userInput | CommentsUpdateManyWithWhereWithoutComments_userInput[]
+    deleteMany?: CommentsScalarWhereInput | CommentsScalarWhereInput[]
   }
 
   export type ChatUncheckedUpdateManyWithoutSenderChatNestedInput = {
@@ -10508,11 +10428,10 @@ export namespace Prisma {
     deleteMany?: CommentsScalarWhereInput | CommentsScalarWhereInput[]
   }
 
-  export type UserCreateNestedManyWithoutCommentsOnPostInput = {
-    create?: XOR<UserCreateWithoutCommentsOnPostInput, UserUncheckedCreateWithoutCommentsOnPostInput> | UserCreateWithoutCommentsOnPostInput[] | UserUncheckedCreateWithoutCommentsOnPostInput[]
-    connectOrCreate?: UserCreateOrConnectWithoutCommentsOnPostInput | UserCreateOrConnectWithoutCommentsOnPostInput[]
-    createMany?: UserCreateManyCommentsOnPostInputEnvelope
-    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  export type UserCreateNestedOneWithoutCommentsOnPostInput = {
+    create?: XOR<UserCreateWithoutCommentsOnPostInput, UserUncheckedCreateWithoutCommentsOnPostInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCommentsOnPostInput
+    connect?: UserWhereUniqueInput
   }
 
   export type PostCreateNestedOneWithoutPost_commentsByUsersInput = {
@@ -10521,25 +10440,12 @@ export namespace Prisma {
     connect?: PostWhereUniqueInput
   }
 
-  export type UserUncheckedCreateNestedManyWithoutCommentsOnPostInput = {
-    create?: XOR<UserCreateWithoutCommentsOnPostInput, UserUncheckedCreateWithoutCommentsOnPostInput> | UserCreateWithoutCommentsOnPostInput[] | UserUncheckedCreateWithoutCommentsOnPostInput[]
-    connectOrCreate?: UserCreateOrConnectWithoutCommentsOnPostInput | UserCreateOrConnectWithoutCommentsOnPostInput[]
-    createMany?: UserCreateManyCommentsOnPostInputEnvelope
-    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-  }
-
-  export type UserUpdateManyWithoutCommentsOnPostNestedInput = {
-    create?: XOR<UserCreateWithoutCommentsOnPostInput, UserUncheckedCreateWithoutCommentsOnPostInput> | UserCreateWithoutCommentsOnPostInput[] | UserUncheckedCreateWithoutCommentsOnPostInput[]
-    connectOrCreate?: UserCreateOrConnectWithoutCommentsOnPostInput | UserCreateOrConnectWithoutCommentsOnPostInput[]
-    upsert?: UserUpsertWithWhereUniqueWithoutCommentsOnPostInput | UserUpsertWithWhereUniqueWithoutCommentsOnPostInput[]
-    createMany?: UserCreateManyCommentsOnPostInputEnvelope
-    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    update?: UserUpdateWithWhereUniqueWithoutCommentsOnPostInput | UserUpdateWithWhereUniqueWithoutCommentsOnPostInput[]
-    updateMany?: UserUpdateManyWithWhereWithoutCommentsOnPostInput | UserUpdateManyWithWhereWithoutCommentsOnPostInput[]
-    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  export type UserUpdateOneRequiredWithoutCommentsOnPostNestedInput = {
+    create?: XOR<UserCreateWithoutCommentsOnPostInput, UserUncheckedCreateWithoutCommentsOnPostInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCommentsOnPostInput
+    upsert?: UserUpsertWithoutCommentsOnPostInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCommentsOnPostInput, UserUpdateWithoutCommentsOnPostInput>, UserUncheckedUpdateWithoutCommentsOnPostInput>
   }
 
   export type PostUpdateOneRequiredWithoutPost_commentsByUsersNestedInput = {
@@ -10548,20 +10454,6 @@ export namespace Prisma {
     upsert?: PostUpsertWithoutPost_commentsByUsersInput
     connect?: PostWhereUniqueInput
     update?: XOR<XOR<PostUpdateToOneWithWhereWithoutPost_commentsByUsersInput, PostUpdateWithoutPost_commentsByUsersInput>, PostUncheckedUpdateWithoutPost_commentsByUsersInput>
-  }
-
-  export type UserUncheckedUpdateManyWithoutCommentsOnPostNestedInput = {
-    create?: XOR<UserCreateWithoutCommentsOnPostInput, UserUncheckedCreateWithoutCommentsOnPostInput> | UserCreateWithoutCommentsOnPostInput[] | UserUncheckedCreateWithoutCommentsOnPostInput[]
-    connectOrCreate?: UserCreateOrConnectWithoutCommentsOnPostInput | UserCreateOrConnectWithoutCommentsOnPostInput[]
-    upsert?: UserUpsertWithWhereUniqueWithoutCommentsOnPostInput | UserUpsertWithWhereUniqueWithoutCommentsOnPostInput[]
-    createMany?: UserCreateManyCommentsOnPostInputEnvelope
-    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    update?: UserUpdateWithWhereUniqueWithoutCommentsOnPostInput | UserUpdateWithWhereUniqueWithoutCommentsOnPostInput[]
-    updateMany?: UserUpdateManyWithWhereWithoutCommentsOnPostInput | UserUpdateManyWithWhereWithoutCommentsOnPostInput[]
-    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutSenderChatInput = {
@@ -10708,17 +10600,6 @@ export namespace Prisma {
     not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
   }
 
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -10773,33 +10654,6 @@ export namespace Prisma {
     _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
-  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -10838,7 +10692,7 @@ export namespace Prisma {
     followedBy?: UserCreateNestedManyWithoutFollowingInput
     likedPost?: PostCreateNestedManyWithoutLikedPostByUsersInput
     createdPosts?: PostCreateNestedManyWithoutPost_authorInput
-    commentsOnPost?: CommentsCreateNestedOneWithoutCommentsByUsersInput
+    commentsOnPost?: CommentsCreateNestedManyWithoutComments_userInput
     senderChat?: ChatCreateNestedManyWithoutSenderChatInput
     receiverChat?: ChatCreateNestedManyWithoutReceiverChatInput
     senderMessage?: MessagesCreateNestedManyWithoutSenderMessageInput
@@ -10856,10 +10710,10 @@ export namespace Prisma {
     confirm_password: string
     profile_picture: string
     role?: $Enums.Role
-    commentOnPostId?: number | null
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
     likedPost?: PostUncheckedCreateNestedManyWithoutLikedPostByUsersInput
     createdPosts?: PostUncheckedCreateNestedManyWithoutPost_authorInput
+    commentsOnPost?: CommentsUncheckedCreateNestedManyWithoutComments_userInput
     senderChat?: ChatUncheckedCreateNestedManyWithoutSenderChatInput
     receiverChat?: ChatUncheckedCreateNestedManyWithoutReceiverChatInput
     senderMessage?: MessagesUncheckedCreateNestedManyWithoutSenderMessageInput
@@ -10884,7 +10738,7 @@ export namespace Prisma {
     following?: UserCreateNestedManyWithoutFollowedByInput
     likedPost?: PostCreateNestedManyWithoutLikedPostByUsersInput
     createdPosts?: PostCreateNestedManyWithoutPost_authorInput
-    commentsOnPost?: CommentsCreateNestedOneWithoutCommentsByUsersInput
+    commentsOnPost?: CommentsCreateNestedManyWithoutComments_userInput
     senderChat?: ChatCreateNestedManyWithoutSenderChatInput
     receiverChat?: ChatCreateNestedManyWithoutReceiverChatInput
     senderMessage?: MessagesCreateNestedManyWithoutSenderMessageInput
@@ -10902,10 +10756,10 @@ export namespace Prisma {
     confirm_password: string
     profile_picture: string
     role?: $Enums.Role
-    commentOnPostId?: number | null
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     likedPost?: PostUncheckedCreateNestedManyWithoutLikedPostByUsersInput
     createdPosts?: PostUncheckedCreateNestedManyWithoutPost_authorInput
+    commentsOnPost?: CommentsUncheckedCreateNestedManyWithoutComments_userInput
     senderChat?: ChatUncheckedCreateNestedManyWithoutSenderChatInput
     receiverChat?: ChatUncheckedCreateNestedManyWithoutReceiverChatInput
     senderMessage?: MessagesUncheckedCreateNestedManyWithoutSenderMessageInput
@@ -10978,22 +10832,27 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type CommentsCreateWithoutCommentsByUsersInput = {
+  export type CommentsCreateWithoutComments_userInput = {
     comment_text: string
     createdAt?: Date | string
     commented_post: PostCreateNestedOneWithoutPost_commentsByUsersInput
   }
 
-  export type CommentsUncheckedCreateWithoutCommentsByUsersInput = {
+  export type CommentsUncheckedCreateWithoutComments_userInput = {
     id?: number
     comment_text: string
     createdAt?: Date | string
     commented_postId: number
   }
 
-  export type CommentsCreateOrConnectWithoutCommentsByUsersInput = {
+  export type CommentsCreateOrConnectWithoutComments_userInput = {
     where: CommentsWhereUniqueInput
-    create: XOR<CommentsCreateWithoutCommentsByUsersInput, CommentsUncheckedCreateWithoutCommentsByUsersInput>
+    create: XOR<CommentsCreateWithoutComments_userInput, CommentsUncheckedCreateWithoutComments_userInput>
+  }
+
+  export type CommentsCreateManyComments_userInputEnvelope = {
+    data: CommentsCreateManyComments_userInput | CommentsCreateManyComments_userInput[]
+    skipDuplicates?: boolean
   }
 
   export type ChatCreateWithoutSenderChatInput = {
@@ -11136,7 +10995,6 @@ export namespace Prisma {
     confirm_password?: StringFilter<"User"> | string
     profile_picture?: StringFilter<"User"> | string
     role?: EnumRoleFilter<"User"> | $Enums.Role
-    commentOnPostId?: IntNullableFilter<"User"> | number | null
   }
 
   export type UserUpsertWithWhereUniqueWithoutFollowedByInput = {
@@ -11201,28 +11059,31 @@ export namespace Prisma {
     data: XOR<PostUpdateManyMutationInput, PostUncheckedUpdateManyWithoutPost_authorInput>
   }
 
-  export type CommentsUpsertWithoutCommentsByUsersInput = {
-    update: XOR<CommentsUpdateWithoutCommentsByUsersInput, CommentsUncheckedUpdateWithoutCommentsByUsersInput>
-    create: XOR<CommentsCreateWithoutCommentsByUsersInput, CommentsUncheckedCreateWithoutCommentsByUsersInput>
-    where?: CommentsWhereInput
+  export type CommentsUpsertWithWhereUniqueWithoutComments_userInput = {
+    where: CommentsWhereUniqueInput
+    update: XOR<CommentsUpdateWithoutComments_userInput, CommentsUncheckedUpdateWithoutComments_userInput>
+    create: XOR<CommentsCreateWithoutComments_userInput, CommentsUncheckedCreateWithoutComments_userInput>
   }
 
-  export type CommentsUpdateToOneWithWhereWithoutCommentsByUsersInput = {
-    where?: CommentsWhereInput
-    data: XOR<CommentsUpdateWithoutCommentsByUsersInput, CommentsUncheckedUpdateWithoutCommentsByUsersInput>
+  export type CommentsUpdateWithWhereUniqueWithoutComments_userInput = {
+    where: CommentsWhereUniqueInput
+    data: XOR<CommentsUpdateWithoutComments_userInput, CommentsUncheckedUpdateWithoutComments_userInput>
   }
 
-  export type CommentsUpdateWithoutCommentsByUsersInput = {
-    comment_text?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    commented_post?: PostUpdateOneRequiredWithoutPost_commentsByUsersNestedInput
+  export type CommentsUpdateManyWithWhereWithoutComments_userInput = {
+    where: CommentsScalarWhereInput
+    data: XOR<CommentsUpdateManyMutationInput, CommentsUncheckedUpdateManyWithoutComments_userInput>
   }
 
-  export type CommentsUncheckedUpdateWithoutCommentsByUsersInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    comment_text?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    commented_postId?: IntFieldUpdateOperationsInput | number
+  export type CommentsScalarWhereInput = {
+    AND?: CommentsScalarWhereInput | CommentsScalarWhereInput[]
+    OR?: CommentsScalarWhereInput[]
+    NOT?: CommentsScalarWhereInput | CommentsScalarWhereInput[]
+    id?: IntFilter<"Comments"> | number
+    comment_text?: StringFilter<"Comments"> | string
+    comments_userId?: IntFilter<"Comments"> | number
+    createdAt?: DateTimeFilter<"Comments"> | Date | string
+    commented_postId?: IntFilter<"Comments"> | number
   }
 
   export type ChatUpsertWithWhereUniqueWithoutSenderChatInput = {
@@ -11327,7 +11188,7 @@ export namespace Prisma {
     followedBy?: UserCreateNestedManyWithoutFollowingInput
     following?: UserCreateNestedManyWithoutFollowedByInput
     createdPosts?: PostCreateNestedManyWithoutPost_authorInput
-    commentsOnPost?: CommentsCreateNestedOneWithoutCommentsByUsersInput
+    commentsOnPost?: CommentsCreateNestedManyWithoutComments_userInput
     senderChat?: ChatCreateNestedManyWithoutSenderChatInput
     receiverChat?: ChatCreateNestedManyWithoutReceiverChatInput
     senderMessage?: MessagesCreateNestedManyWithoutSenderMessageInput
@@ -11345,10 +11206,10 @@ export namespace Prisma {
     confirm_password: string
     profile_picture: string
     role?: $Enums.Role
-    commentOnPostId?: number | null
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     createdPosts?: PostUncheckedCreateNestedManyWithoutPost_authorInput
+    commentsOnPost?: CommentsUncheckedCreateNestedManyWithoutComments_userInput
     senderChat?: ChatUncheckedCreateNestedManyWithoutSenderChatInput
     receiverChat?: ChatUncheckedCreateNestedManyWithoutReceiverChatInput
     senderMessage?: MessagesUncheckedCreateNestedManyWithoutSenderMessageInput
@@ -11373,7 +11234,7 @@ export namespace Prisma {
     followedBy?: UserCreateNestedManyWithoutFollowingInput
     following?: UserCreateNestedManyWithoutFollowedByInput
     likedPost?: PostCreateNestedManyWithoutLikedPostByUsersInput
-    commentsOnPost?: CommentsCreateNestedOneWithoutCommentsByUsersInput
+    commentsOnPost?: CommentsCreateNestedManyWithoutComments_userInput
     senderChat?: ChatCreateNestedManyWithoutSenderChatInput
     receiverChat?: ChatCreateNestedManyWithoutReceiverChatInput
     senderMessage?: MessagesCreateNestedManyWithoutSenderMessageInput
@@ -11391,10 +11252,10 @@ export namespace Prisma {
     confirm_password: string
     profile_picture: string
     role?: $Enums.Role
-    commentOnPostId?: number | null
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     likedPost?: PostUncheckedCreateNestedManyWithoutLikedPostByUsersInput
+    commentsOnPost?: CommentsUncheckedCreateNestedManyWithoutComments_userInput
     senderChat?: ChatUncheckedCreateNestedManyWithoutSenderChatInput
     receiverChat?: ChatUncheckedCreateNestedManyWithoutReceiverChatInput
     senderMessage?: MessagesUncheckedCreateNestedManyWithoutSenderMessageInput
@@ -11409,14 +11270,14 @@ export namespace Prisma {
   export type CommentsCreateWithoutCommented_postInput = {
     comment_text: string
     createdAt?: Date | string
-    commentsByUsers?: UserCreateNestedManyWithoutCommentsOnPostInput
+    comments_user: UserCreateNestedOneWithoutCommentsOnPostInput
   }
 
   export type CommentsUncheckedCreateWithoutCommented_postInput = {
     id?: number
     comment_text: string
+    comments_userId: number
     createdAt?: Date | string
-    commentsByUsers?: UserUncheckedCreateNestedManyWithoutCommentsOnPostInput
   }
 
   export type CommentsCreateOrConnectWithoutCommented_postInput = {
@@ -11469,7 +11330,7 @@ export namespace Prisma {
     followedBy?: UserUpdateManyWithoutFollowingNestedInput
     following?: UserUpdateManyWithoutFollowedByNestedInput
     likedPost?: PostUpdateManyWithoutLikedPostByUsersNestedInput
-    commentsOnPost?: CommentsUpdateOneWithoutCommentsByUsersNestedInput
+    commentsOnPost?: CommentsUpdateManyWithoutComments_userNestedInput
     senderChat?: ChatUpdateManyWithoutSenderChatNestedInput
     receiverChat?: ChatUpdateManyWithoutReceiverChatNestedInput
     senderMessage?: MessagesUpdateManyWithoutSenderMessageNestedInput
@@ -11487,10 +11348,10 @@ export namespace Prisma {
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    commentOnPostId?: NullableIntFieldUpdateOperationsInput | number | null
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     likedPost?: PostUncheckedUpdateManyWithoutLikedPostByUsersNestedInput
+    commentsOnPost?: CommentsUncheckedUpdateManyWithoutComments_userNestedInput
     senderChat?: ChatUncheckedUpdateManyWithoutSenderChatNestedInput
     receiverChat?: ChatUncheckedUpdateManyWithoutReceiverChatNestedInput
     senderMessage?: MessagesUncheckedUpdateManyWithoutSenderMessageNestedInput
@@ -11511,16 +11372,6 @@ export namespace Prisma {
   export type CommentsUpdateManyWithWhereWithoutCommented_postInput = {
     where: CommentsScalarWhereInput
     data: XOR<CommentsUpdateManyMutationInput, CommentsUncheckedUpdateManyWithoutCommented_postInput>
-  }
-
-  export type CommentsScalarWhereInput = {
-    AND?: CommentsScalarWhereInput | CommentsScalarWhereInput[]
-    OR?: CommentsScalarWhereInput[]
-    NOT?: CommentsScalarWhereInput | CommentsScalarWhereInput[]
-    id?: IntFilter<"Comments"> | number
-    comment_text?: StringFilter<"Comments"> | string
-    createdAt?: DateTimeFilter<"Comments"> | Date | string
-    commented_postId?: IntFilter<"Comments"> | number
   }
 
   export type UserCreateWithoutCommentsOnPostInput = {
@@ -11569,11 +11420,6 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutCommentsOnPostInput, UserUncheckedCreateWithoutCommentsOnPostInput>
   }
 
-  export type UserCreateManyCommentsOnPostInputEnvelope = {
-    data: UserCreateManyCommentsOnPostInput | UserCreateManyCommentsOnPostInput[]
-    skipDuplicates?: boolean
-  }
-
   export type PostCreateWithoutPost_commentsByUsersInput = {
     post_content: string
     post_imageURL: string
@@ -11602,20 +11448,56 @@ export namespace Prisma {
     create: XOR<PostCreateWithoutPost_commentsByUsersInput, PostUncheckedCreateWithoutPost_commentsByUsersInput>
   }
 
-  export type UserUpsertWithWhereUniqueWithoutCommentsOnPostInput = {
-    where: UserWhereUniqueInput
+  export type UserUpsertWithoutCommentsOnPostInput = {
     update: XOR<UserUpdateWithoutCommentsOnPostInput, UserUncheckedUpdateWithoutCommentsOnPostInput>
     create: XOR<UserCreateWithoutCommentsOnPostInput, UserUncheckedCreateWithoutCommentsOnPostInput>
+    where?: UserWhereInput
   }
 
-  export type UserUpdateWithWhereUniqueWithoutCommentsOnPostInput = {
-    where: UserWhereUniqueInput
+  export type UserUpdateToOneWithWhereWithoutCommentsOnPostInput = {
+    where?: UserWhereInput
     data: XOR<UserUpdateWithoutCommentsOnPostInput, UserUncheckedUpdateWithoutCommentsOnPostInput>
   }
 
-  export type UserUpdateManyWithWhereWithoutCommentsOnPostInput = {
-    where: UserScalarWhereInput
-    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutCommentsOnPostInput>
+  export type UserUpdateWithoutCommentsOnPostInput = {
+    username?: StringFieldUpdateOperationsInput | string
+    display_name?: StringFieldUpdateOperationsInput | string
+    bio?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    github?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    confirm_password?: StringFieldUpdateOperationsInput | string
+    profile_picture?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    followedBy?: UserUpdateManyWithoutFollowingNestedInput
+    following?: UserUpdateManyWithoutFollowedByNestedInput
+    likedPost?: PostUpdateManyWithoutLikedPostByUsersNestedInput
+    createdPosts?: PostUpdateManyWithoutPost_authorNestedInput
+    senderChat?: ChatUpdateManyWithoutSenderChatNestedInput
+    receiverChat?: ChatUpdateManyWithoutReceiverChatNestedInput
+    senderMessage?: MessagesUpdateManyWithoutSenderMessageNestedInput
+    receiverMessage?: MessagesUpdateManyWithoutReceiverMessageNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCommentsOnPostInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    username?: StringFieldUpdateOperationsInput | string
+    display_name?: StringFieldUpdateOperationsInput | string
+    bio?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    github?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    confirm_password?: StringFieldUpdateOperationsInput | string
+    profile_picture?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
+    following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
+    likedPost?: PostUncheckedUpdateManyWithoutLikedPostByUsersNestedInput
+    createdPosts?: PostUncheckedUpdateManyWithoutPost_authorNestedInput
+    senderChat?: ChatUncheckedUpdateManyWithoutSenderChatNestedInput
+    receiverChat?: ChatUncheckedUpdateManyWithoutReceiverChatNestedInput
+    senderMessage?: MessagesUncheckedUpdateManyWithoutSenderMessageNestedInput
+    receiverMessage?: MessagesUncheckedUpdateManyWithoutReceiverMessageNestedInput
   }
 
   export type PostUpsertWithoutPost_commentsByUsersInput = {
@@ -11666,7 +11548,7 @@ export namespace Prisma {
     following?: UserCreateNestedManyWithoutFollowedByInput
     likedPost?: PostCreateNestedManyWithoutLikedPostByUsersInput
     createdPosts?: PostCreateNestedManyWithoutPost_authorInput
-    commentsOnPost?: CommentsCreateNestedOneWithoutCommentsByUsersInput
+    commentsOnPost?: CommentsCreateNestedManyWithoutComments_userInput
     receiverChat?: ChatCreateNestedManyWithoutReceiverChatInput
     senderMessage?: MessagesCreateNestedManyWithoutSenderMessageInput
     receiverMessage?: MessagesCreateNestedManyWithoutReceiverMessageInput
@@ -11683,11 +11565,11 @@ export namespace Prisma {
     confirm_password: string
     profile_picture: string
     role?: $Enums.Role
-    commentOnPostId?: number | null
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     likedPost?: PostUncheckedCreateNestedManyWithoutLikedPostByUsersInput
     createdPosts?: PostUncheckedCreateNestedManyWithoutPost_authorInput
+    commentsOnPost?: CommentsUncheckedCreateNestedManyWithoutComments_userInput
     receiverChat?: ChatUncheckedCreateNestedManyWithoutReceiverChatInput
     senderMessage?: MessagesUncheckedCreateNestedManyWithoutSenderMessageInput
     receiverMessage?: MessagesUncheckedCreateNestedManyWithoutReceiverMessageInput
@@ -11712,7 +11594,7 @@ export namespace Prisma {
     following?: UserCreateNestedManyWithoutFollowedByInput
     likedPost?: PostCreateNestedManyWithoutLikedPostByUsersInput
     createdPosts?: PostCreateNestedManyWithoutPost_authorInput
-    commentsOnPost?: CommentsCreateNestedOneWithoutCommentsByUsersInput
+    commentsOnPost?: CommentsCreateNestedManyWithoutComments_userInput
     senderChat?: ChatCreateNestedManyWithoutSenderChatInput
     senderMessage?: MessagesCreateNestedManyWithoutSenderMessageInput
     receiverMessage?: MessagesCreateNestedManyWithoutReceiverMessageInput
@@ -11729,11 +11611,11 @@ export namespace Prisma {
     confirm_password: string
     profile_picture: string
     role?: $Enums.Role
-    commentOnPostId?: number | null
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     likedPost?: PostUncheckedCreateNestedManyWithoutLikedPostByUsersInput
     createdPosts?: PostUncheckedCreateNestedManyWithoutPost_authorInput
+    commentsOnPost?: CommentsUncheckedCreateNestedManyWithoutComments_userInput
     senderChat?: ChatUncheckedCreateNestedManyWithoutSenderChatInput
     senderMessage?: MessagesUncheckedCreateNestedManyWithoutSenderMessageInput
     receiverMessage?: MessagesUncheckedCreateNestedManyWithoutReceiverMessageInput
@@ -11802,7 +11684,7 @@ export namespace Prisma {
     following?: UserUpdateManyWithoutFollowedByNestedInput
     likedPost?: PostUpdateManyWithoutLikedPostByUsersNestedInput
     createdPosts?: PostUpdateManyWithoutPost_authorNestedInput
-    commentsOnPost?: CommentsUpdateOneWithoutCommentsByUsersNestedInput
+    commentsOnPost?: CommentsUpdateManyWithoutComments_userNestedInput
     receiverChat?: ChatUpdateManyWithoutReceiverChatNestedInput
     senderMessage?: MessagesUpdateManyWithoutSenderMessageNestedInput
     receiverMessage?: MessagesUpdateManyWithoutReceiverMessageNestedInput
@@ -11819,11 +11701,11 @@ export namespace Prisma {
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    commentOnPostId?: NullableIntFieldUpdateOperationsInput | number | null
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     likedPost?: PostUncheckedUpdateManyWithoutLikedPostByUsersNestedInput
     createdPosts?: PostUncheckedUpdateManyWithoutPost_authorNestedInput
+    commentsOnPost?: CommentsUncheckedUpdateManyWithoutComments_userNestedInput
     receiverChat?: ChatUncheckedUpdateManyWithoutReceiverChatNestedInput
     senderMessage?: MessagesUncheckedUpdateManyWithoutSenderMessageNestedInput
     receiverMessage?: MessagesUncheckedUpdateManyWithoutReceiverMessageNestedInput
@@ -11854,7 +11736,7 @@ export namespace Prisma {
     following?: UserUpdateManyWithoutFollowedByNestedInput
     likedPost?: PostUpdateManyWithoutLikedPostByUsersNestedInput
     createdPosts?: PostUpdateManyWithoutPost_authorNestedInput
-    commentsOnPost?: CommentsUpdateOneWithoutCommentsByUsersNestedInput
+    commentsOnPost?: CommentsUpdateManyWithoutComments_userNestedInput
     senderChat?: ChatUpdateManyWithoutSenderChatNestedInput
     senderMessage?: MessagesUpdateManyWithoutSenderMessageNestedInput
     receiverMessage?: MessagesUpdateManyWithoutReceiverMessageNestedInput
@@ -11871,11 +11753,11 @@ export namespace Prisma {
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    commentOnPostId?: NullableIntFieldUpdateOperationsInput | number | null
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     likedPost?: PostUncheckedUpdateManyWithoutLikedPostByUsersNestedInput
     createdPosts?: PostUncheckedUpdateManyWithoutPost_authorNestedInput
+    commentsOnPost?: CommentsUncheckedUpdateManyWithoutComments_userNestedInput
     senderChat?: ChatUncheckedUpdateManyWithoutSenderChatNestedInput
     senderMessage?: MessagesUncheckedUpdateManyWithoutSenderMessageNestedInput
     receiverMessage?: MessagesUncheckedUpdateManyWithoutReceiverMessageNestedInput
@@ -11911,7 +11793,7 @@ export namespace Prisma {
     following?: UserCreateNestedManyWithoutFollowedByInput
     likedPost?: PostCreateNestedManyWithoutLikedPostByUsersInput
     createdPosts?: PostCreateNestedManyWithoutPost_authorInput
-    commentsOnPost?: CommentsCreateNestedOneWithoutCommentsByUsersInput
+    commentsOnPost?: CommentsCreateNestedManyWithoutComments_userInput
     senderChat?: ChatCreateNestedManyWithoutSenderChatInput
     receiverChat?: ChatCreateNestedManyWithoutReceiverChatInput
     receiverMessage?: MessagesCreateNestedManyWithoutReceiverMessageInput
@@ -11928,11 +11810,11 @@ export namespace Prisma {
     confirm_password: string
     profile_picture: string
     role?: $Enums.Role
-    commentOnPostId?: number | null
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     likedPost?: PostUncheckedCreateNestedManyWithoutLikedPostByUsersInput
     createdPosts?: PostUncheckedCreateNestedManyWithoutPost_authorInput
+    commentsOnPost?: CommentsUncheckedCreateNestedManyWithoutComments_userInput
     senderChat?: ChatUncheckedCreateNestedManyWithoutSenderChatInput
     receiverChat?: ChatUncheckedCreateNestedManyWithoutReceiverChatInput
     receiverMessage?: MessagesUncheckedCreateNestedManyWithoutReceiverMessageInput
@@ -11957,7 +11839,7 @@ export namespace Prisma {
     following?: UserCreateNestedManyWithoutFollowedByInput
     likedPost?: PostCreateNestedManyWithoutLikedPostByUsersInput
     createdPosts?: PostCreateNestedManyWithoutPost_authorInput
-    commentsOnPost?: CommentsCreateNestedOneWithoutCommentsByUsersInput
+    commentsOnPost?: CommentsCreateNestedManyWithoutComments_userInput
     senderChat?: ChatCreateNestedManyWithoutSenderChatInput
     receiverChat?: ChatCreateNestedManyWithoutReceiverChatInput
     senderMessage?: MessagesCreateNestedManyWithoutSenderMessageInput
@@ -11974,11 +11856,11 @@ export namespace Prisma {
     confirm_password: string
     profile_picture: string
     role?: $Enums.Role
-    commentOnPostId?: number | null
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     likedPost?: PostUncheckedCreateNestedManyWithoutLikedPostByUsersInput
     createdPosts?: PostUncheckedCreateNestedManyWithoutPost_authorInput
+    commentsOnPost?: CommentsUncheckedCreateNestedManyWithoutComments_userInput
     senderChat?: ChatUncheckedCreateNestedManyWithoutSenderChatInput
     receiverChat?: ChatUncheckedCreateNestedManyWithoutReceiverChatInput
     senderMessage?: MessagesUncheckedCreateNestedManyWithoutSenderMessageInput
@@ -12031,7 +11913,7 @@ export namespace Prisma {
     following?: UserUpdateManyWithoutFollowedByNestedInput
     likedPost?: PostUpdateManyWithoutLikedPostByUsersNestedInput
     createdPosts?: PostUpdateManyWithoutPost_authorNestedInput
-    commentsOnPost?: CommentsUpdateOneWithoutCommentsByUsersNestedInput
+    commentsOnPost?: CommentsUpdateManyWithoutComments_userNestedInput
     senderChat?: ChatUpdateManyWithoutSenderChatNestedInput
     receiverChat?: ChatUpdateManyWithoutReceiverChatNestedInput
     receiverMessage?: MessagesUpdateManyWithoutReceiverMessageNestedInput
@@ -12048,11 +11930,11 @@ export namespace Prisma {
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    commentOnPostId?: NullableIntFieldUpdateOperationsInput | number | null
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     likedPost?: PostUncheckedUpdateManyWithoutLikedPostByUsersNestedInput
     createdPosts?: PostUncheckedUpdateManyWithoutPost_authorNestedInput
+    commentsOnPost?: CommentsUncheckedUpdateManyWithoutComments_userNestedInput
     senderChat?: ChatUncheckedUpdateManyWithoutSenderChatNestedInput
     receiverChat?: ChatUncheckedUpdateManyWithoutReceiverChatNestedInput
     receiverMessage?: MessagesUncheckedUpdateManyWithoutReceiverMessageNestedInput
@@ -12083,7 +11965,7 @@ export namespace Prisma {
     following?: UserUpdateManyWithoutFollowedByNestedInput
     likedPost?: PostUpdateManyWithoutLikedPostByUsersNestedInput
     createdPosts?: PostUpdateManyWithoutPost_authorNestedInput
-    commentsOnPost?: CommentsUpdateOneWithoutCommentsByUsersNestedInput
+    commentsOnPost?: CommentsUpdateManyWithoutComments_userNestedInput
     senderChat?: ChatUpdateManyWithoutSenderChatNestedInput
     receiverChat?: ChatUpdateManyWithoutReceiverChatNestedInput
     senderMessage?: MessagesUpdateManyWithoutSenderMessageNestedInput
@@ -12100,11 +11982,11 @@ export namespace Prisma {
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    commentOnPostId?: NullableIntFieldUpdateOperationsInput | number | null
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     likedPost?: PostUncheckedUpdateManyWithoutLikedPostByUsersNestedInput
     createdPosts?: PostUncheckedUpdateManyWithoutPost_authorNestedInput
+    commentsOnPost?: CommentsUncheckedUpdateManyWithoutComments_userNestedInput
     senderChat?: ChatUncheckedUpdateManyWithoutSenderChatNestedInput
     receiverChat?: ChatUncheckedUpdateManyWithoutReceiverChatNestedInput
     senderMessage?: MessagesUncheckedUpdateManyWithoutSenderMessageNestedInput
@@ -12141,6 +12023,13 @@ export namespace Prisma {
     post_likes: number
     post_comments: number
     createdAt?: Date | string
+  }
+
+  export type CommentsCreateManyComments_userInput = {
+    id?: number
+    comment_text: string
+    createdAt?: Date | string
+    commented_postId: number
   }
 
   export type ChatCreateManySenderChatInput = {
@@ -12190,7 +12079,7 @@ export namespace Prisma {
     followedBy?: UserUpdateManyWithoutFollowingNestedInput
     likedPost?: PostUpdateManyWithoutLikedPostByUsersNestedInput
     createdPosts?: PostUpdateManyWithoutPost_authorNestedInput
-    commentsOnPost?: CommentsUpdateOneWithoutCommentsByUsersNestedInput
+    commentsOnPost?: CommentsUpdateManyWithoutComments_userNestedInput
     senderChat?: ChatUpdateManyWithoutSenderChatNestedInput
     receiverChat?: ChatUpdateManyWithoutReceiverChatNestedInput
     senderMessage?: MessagesUpdateManyWithoutSenderMessageNestedInput
@@ -12208,10 +12097,10 @@ export namespace Prisma {
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    commentOnPostId?: NullableIntFieldUpdateOperationsInput | number | null
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
     likedPost?: PostUncheckedUpdateManyWithoutLikedPostByUsersNestedInput
     createdPosts?: PostUncheckedUpdateManyWithoutPost_authorNestedInput
+    commentsOnPost?: CommentsUncheckedUpdateManyWithoutComments_userNestedInput
     senderChat?: ChatUncheckedUpdateManyWithoutSenderChatNestedInput
     receiverChat?: ChatUncheckedUpdateManyWithoutReceiverChatNestedInput
     senderMessage?: MessagesUncheckedUpdateManyWithoutSenderMessageNestedInput
@@ -12229,7 +12118,6 @@ export namespace Prisma {
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    commentOnPostId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type UserUpdateWithoutFollowedByInput = {
@@ -12245,7 +12133,7 @@ export namespace Prisma {
     following?: UserUpdateManyWithoutFollowedByNestedInput
     likedPost?: PostUpdateManyWithoutLikedPostByUsersNestedInput
     createdPosts?: PostUpdateManyWithoutPost_authorNestedInput
-    commentsOnPost?: CommentsUpdateOneWithoutCommentsByUsersNestedInput
+    commentsOnPost?: CommentsUpdateManyWithoutComments_userNestedInput
     senderChat?: ChatUpdateManyWithoutSenderChatNestedInput
     receiverChat?: ChatUpdateManyWithoutReceiverChatNestedInput
     senderMessage?: MessagesUpdateManyWithoutSenderMessageNestedInput
@@ -12263,10 +12151,10 @@ export namespace Prisma {
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    commentOnPostId?: NullableIntFieldUpdateOperationsInput | number | null
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     likedPost?: PostUncheckedUpdateManyWithoutLikedPostByUsersNestedInput
     createdPosts?: PostUncheckedUpdateManyWithoutPost_authorNestedInput
+    commentsOnPost?: CommentsUncheckedUpdateManyWithoutComments_userNestedInput
     senderChat?: ChatUncheckedUpdateManyWithoutSenderChatNestedInput
     receiverChat?: ChatUncheckedUpdateManyWithoutReceiverChatNestedInput
     senderMessage?: MessagesUncheckedUpdateManyWithoutSenderMessageNestedInput
@@ -12284,7 +12172,6 @@ export namespace Prisma {
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    commentOnPostId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type PostUpdateWithoutLikedPostByUsersInput = {
@@ -12352,6 +12239,26 @@ export namespace Prisma {
     post_likes?: IntFieldUpdateOperationsInput | number
     post_comments?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CommentsUpdateWithoutComments_userInput = {
+    comment_text?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    commented_post?: PostUpdateOneRequiredWithoutPost_commentsByUsersNestedInput
+  }
+
+  export type CommentsUncheckedUpdateWithoutComments_userInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    comment_text?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    commented_postId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type CommentsUncheckedUpdateManyWithoutComments_userInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    comment_text?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    commented_postId?: IntFieldUpdateOperationsInput | number
   }
 
   export type ChatUpdateWithoutSenderChatInput = {
@@ -12461,6 +12368,7 @@ export namespace Prisma {
   export type CommentsCreateManyCommented_postInput = {
     id?: number
     comment_text: string
+    comments_userId: number
     createdAt?: Date | string
   }
 
@@ -12477,7 +12385,7 @@ export namespace Prisma {
     followedBy?: UserUpdateManyWithoutFollowingNestedInput
     following?: UserUpdateManyWithoutFollowedByNestedInput
     createdPosts?: PostUpdateManyWithoutPost_authorNestedInput
-    commentsOnPost?: CommentsUpdateOneWithoutCommentsByUsersNestedInput
+    commentsOnPost?: CommentsUpdateManyWithoutComments_userNestedInput
     senderChat?: ChatUpdateManyWithoutSenderChatNestedInput
     receiverChat?: ChatUpdateManyWithoutReceiverChatNestedInput
     senderMessage?: MessagesUpdateManyWithoutSenderMessageNestedInput
@@ -12495,10 +12403,10 @@ export namespace Prisma {
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    commentOnPostId?: NullableIntFieldUpdateOperationsInput | number | null
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     createdPosts?: PostUncheckedUpdateManyWithoutPost_authorNestedInput
+    commentsOnPost?: CommentsUncheckedUpdateManyWithoutComments_userNestedInput
     senderChat?: ChatUncheckedUpdateManyWithoutSenderChatNestedInput
     receiverChat?: ChatUncheckedUpdateManyWithoutReceiverChatNestedInput
     senderMessage?: MessagesUncheckedUpdateManyWithoutSenderMessageNestedInput
@@ -12516,93 +12424,26 @@ export namespace Prisma {
     confirm_password?: StringFieldUpdateOperationsInput | string
     profile_picture?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    commentOnPostId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type CommentsUpdateWithoutCommented_postInput = {
     comment_text?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    commentsByUsers?: UserUpdateManyWithoutCommentsOnPostNestedInput
+    comments_user?: UserUpdateOneRequiredWithoutCommentsOnPostNestedInput
   }
 
   export type CommentsUncheckedUpdateWithoutCommented_postInput = {
     id?: IntFieldUpdateOperationsInput | number
     comment_text?: StringFieldUpdateOperationsInput | string
+    comments_userId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    commentsByUsers?: UserUncheckedUpdateManyWithoutCommentsOnPostNestedInput
   }
 
   export type CommentsUncheckedUpdateManyWithoutCommented_postInput = {
     id?: IntFieldUpdateOperationsInput | number
     comment_text?: StringFieldUpdateOperationsInput | string
+    comments_userId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UserCreateManyCommentsOnPostInput = {
-    id?: number
-    username: string
-    display_name: string
-    bio: string
-    website: string
-    github: string
-    password: string
-    confirm_password: string
-    profile_picture: string
-    role?: $Enums.Role
-  }
-
-  export type UserUpdateWithoutCommentsOnPostInput = {
-    username?: StringFieldUpdateOperationsInput | string
-    display_name?: StringFieldUpdateOperationsInput | string
-    bio?: StringFieldUpdateOperationsInput | string
-    website?: StringFieldUpdateOperationsInput | string
-    github?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    confirm_password?: StringFieldUpdateOperationsInput | string
-    profile_picture?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    followedBy?: UserUpdateManyWithoutFollowingNestedInput
-    following?: UserUpdateManyWithoutFollowedByNestedInput
-    likedPost?: PostUpdateManyWithoutLikedPostByUsersNestedInput
-    createdPosts?: PostUpdateManyWithoutPost_authorNestedInput
-    senderChat?: ChatUpdateManyWithoutSenderChatNestedInput
-    receiverChat?: ChatUpdateManyWithoutReceiverChatNestedInput
-    senderMessage?: MessagesUpdateManyWithoutSenderMessageNestedInput
-    receiverMessage?: MessagesUpdateManyWithoutReceiverMessageNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutCommentsOnPostInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    username?: StringFieldUpdateOperationsInput | string
-    display_name?: StringFieldUpdateOperationsInput | string
-    bio?: StringFieldUpdateOperationsInput | string
-    website?: StringFieldUpdateOperationsInput | string
-    github?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    confirm_password?: StringFieldUpdateOperationsInput | string
-    profile_picture?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
-    following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
-    likedPost?: PostUncheckedUpdateManyWithoutLikedPostByUsersNestedInput
-    createdPosts?: PostUncheckedUpdateManyWithoutPost_authorNestedInput
-    senderChat?: ChatUncheckedUpdateManyWithoutSenderChatNestedInput
-    receiverChat?: ChatUncheckedUpdateManyWithoutReceiverChatNestedInput
-    senderMessage?: MessagesUncheckedUpdateManyWithoutSenderMessageNestedInput
-    receiverMessage?: MessagesUncheckedUpdateManyWithoutReceiverMessageNestedInput
-  }
-
-  export type UserUncheckedUpdateManyWithoutCommentsOnPostInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    username?: StringFieldUpdateOperationsInput | string
-    display_name?: StringFieldUpdateOperationsInput | string
-    bio?: StringFieldUpdateOperationsInput | string
-    website?: StringFieldUpdateOperationsInput | string
-    github?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    confirm_password?: StringFieldUpdateOperationsInput | string
-    profile_picture?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
   }
 
   export type MessagesCreateManyChatInput = {

@@ -7,6 +7,7 @@ const prisma = require("../db/client");
 const upload = require("../middlewares/multer");
 
 const uploadingImage = require("../helper/uploadingImage");
+
 const creatingPost = require("../validatingMiddlewares/creatingPost");
 
 exports.post_create = [
@@ -58,6 +59,7 @@ exports.post_get_by_id = [
       },
       include: {
         post_author: true,
+        post_commentsByUsers: true,
       },
     });
 
@@ -128,5 +130,27 @@ exports.post_like = [
 
       res.json(postHasBeenDisliked);
     }
+  }),
+];
+
+exports.post_comment = [
+  asyncHandler(async (req, res, next) => {
+    const { id } = req.params;
+
+    const { comment_text } = req.body;
+
+    const getPostById = await prisma.post.findFirst({
+      where: { id: Number(id) },
+    });
+
+    const commentingOnPost = await prisma.comments.create({
+      data: {
+        comment_text: comment_text,
+        comments_userId: req.authData.id,
+        commented_postId: getPostById.id,
+      },
+    });
+
+    res.json(commentingOnPost);
   }),
 ];

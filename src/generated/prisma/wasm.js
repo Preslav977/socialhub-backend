@@ -130,8 +130,7 @@ exports.Prisma.UserScalarFieldEnum = {
   password: 'password',
   confirm_password: 'confirm_password',
   profile_picture: 'profile_picture',
-  role: 'role',
-  commentOnPostId: 'commentOnPostId'
+  role: 'role'
 };
 
 exports.Prisma.PostScalarFieldEnum = {
@@ -148,6 +147,7 @@ exports.Prisma.PostScalarFieldEnum = {
 exports.Prisma.CommentsScalarFieldEnum = {
   id: 'id',
   comment_text: 'comment_text',
+  comments_userId: 'comments_userId',
   createdAt: 'createdAt',
   commented_postId: 'commented_postId'
 };
@@ -186,11 +186,6 @@ exports.Prisma.SortOrder = {
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
-};
-
-exports.Prisma.NullsOrder = {
-  first: 'first',
-  last: 'last'
 };
 exports.Role = exports.$Enums.Role = {
   USER: 'USER',
