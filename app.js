@@ -38,6 +38,8 @@ const userRouter = require("./routes/userRouter");
 
 const postRouter = require("./routes/postRouter");
 
+const chatRouter = require("./routes/chatRouter");
+
 const verifyToken = require("./middlewares/verifyToken");
 
 app.use(
@@ -133,6 +135,8 @@ app.use(verifyToken);
 app.use("/users", userRouter);
 
 app.use("/posts", postRouter);
+
+app.use("/chats", chatRouter);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
