@@ -78,3 +78,27 @@ exports.chat_get = [
     res.json(getChats);
   }),
 ];
+
+exports.chat_get_by_id = [
+  asyncHandler(async (req, res, next) => {
+    const { id } = req.params;
+
+    const findChatById = await prisma.chat.findFirst({
+      where: {
+        id: id,
+      },
+
+      include: {
+        messages: {
+          orderBy: {
+            id: "asc",
+          },
+        },
+        senderChat: true,
+        receiverChat: true,
+      },
+    });
+
+    res.json(findChatById);
+  }),
+];

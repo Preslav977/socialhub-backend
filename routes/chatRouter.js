@@ -8,4 +8,6 @@ chatRouter.post("/", chatController.chat_create);
 
 chatRouter.get("/", chatController.chat_get);
 
+chatRouter.get("/:id", chatController.chat_get_by_id);
+
 module.exports = chatRouter;
