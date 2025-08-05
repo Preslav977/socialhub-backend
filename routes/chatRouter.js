@@ -6,4 +6,6 @@ const chatController = require("../controllers/chatController");
 
 chatRouter.post("/", chatController.chat_create);
 
+chatRouter.get("/", chatController.chat_get);
+
 module.exports = chatRouter;

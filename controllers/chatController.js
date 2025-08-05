@@ -57,3 +57,24 @@ exports.chat_create = [
     }
   }),
 ];
+
+exports.chat_get = [
+  asyncHandler(async (req, res, next) => {
+    const getChats = await prisma.chat.findMany({
+      where: {
+        OR: [
+          { senderChatId: req.authData.id },
+          { receiverChatId: req.authData.id },
+        ],
+      },
+
+      include: {
+        senderChat: true,
+        receiverChat: true,
+        messages: true,
+      },
+    });
+
+    res.json(getChats);
+  }),
+];
