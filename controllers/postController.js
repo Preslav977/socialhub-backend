@@ -73,47 +73,60 @@ exports.post_like = [
       where: {
         id: Number(id),
       },
+
       include: {
         likedPostByUsers: true,
       },
     });
 
-    // const checkIfUserLikedThePost = getPostById.likedPostByUsers.some(
-    //   (post) => {
-    //     if (post. === req.authData.id) {
-    //       return true;
-    //     } else {
-    //       return false;
-    //     }
-    //   },
-    // );
+    const checkIfUserLikedThePost = getPostById.likedPostByUsers.some(
+      (user) => user.id === req.authData.id,
+    );
 
-    //     if (checkIfUserLikedThePost) {
-    //       const dislike = await prisma.post.update({
-    //         where: {
-    //           id: Number(id),
-    //         },
-    //         data: {
-    //           post_likes: {
-    //             decrement: 1,
-    //           },
-    //         },
-    //       });
+    if (!checkIfUserLikedThePost && getPostById.post_likes >= 0) {
+      const postHasBeenLiked = await prisma.post.update({
+        where: {
+          id: Number(id),
+        },
 
-    //       res.json(dislike);
-    //     } else {
-    //       const like = await prisma.post.update({
-    //         where: {
-    //           id: Number(id),
-    //         },
-    //         data: {
-    //           post_likes: {
-    //             increment: 1,
-    //           },
-    //         },
-    //       });
+        include: {
+          likedPostByUsers: true,
+        },
 
-    //       res.json(like);
-    //     }
+        data: {
+          post_likes: {
+            increment: 1,
+          },
+
+          likedPostByUsers: {
+            connect: [{ id: req.authData.id }],
+          },
+        },
+      });
+
+      res.json(postHasBeenLiked);
+    } else {
+      const postHasBeenDisliked = await prisma.post.update({
+        where: {
+          id: Number(id),
+        },
+
+        include: {
+          likedPostByUsers: true,
+        },
+
+        data: {
+          post_likes: {
+            decrement: 1,
+          },
+
+          likedPostByUsers: {
+            disconnect: [{ id: req.authData.id }],
+          },
+        },
+      });
+
+      res.json(postHasBeenDisliked);
+    }
   }),
 ];

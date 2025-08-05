@@ -96,6 +96,7 @@ exports.user_get_by_id = [
       include: {
         followedBy: true,
         following: true,
+        likedPost: true,
       },
     });
 
