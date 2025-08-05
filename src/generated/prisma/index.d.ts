@@ -6489,10 +6489,7 @@ export namespace Prisma {
   export type MessagesMinAggregateOutputType = {
     id: number | null
     message_text: string | null
-    message_imageName: string | null
     message_imageURL: string | null
-    message_imageType: string | null
-    message_imageSize: string | null
     createdAt: Date | null
     senderMessageId: number | null
     receiverMessageId: number | null
@@ -6502,10 +6499,7 @@ export namespace Prisma {
   export type MessagesMaxAggregateOutputType = {
     id: number | null
     message_text: string | null
-    message_imageName: string | null
     message_imageURL: string | null
-    message_imageType: string | null
-    message_imageSize: string | null
     createdAt: Date | null
     senderMessageId: number | null
     receiverMessageId: number | null
@@ -6515,10 +6509,7 @@ export namespace Prisma {
   export type MessagesCountAggregateOutputType = {
     id: number
     message_text: number
-    message_imageName: number
     message_imageURL: number
-    message_imageType: number
-    message_imageSize: number
     createdAt: number
     senderMessageId: number
     receiverMessageId: number
@@ -6542,10 +6533,7 @@ export namespace Prisma {
   export type MessagesMinAggregateInputType = {
     id?: true
     message_text?: true
-    message_imageName?: true
     message_imageURL?: true
-    message_imageType?: true
-    message_imageSize?: true
     createdAt?: true
     senderMessageId?: true
     receiverMessageId?: true
@@ -6555,10 +6543,7 @@ export namespace Prisma {
   export type MessagesMaxAggregateInputType = {
     id?: true
     message_text?: true
-    message_imageName?: true
     message_imageURL?: true
-    message_imageType?: true
-    message_imageSize?: true
     createdAt?: true
     senderMessageId?: true
     receiverMessageId?: true
@@ -6568,10 +6553,7 @@ export namespace Prisma {
   export type MessagesCountAggregateInputType = {
     id?: true
     message_text?: true
-    message_imageName?: true
     message_imageURL?: true
-    message_imageType?: true
-    message_imageSize?: true
     createdAt?: true
     senderMessageId?: true
     receiverMessageId?: true
@@ -6668,10 +6650,7 @@ export namespace Prisma {
   export type MessagesGroupByOutputType = {
     id: number
     message_text: string
-    message_imageName: string
-    message_imageURL: string
-    message_imageType: string
-    message_imageSize: string
+    message_imageURL: string | null
     createdAt: Date
     senderMessageId: number
     receiverMessageId: number
@@ -6700,10 +6679,7 @@ export namespace Prisma {
   export type MessagesSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     message_text?: boolean
-    message_imageName?: boolean
     message_imageURL?: boolean
-    message_imageType?: boolean
-    message_imageSize?: boolean
     createdAt?: boolean
     senderMessageId?: boolean
     receiverMessageId?: boolean
@@ -6716,10 +6692,7 @@ export namespace Prisma {
   export type MessagesSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     message_text?: boolean
-    message_imageName?: boolean
     message_imageURL?: boolean
-    message_imageType?: boolean
-    message_imageSize?: boolean
     createdAt?: boolean
     senderMessageId?: boolean
     receiverMessageId?: boolean
@@ -6732,10 +6705,7 @@ export namespace Prisma {
   export type MessagesSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     message_text?: boolean
-    message_imageName?: boolean
     message_imageURL?: boolean
-    message_imageType?: boolean
-    message_imageSize?: boolean
     createdAt?: boolean
     senderMessageId?: boolean
     receiverMessageId?: boolean
@@ -6748,17 +6718,14 @@ export namespace Prisma {
   export type MessagesSelectScalar = {
     id?: boolean
     message_text?: boolean
-    message_imageName?: boolean
     message_imageURL?: boolean
-    message_imageType?: boolean
-    message_imageSize?: boolean
     createdAt?: boolean
     senderMessageId?: boolean
     receiverMessageId?: boolean
     chatId?: boolean
   }
 
-  export type MessagesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "message_text" | "message_imageName" | "message_imageURL" | "message_imageType" | "message_imageSize" | "createdAt" | "senderMessageId" | "receiverMessageId" | "chatId", ExtArgs["result"]["messages"]>
+  export type MessagesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "message_text" | "message_imageURL" | "createdAt" | "senderMessageId" | "receiverMessageId" | "chatId", ExtArgs["result"]["messages"]>
   export type MessagesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     senderMessage?: boolean | UserDefaultArgs<ExtArgs>
     receiverMessage?: boolean | UserDefaultArgs<ExtArgs>
@@ -6785,10 +6752,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       message_text: string
-      message_imageName: string
-      message_imageURL: string
-      message_imageType: string
-      message_imageSize: string
+      message_imageURL: string | null
       createdAt: Date
       senderMessageId: number
       receiverMessageId: number
@@ -7221,10 +7185,7 @@ export namespace Prisma {
   interface MessagesFieldRefs {
     readonly id: FieldRef<"Messages", 'Int'>
     readonly message_text: FieldRef<"Messages", 'String'>
-    readonly message_imageName: FieldRef<"Messages", 'String'>
     readonly message_imageURL: FieldRef<"Messages", 'String'>
-    readonly message_imageType: FieldRef<"Messages", 'String'>
-    readonly message_imageSize: FieldRef<"Messages", 'String'>
     readonly createdAt: FieldRef<"Messages", 'DateTime'>
     readonly senderMessageId: FieldRef<"Messages", 'Int'>
     readonly receiverMessageId: FieldRef<"Messages", 'Int'>
@@ -8693,10 +8654,7 @@ export namespace Prisma {
   export const MessagesScalarFieldEnum: {
     id: 'id',
     message_text: 'message_text',
-    message_imageName: 'message_imageName',
     message_imageURL: 'message_imageURL',
-    message_imageType: 'message_imageType',
-    message_imageSize: 'message_imageSize',
     createdAt: 'createdAt',
     senderMessageId: 'senderMessageId',
     receiverMessageId: 'receiverMessageId',
@@ -9132,10 +9090,7 @@ export namespace Prisma {
     NOT?: MessagesWhereInput | MessagesWhereInput[]
     id?: IntFilter<"Messages"> | number
     message_text?: StringFilter<"Messages"> | string
-    message_imageName?: StringFilter<"Messages"> | string
-    message_imageURL?: StringFilter<"Messages"> | string
-    message_imageType?: StringFilter<"Messages"> | string
-    message_imageSize?: StringFilter<"Messages"> | string
+    message_imageURL?: StringNullableFilter<"Messages"> | string | null
     createdAt?: DateTimeFilter<"Messages"> | Date | string
     senderMessageId?: IntFilter<"Messages"> | number
     receiverMessageId?: IntFilter<"Messages"> | number
@@ -9148,10 +9103,7 @@ export namespace Prisma {
   export type MessagesOrderByWithRelationInput = {
     id?: SortOrder
     message_text?: SortOrder
-    message_imageName?: SortOrder
-    message_imageURL?: SortOrder
-    message_imageType?: SortOrder
-    message_imageSize?: SortOrder
+    message_imageURL?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     senderMessageId?: SortOrder
     receiverMessageId?: SortOrder
@@ -9167,10 +9119,7 @@ export namespace Prisma {
     OR?: MessagesWhereInput[]
     NOT?: MessagesWhereInput | MessagesWhereInput[]
     message_text?: StringFilter<"Messages"> | string
-    message_imageName?: StringFilter<"Messages"> | string
-    message_imageURL?: StringFilter<"Messages"> | string
-    message_imageType?: StringFilter<"Messages"> | string
-    message_imageSize?: StringFilter<"Messages"> | string
+    message_imageURL?: StringNullableFilter<"Messages"> | string | null
     createdAt?: DateTimeFilter<"Messages"> | Date | string
     senderMessageId?: IntFilter<"Messages"> | number
     receiverMessageId?: IntFilter<"Messages"> | number
@@ -9183,10 +9132,7 @@ export namespace Prisma {
   export type MessagesOrderByWithAggregationInput = {
     id?: SortOrder
     message_text?: SortOrder
-    message_imageName?: SortOrder
-    message_imageURL?: SortOrder
-    message_imageType?: SortOrder
-    message_imageSize?: SortOrder
+    message_imageURL?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     senderMessageId?: SortOrder
     receiverMessageId?: SortOrder
@@ -9204,10 +9150,7 @@ export namespace Prisma {
     NOT?: MessagesScalarWhereWithAggregatesInput | MessagesScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Messages"> | number
     message_text?: StringWithAggregatesFilter<"Messages"> | string
-    message_imageName?: StringWithAggregatesFilter<"Messages"> | string
-    message_imageURL?: StringWithAggregatesFilter<"Messages"> | string
-    message_imageType?: StringWithAggregatesFilter<"Messages"> | string
-    message_imageSize?: StringWithAggregatesFilter<"Messages"> | string
+    message_imageURL?: StringNullableWithAggregatesFilter<"Messages"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Messages"> | Date | string
     senderMessageId?: IntWithAggregatesFilter<"Messages"> | number
     receiverMessageId?: IntWithAggregatesFilter<"Messages"> | number
@@ -9573,10 +9516,7 @@ export namespace Prisma {
 
   export type MessagesCreateInput = {
     message_text: string
-    message_imageName: string
-    message_imageURL: string
-    message_imageType: string
-    message_imageSize: string
+    message_imageURL?: string | null
     createdAt?: Date | string
     senderMessage: UserCreateNestedOneWithoutSenderMessageInput
     receiverMessage: UserCreateNestedOneWithoutReceiverMessageInput
@@ -9586,10 +9526,7 @@ export namespace Prisma {
   export type MessagesUncheckedCreateInput = {
     id?: number
     message_text: string
-    message_imageName: string
-    message_imageURL: string
-    message_imageType: string
-    message_imageSize: string
+    message_imageURL?: string | null
     createdAt?: Date | string
     senderMessageId: number
     receiverMessageId: number
@@ -9598,10 +9535,7 @@ export namespace Prisma {
 
   export type MessagesUpdateInput = {
     message_text?: StringFieldUpdateOperationsInput | string
-    message_imageName?: StringFieldUpdateOperationsInput | string
-    message_imageURL?: StringFieldUpdateOperationsInput | string
-    message_imageType?: StringFieldUpdateOperationsInput | string
-    message_imageSize?: StringFieldUpdateOperationsInput | string
+    message_imageURL?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     senderMessage?: UserUpdateOneRequiredWithoutSenderMessageNestedInput
     receiverMessage?: UserUpdateOneRequiredWithoutReceiverMessageNestedInput
@@ -9611,10 +9545,7 @@ export namespace Prisma {
   export type MessagesUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     message_text?: StringFieldUpdateOperationsInput | string
-    message_imageName?: StringFieldUpdateOperationsInput | string
-    message_imageURL?: StringFieldUpdateOperationsInput | string
-    message_imageType?: StringFieldUpdateOperationsInput | string
-    message_imageSize?: StringFieldUpdateOperationsInput | string
+    message_imageURL?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     senderMessageId?: IntFieldUpdateOperationsInput | number
     receiverMessageId?: IntFieldUpdateOperationsInput | number
@@ -9624,10 +9555,7 @@ export namespace Prisma {
   export type MessagesCreateManyInput = {
     id?: number
     message_text: string
-    message_imageName: string
-    message_imageURL: string
-    message_imageType: string
-    message_imageSize: string
+    message_imageURL?: string | null
     createdAt?: Date | string
     senderMessageId: number
     receiverMessageId: number
@@ -9636,20 +9564,14 @@ export namespace Prisma {
 
   export type MessagesUpdateManyMutationInput = {
     message_text?: StringFieldUpdateOperationsInput | string
-    message_imageName?: StringFieldUpdateOperationsInput | string
-    message_imageURL?: StringFieldUpdateOperationsInput | string
-    message_imageType?: StringFieldUpdateOperationsInput | string
-    message_imageSize?: StringFieldUpdateOperationsInput | string
+    message_imageURL?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MessagesUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     message_text?: StringFieldUpdateOperationsInput | string
-    message_imageName?: StringFieldUpdateOperationsInput | string
-    message_imageURL?: StringFieldUpdateOperationsInput | string
-    message_imageType?: StringFieldUpdateOperationsInput | string
-    message_imageSize?: StringFieldUpdateOperationsInput | string
+    message_imageURL?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     senderMessageId?: IntFieldUpdateOperationsInput | number
     receiverMessageId?: IntFieldUpdateOperationsInput | number
@@ -10067,6 +9989,21 @@ export namespace Prisma {
     receiverChatId?: SortOrder
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type ChatScalarRelationFilter = {
     is?: ChatWhereInput
     isNot?: ChatWhereInput
@@ -10075,10 +10012,7 @@ export namespace Prisma {
   export type MessagesCountOrderByAggregateInput = {
     id?: SortOrder
     message_text?: SortOrder
-    message_imageName?: SortOrder
     message_imageURL?: SortOrder
-    message_imageType?: SortOrder
-    message_imageSize?: SortOrder
     createdAt?: SortOrder
     senderMessageId?: SortOrder
     receiverMessageId?: SortOrder
@@ -10094,10 +10028,7 @@ export namespace Prisma {
   export type MessagesMaxOrderByAggregateInput = {
     id?: SortOrder
     message_text?: SortOrder
-    message_imageName?: SortOrder
     message_imageURL?: SortOrder
-    message_imageType?: SortOrder
-    message_imageSize?: SortOrder
     createdAt?: SortOrder
     senderMessageId?: SortOrder
     receiverMessageId?: SortOrder
@@ -10107,10 +10038,7 @@ export namespace Prisma {
   export type MessagesMinOrderByAggregateInput = {
     id?: SortOrder
     message_text?: SortOrder
-    message_imageName?: SortOrder
     message_imageURL?: SortOrder
-    message_imageType?: SortOrder
-    message_imageSize?: SortOrder
     createdAt?: SortOrder
     senderMessageId?: SortOrder
     receiverMessageId?: SortOrder
@@ -10121,6 +10049,24 @@ export namespace Prisma {
     id?: SortOrder
     senderMessageId?: SortOrder
     receiverMessageId?: SortOrder
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type SessionCountOrderByAggregateInput = {
@@ -10808,6 +10754,10 @@ export namespace Prisma {
     connect?: ChatWhereUniqueInput
   }
 
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
   export type UserUpdateOneRequiredWithoutSenderMessageNestedInput = {
     create?: XOR<UserCreateWithoutSenderMessageInput, UserUncheckedCreateWithoutSenderMessageInput>
     connectOrCreate?: UserCreateOrConnectWithoutSenderMessageInput
@@ -10979,6 +10929,37 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type UserCreateWithoutFollowingInput = {
@@ -11207,10 +11188,7 @@ export namespace Prisma {
 
   export type MessagesCreateWithoutSenderMessageInput = {
     message_text: string
-    message_imageName: string
-    message_imageURL: string
-    message_imageType: string
-    message_imageSize: string
+    message_imageURL?: string | null
     createdAt?: Date | string
     receiverMessage: UserCreateNestedOneWithoutReceiverMessageInput
     chat: ChatCreateNestedOneWithoutMessagesInput
@@ -11219,10 +11197,7 @@ export namespace Prisma {
   export type MessagesUncheckedCreateWithoutSenderMessageInput = {
     id?: number
     message_text: string
-    message_imageName: string
-    message_imageURL: string
-    message_imageType: string
-    message_imageSize: string
+    message_imageURL?: string | null
     createdAt?: Date | string
     receiverMessageId: number
     chatId: string
@@ -11240,10 +11215,7 @@ export namespace Prisma {
 
   export type MessagesCreateWithoutReceiverMessageInput = {
     message_text: string
-    message_imageName: string
-    message_imageURL: string
-    message_imageType: string
-    message_imageSize: string
+    message_imageURL?: string | null
     createdAt?: Date | string
     senderMessage: UserCreateNestedOneWithoutSenderMessageInput
     chat: ChatCreateNestedOneWithoutMessagesInput
@@ -11252,10 +11224,7 @@ export namespace Prisma {
   export type MessagesUncheckedCreateWithoutReceiverMessageInput = {
     id?: number
     message_text: string
-    message_imageName: string
-    message_imageURL: string
-    message_imageType: string
-    message_imageSize: string
+    message_imageURL?: string | null
     createdAt?: Date | string
     senderMessageId: number
     chatId: string
@@ -11456,10 +11425,7 @@ export namespace Prisma {
     NOT?: MessagesScalarWhereInput | MessagesScalarWhereInput[]
     id?: IntFilter<"Messages"> | number
     message_text?: StringFilter<"Messages"> | string
-    message_imageName?: StringFilter<"Messages"> | string
-    message_imageURL?: StringFilter<"Messages"> | string
-    message_imageType?: StringFilter<"Messages"> | string
-    message_imageSize?: StringFilter<"Messages"> | string
+    message_imageURL?: StringNullableFilter<"Messages"> | string | null
     createdAt?: DateTimeFilter<"Messages"> | Date | string
     senderMessageId?: IntFilter<"Messages"> | number
     receiverMessageId?: IntFilter<"Messages"> | number
@@ -12032,10 +11998,7 @@ export namespace Prisma {
 
   export type MessagesCreateWithoutChatInput = {
     message_text: string
-    message_imageName: string
-    message_imageURL: string
-    message_imageType: string
-    message_imageSize: string
+    message_imageURL?: string | null
     createdAt?: Date | string
     senderMessage: UserCreateNestedOneWithoutSenderMessageInput
     receiverMessage: UserCreateNestedOneWithoutReceiverMessageInput
@@ -12044,10 +12007,7 @@ export namespace Prisma {
   export type MessagesUncheckedCreateWithoutChatInput = {
     id?: number
     message_text: string
-    message_imageName: string
-    message_imageURL: string
-    message_imageType: string
-    message_imageSize: string
+    message_imageURL?: string | null
     createdAt?: Date | string
     senderMessageId: number
     receiverMessageId: number
@@ -12450,10 +12410,7 @@ export namespace Prisma {
   export type MessagesCreateManySenderMessageInput = {
     id?: number
     message_text: string
-    message_imageName: string
-    message_imageURL: string
-    message_imageType: string
-    message_imageSize: string
+    message_imageURL?: string | null
     createdAt?: Date | string
     receiverMessageId: number
     chatId: string
@@ -12462,10 +12419,7 @@ export namespace Prisma {
   export type MessagesCreateManyReceiverMessageInput = {
     id?: number
     message_text: string
-    message_imageName: string
-    message_imageURL: string
-    message_imageType: string
-    message_imageSize: string
+    message_imageURL?: string | null
     createdAt?: Date | string
     senderMessageId: number
     chatId: string
@@ -12707,10 +12661,7 @@ export namespace Prisma {
 
   export type MessagesUpdateWithoutSenderMessageInput = {
     message_text?: StringFieldUpdateOperationsInput | string
-    message_imageName?: StringFieldUpdateOperationsInput | string
-    message_imageURL?: StringFieldUpdateOperationsInput | string
-    message_imageType?: StringFieldUpdateOperationsInput | string
-    message_imageSize?: StringFieldUpdateOperationsInput | string
+    message_imageURL?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     receiverMessage?: UserUpdateOneRequiredWithoutReceiverMessageNestedInput
     chat?: ChatUpdateOneRequiredWithoutMessagesNestedInput
@@ -12719,10 +12670,7 @@ export namespace Prisma {
   export type MessagesUncheckedUpdateWithoutSenderMessageInput = {
     id?: IntFieldUpdateOperationsInput | number
     message_text?: StringFieldUpdateOperationsInput | string
-    message_imageName?: StringFieldUpdateOperationsInput | string
-    message_imageURL?: StringFieldUpdateOperationsInput | string
-    message_imageType?: StringFieldUpdateOperationsInput | string
-    message_imageSize?: StringFieldUpdateOperationsInput | string
+    message_imageURL?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     receiverMessageId?: IntFieldUpdateOperationsInput | number
     chatId?: StringFieldUpdateOperationsInput | string
@@ -12731,10 +12679,7 @@ export namespace Prisma {
   export type MessagesUncheckedUpdateManyWithoutSenderMessageInput = {
     id?: IntFieldUpdateOperationsInput | number
     message_text?: StringFieldUpdateOperationsInput | string
-    message_imageName?: StringFieldUpdateOperationsInput | string
-    message_imageURL?: StringFieldUpdateOperationsInput | string
-    message_imageType?: StringFieldUpdateOperationsInput | string
-    message_imageSize?: StringFieldUpdateOperationsInput | string
+    message_imageURL?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     receiverMessageId?: IntFieldUpdateOperationsInput | number
     chatId?: StringFieldUpdateOperationsInput | string
@@ -12742,10 +12687,7 @@ export namespace Prisma {
 
   export type MessagesUpdateWithoutReceiverMessageInput = {
     message_text?: StringFieldUpdateOperationsInput | string
-    message_imageName?: StringFieldUpdateOperationsInput | string
-    message_imageURL?: StringFieldUpdateOperationsInput | string
-    message_imageType?: StringFieldUpdateOperationsInput | string
-    message_imageSize?: StringFieldUpdateOperationsInput | string
+    message_imageURL?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     senderMessage?: UserUpdateOneRequiredWithoutSenderMessageNestedInput
     chat?: ChatUpdateOneRequiredWithoutMessagesNestedInput
@@ -12754,10 +12696,7 @@ export namespace Prisma {
   export type MessagesUncheckedUpdateWithoutReceiverMessageInput = {
     id?: IntFieldUpdateOperationsInput | number
     message_text?: StringFieldUpdateOperationsInput | string
-    message_imageName?: StringFieldUpdateOperationsInput | string
-    message_imageURL?: StringFieldUpdateOperationsInput | string
-    message_imageType?: StringFieldUpdateOperationsInput | string
-    message_imageSize?: StringFieldUpdateOperationsInput | string
+    message_imageURL?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     senderMessageId?: IntFieldUpdateOperationsInput | number
     chatId?: StringFieldUpdateOperationsInput | string
@@ -12766,10 +12705,7 @@ export namespace Prisma {
   export type MessagesUncheckedUpdateManyWithoutReceiverMessageInput = {
     id?: IntFieldUpdateOperationsInput | number
     message_text?: StringFieldUpdateOperationsInput | string
-    message_imageName?: StringFieldUpdateOperationsInput | string
-    message_imageURL?: StringFieldUpdateOperationsInput | string
-    message_imageType?: StringFieldUpdateOperationsInput | string
-    message_imageSize?: StringFieldUpdateOperationsInput | string
+    message_imageURL?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     senderMessageId?: IntFieldUpdateOperationsInput | number
     chatId?: StringFieldUpdateOperationsInput | string
@@ -12898,10 +12834,7 @@ export namespace Prisma {
   export type MessagesCreateManyChatInput = {
     id?: number
     message_text: string
-    message_imageName: string
-    message_imageURL: string
-    message_imageType: string
-    message_imageSize: string
+    message_imageURL?: string | null
     createdAt?: Date | string
     senderMessageId: number
     receiverMessageId: number
@@ -12909,10 +12842,7 @@ export namespace Prisma {
 
   export type MessagesUpdateWithoutChatInput = {
     message_text?: StringFieldUpdateOperationsInput | string
-    message_imageName?: StringFieldUpdateOperationsInput | string
-    message_imageURL?: StringFieldUpdateOperationsInput | string
-    message_imageType?: StringFieldUpdateOperationsInput | string
-    message_imageSize?: StringFieldUpdateOperationsInput | string
+    message_imageURL?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     senderMessage?: UserUpdateOneRequiredWithoutSenderMessageNestedInput
     receiverMessage?: UserUpdateOneRequiredWithoutReceiverMessageNestedInput
@@ -12921,10 +12851,7 @@ export namespace Prisma {
   export type MessagesUncheckedUpdateWithoutChatInput = {
     id?: IntFieldUpdateOperationsInput | number
     message_text?: StringFieldUpdateOperationsInput | string
-    message_imageName?: StringFieldUpdateOperationsInput | string
-    message_imageURL?: StringFieldUpdateOperationsInput | string
-    message_imageType?: StringFieldUpdateOperationsInput | string
-    message_imageSize?: StringFieldUpdateOperationsInput | string
+    message_imageURL?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     senderMessageId?: IntFieldUpdateOperationsInput | number
     receiverMessageId?: IntFieldUpdateOperationsInput | number
@@ -12933,10 +12860,7 @@ export namespace Prisma {
   export type MessagesUncheckedUpdateManyWithoutChatInput = {
     id?: IntFieldUpdateOperationsInput | number
     message_text?: StringFieldUpdateOperationsInput | string
-    message_imageName?: StringFieldUpdateOperationsInput | string
-    message_imageURL?: StringFieldUpdateOperationsInput | string
-    message_imageType?: StringFieldUpdateOperationsInput | string
-    message_imageSize?: StringFieldUpdateOperationsInput | string
+    message_imageURL?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     senderMessageId?: IntFieldUpdateOperationsInput | number
     receiverMessageId?: IntFieldUpdateOperationsInput | number

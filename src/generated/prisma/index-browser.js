@@ -162,10 +162,7 @@ exports.Prisma.ChatScalarFieldEnum = {
 exports.Prisma.MessagesScalarFieldEnum = {
   id: 'id',
   message_text: 'message_text',
-  message_imageName: 'message_imageName',
   message_imageURL: 'message_imageURL',
-  message_imageType: 'message_imageType',
-  message_imageSize: 'message_imageSize',
   createdAt: 'createdAt',
   senderMessageId: 'senderMessageId',
   receiverMessageId: 'receiverMessageId',

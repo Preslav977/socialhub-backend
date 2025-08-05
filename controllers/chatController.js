@@ -102,3 +102,5 @@ exports.chat_get_by_id = [
     res.json(findChatById);
   }),
 ];
+
+exports.chat_send_message = [asyncHandler(async (req, res, next) => {})];
