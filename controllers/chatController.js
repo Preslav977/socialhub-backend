@@ -1,4 +1,4 @@
-const { validationRequest } = require("express-validator");
+const { validationResult } = require("express-validator");
 
 const asyncHandler = require("express-async-handler");
 
@@ -7,6 +7,8 @@ const prisma = require("../db/client");
 const upload = require("../middlewares/multer");
 
 const uploadImage = require("../helper/uploadingImage");
+
+const sendingAMessage = require("../validatingMiddlewares/sendingAMessage");
 
 exports.chat_create = [
   asyncHandler(async (req, res, next) => {
@@ -103,4 +105,28 @@ exports.chat_get_by_id = [
   }),
 ];
 
-exports.chat_send_message = [asyncHandler(async (req, res, next) => {})];
+exports.chat_send_message = [
+  sendingAMessage,
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    const { id } = req.params;
+
+    const { message_text, receiverId } = req.body;
+
+    if (!errors.isEmpty()) {
+      return res.status(400).send(errors.array());
+    } else {
+      const sendingAMessage = await prisma.messages.create({
+        data: {
+          message_text: message_text,
+          senderMessageId: req.authData.id,
+          receiverMessageId: Number(receiverId),
+          chatId: id,
+        },
+      });
+
+      res.json(sendingAMessage);
+    }
+  }),
+];
