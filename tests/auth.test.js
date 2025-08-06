@@ -59,5 +59,31 @@ describe("testing auth routers with controllers", (done) => {
 
       expect(body.confirm_password).toEqual(body.confirm_password);
     });
+
+    it("should respond with status 400, if the username and display name is taken", async () => {
+      const { body, header, status } = await request(app).post("/signup").send({
+        username: "preslaw",
+        display_name: "preslaw",
+        bio: "",
+        website: "",
+        github: "",
+        password: "12345678B",
+        confirm_password: "12345678B",
+      });
+
+      const findTheSignUpUser = await prisma.user.findFirst();
+
+      expect(status).toBe(400);
+
+      expect(header["content-type"]).toMatch(/json/);
+
+      expect(findTheSignUpUser).not.toBeNull();
+
+      const [username, display_name] = body;
+
+      expect(username.msg).toEqual("First name is already taken");
+
+      expect(display_name.msg).toEqual("Display name is already taken");
+    });
   });
 });
