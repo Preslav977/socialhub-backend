@@ -78,9 +78,9 @@ model Comments {
 model Chat {
   id             String     @id @default(uuid())
   senderChatId   Int
-  senderChat     User       @relation("senderChat", fields: [senderChatId], references: [id])
+  senderChat     User       @relation("senderChat", fields: [senderChatId], references: [id], onDelete: Cascade)
   receiverChatId Int
-  receiverChat   User       @relation("receiverChat", fields: [receiverChatId], references: [id])
+  receiverChat   User       @relation("receiverChat", fields: [receiverChatId], references: [id], onDelete: Cascade)
   messages       Messages[]
 
   @@map("chat")

@@ -55,7 +55,19 @@ exports.chat_create = [
         },
       });
 
-      res.json(createChat);
+      const fetchTheCreatedChat = await prisma.chat.findFirst({
+        where: {
+          id: createChat.id,
+        },
+
+        include: {
+          senderChat: true,
+          receiverChat: true,
+          messages: true,
+        },
+      });
+
+      res.json(fetchTheCreatedChat);
     }
   }),
 ];
@@ -117,7 +129,7 @@ exports.chat_send_message = [
     if (!errors.isEmpty()) {
       return res.status(400).send(errors.array());
     } else {
-      const sendingAMessage = await prisma.messages.create({
+      await prisma.messages.create({
         data: {
           message_text: message_text,
           senderMessageId: req.authData.id,
@@ -126,7 +138,23 @@ exports.chat_send_message = [
         },
       });
 
-      res.json(sendingAMessage);
+      const fetchChatWithSendMessage = await prisma.chat.findFirst({
+        where: {
+          id: id,
+        },
+
+        include: {
+          messages: {
+            orderBy: {
+              id: "asc",
+            },
+          },
+          senderChat: true,
+          receiverChat: true,
+        },
+      });
+
+      res.json(fetchChatWithSendMessage);
     }
   }),
 ];
@@ -140,7 +168,7 @@ exports.chat_send_image = [
 
     const message_image = await uploadImage(req.file);
 
-    const sendingAImage = await prisma.messages.create({
+    await prisma.messages.create({
       data: {
         message_text: "",
         message_imageURL: message_image,
@@ -150,6 +178,22 @@ exports.chat_send_image = [
       },
     });
 
-    res.json(sendingAImage);
+    const fetchChatWithSendImage = await prisma.chat.findFirst({
+      where: {
+        id: id,
+      },
+
+      include: {
+        messages: {
+          orderBy: {
+            id: "asc",
+          },
+        },
+        senderChat: true,
+        receiverChat: true,
+      },
+    });
+
+    res.json(fetchChatWithSendImage);
   }),
 ];
