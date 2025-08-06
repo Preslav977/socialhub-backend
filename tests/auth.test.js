@@ -157,6 +157,17 @@ describe("testing auth routers with controllers", (done) => {
 
         expect(jwt.verify(body.token, process.env.SECRET) === String);
       });
+
+      it("should respond with 400 if the credentials are wrong", async () => {
+        const response = await request(app).post("/login").send({
+          username: "preslaww",
+          password: "12345678B",
+        });
+
+        expect(response.text).toEqual("Unauthorized");
+
+        expect(response.status).toBe(401);
+      });
     });
   });
 });
