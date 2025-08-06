@@ -85,5 +85,35 @@ describe("testing auth routers with controllers", (done) => {
 
       expect(display_name.msg).toEqual("Display name is already taken");
     });
+
+    it("should respond with status 400, if the password conditions are not met", async () => {
+      const { body, header, status } = await request(app).post("/signup").send({
+        username: "preslaw1",
+        display_name: "preslaw1",
+        bio: "",
+        website: "",
+        github: "",
+        password: "12345678",
+        confirm_password: "12345678",
+      });
+
+      const findTheSignUpUser = await prisma.user.findFirst();
+
+      expect(status).toBe(400);
+
+      expect(header["content-type"]).toMatch(/json/);
+
+      expect(findTheSignUpUser).not.toBeNull();
+
+      const [password] = body;
+
+      expect(status).toBe(400);
+
+      expect(header["content-type"]).toMatch(/json/);
+
+      expect(password.msg).toEqual(
+        "Password must be minimum 8 characters, and contain at least one letter, and one number",
+      );
+    });
   });
 });
