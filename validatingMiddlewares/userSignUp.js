@@ -59,7 +59,7 @@ const userSignUp = [
     .custom((value, { req }) => {
       return value === req.body.password;
     })
-    .withMessage(`Password ${passwordMatchError}`),
+    .withMessage(`Passwords ${passwordMatchError}`),
 ];
 
 module.exports = userSignUp;
