@@ -4,7 +4,9 @@ const postRouter = Router();
 
 const postController = require("../controllers/postController");
 
-postRouter.post("/", postController.post_create);
+postRouter.post("/", postController.post_create_text);
+
+postRouter.post("/with-image", postController.post_create_with_image);
 
 postRouter.get("/", postController.posts_get);
 

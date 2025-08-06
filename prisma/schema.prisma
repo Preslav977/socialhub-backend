@@ -47,7 +47,7 @@ model User {
 model Post {
   id                   Int        @id @default(autoincrement())
   post_content         String
-  post_imageURL        String
+  post_imageURL        String?
   post_tag             String
   post_likes           Int
   post_comments        Int
