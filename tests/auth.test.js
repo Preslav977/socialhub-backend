@@ -143,5 +143,20 @@ describe("testing auth routers with controllers", (done) => {
 
       expect(password.msg).toEqual("Passwords must match");
     });
+
+    describe("[POST] /login", () => {
+      it("should retrieve a token on successful login", async () => {
+        const { body, status } = await request(app).post("/login").send({
+          username: "preslaw",
+          password: "12345678B",
+        });
+
+        expect(status).toBe(200);
+
+        expect(body).toHaveProperty("token");
+
+        expect(jwt.verify(body.token, process.env.SECRET) === String);
+      });
+    });
   });
 });
