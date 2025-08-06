@@ -106,7 +106,13 @@ exports.post_like = [
         },
       });
 
-      res.json(postHasBeenLiked);
+      const fetchTheLikedPost = await prisma.post.findFirst({
+        where: {
+          id: postHasBeenLiked.id,
+        },
+      });
+
+      res.json(fetchTheLikedPost);
     } else {
       const postHasBeenDisliked = await prisma.post.update({
         where: {
@@ -128,7 +134,11 @@ exports.post_like = [
         },
       });
 
-      res.json(postHasBeenDisliked);
+      const fetchTheUnLikedPost = await prisma.post.findFirst({
+        id: postHasBeenDisliked.id,
+      });
+
+      res.json(fetchTheUnLikedPost);
     }
   }),
 ];
@@ -145,7 +155,7 @@ exports.post_comment = [
       },
     });
 
-    const commentingOnPost = await prisma.comments.create({
+    await prisma.comments.create({
       data: {
         comment_text: comment_text,
         comments_userId: req.authData.id,
@@ -153,7 +163,30 @@ exports.post_comment = [
       },
     });
 
-    res.json(commentingOnPost);
+    await prisma.post.update({
+      where: {
+        id: getPostById.id,
+      },
+
+      data: {
+        post_comments: {
+          increment: 1,
+        },
+      },
+    });
+
+    const fetchThePostWithAComment = await prisma.post.findFirst({
+      where: {
+        id: Number(getPostById.id),
+      },
+
+      include: {
+        likedPostByUsers: true,
+        post_commentsByUsers: true,
+      },
+    });
+
+    res.json(fetchThePostWithAComment);
   }),
 ];
 
@@ -169,7 +202,7 @@ exports.post_comment_reply = [
       },
     });
 
-    const replyToCommentInPost = await prisma.comments.create({
+    await prisma.comments.create({
       data: {
         comment_text: comment_text,
         comments_userId: req.authData.id,
@@ -178,7 +211,30 @@ exports.post_comment_reply = [
       },
     });
 
-    res.json(replyToCommentInPost);
+    await prisma.post.update({
+      where: {
+        id: getPostById.id,
+      },
+
+      data: {
+        post_comments: {
+          increment: 1,
+        },
+      },
+    });
+
+    const fetchThePostWithACommentReply = await prisma.post.findFirst({
+      where: {
+        id: getPostById.id,
+      },
+
+      include: {
+        likedPostByUsers: true,
+        post_commentsByUsers: true,
+      },
+    });
+
+    res.json(fetchThePostWithACommentReply);
   }),
 ];
 
