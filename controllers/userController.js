@@ -209,7 +209,17 @@ exports.user_followers = [
         },
       });
 
-      res.json(followTheUser);
+      const fetchTheFollowedUser = await prisma.user.findFirst({
+        where: {
+          id: followTheUser.id,
+        },
+
+        include: {
+          followedBy: true,
+        },
+      });
+
+      res.json(fetchTheFollowedUser);
     } else {
       const unFollowTheUser = await prisma.user.update({
         where: {
@@ -227,7 +237,17 @@ exports.user_followers = [
         },
       });
 
-      res.json(unFollowTheUser);
+      const fetchTheUnFollowedUser = await prisma.user.findFirst({
+        where: {
+          id: unFollowTheUser.id,
+        },
+
+        include: {
+          followedBy: true,
+        },
+      });
+
+      res.json(fetchTheUnFollowedUser);
     }
   }),
 ];
@@ -250,6 +270,16 @@ exports.user_following = [
       },
     });
 
-    res.json(followingTheUser);
+    const fetchTheFollowingUser = await prisma.user.findFirst({
+      where: {
+        id: followingTheUser.id,
+      },
+
+      include: {
+        following: true,
+      },
+    });
+
+    res.json(fetchTheFollowingUser);
   }),
 ];
