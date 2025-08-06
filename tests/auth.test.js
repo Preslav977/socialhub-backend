@@ -169,5 +169,55 @@ describe("testing auth routers with controllers", (done) => {
         expect(response.status).toBe(401);
       });
     });
+
+    describe("POST /login_guest", () => {
+      it("should respond with status 401, if the logged in user role is not guest", async () => {
+        const { body } = await request(app).post("/login_guest").send({
+          username: "preslaw",
+          password: "12345678B",
+        });
+
+        expect(body.error).toEqual("Only guests can login!");
+      });
+
+      it("should retrieve a token if the logged in user is guest", async () => {
+        await request(app).post("/signup").send({
+          username: "preslaw2",
+          display_name: "preslaw2",
+          bio: "",
+          website: "",
+          github: "",
+          password: "12345678A",
+          confirm_password: "12345678A",
+        });
+
+        const findTheSignUpUser = await prisma.user.findFirst({
+          where: {
+            username: "preslaw2",
+          },
+        });
+
+        await prisma.user.update({
+          where: {
+            id: findTheSignUpUser.id,
+          },
+
+          data: {
+            role: "GUEST",
+          },
+        });
+
+        const { body, status } = await request(app).post("/login_guest").send({
+          username: "preslaw2",
+          password: "12345678A",
+        });
+
+        expect(status).toBe(200);
+
+        expect(body).toHaveProperty("token");
+
+        expect(jwt.verify(body.token, process.env.SECRET) === String);
+      });
+    });
   });
 });
