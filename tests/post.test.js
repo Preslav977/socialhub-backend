@@ -123,5 +123,30 @@ describe("testing post routes and controllers", (done) => {
 
       expect(header["content-type"]).toMatch(/json/);
     });
+
+    it("should respond with message if the image is bigger than 5MB", async () => {
+      const { body, status, header } = await request(app)
+        .post("/posts/with-image")
+
+        .set("Authorization", `Bearer ${getToken}`)
+
+        .field("post_content", "testing")
+
+        .attach("file", "public/7mb.jpg")
+
+        .field("post_tag", "tag")
+
+        .field("post_authorId", `${signUpUserId}`);
+
+      createdPostId = body.id;
+
+      expect(body).toEqual(
+        "Image uploading failed: The object exceeded the maximum allowed size",
+      );
+
+      expect(status).toBe(200);
+
+      expect(header["content-type"]).toMatch(/json/);
+    });
   });
 });

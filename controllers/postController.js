@@ -50,19 +50,23 @@ exports.post_create_with_image = [
     if (!errors.isEmpty()) {
       return res.status(400).send(errors.array());
     } else {
-      const createPost = await prisma.post.create({
-        data: {
-          post_content: post_content,
-          post_imageURL: post_imageURL,
-          post_tag: post_tag,
-          post_likes: 0,
-          post_comments: 0,
-          createdAt: new Date(),
-          post_authorId: Number(post_authorId),
-        },
-      });
+      if (!post_imageURL.startsWith("https")) {
+        res.json(post_imageURL);
+      } else {
+        const createPost = await prisma.post.create({
+          data: {
+            post_content: post_content,
+            post_imageURL: post_imageURL,
+            post_tag: post_tag,
+            post_likes: 0,
+            post_comments: 0,
+            createdAt: new Date(),
+            post_authorId: Number(post_authorId),
+          },
+        });
 
-      res.json(createPost);
+        res.json(createPost);
+      }
     }
   }),
 ];
@@ -71,7 +75,11 @@ exports.posts_get = [
   asyncHandler(async (req, res, next) => {
     const getAllPosts = await prisma.post.findMany();
 
+    // if (getAllPosts.length === 0) {
+    // res.json({ message: "Failed to fetch all posts!" });
+    // } else {
     res.json(getAllPosts);
+    // }
   }),
 ];
 
