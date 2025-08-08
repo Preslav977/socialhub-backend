@@ -348,7 +348,7 @@ describe("testing user routes with controllers", (done) => {
         expect(header["content-type"]).toMatch(/json/);
       });
 
-      it("should respond with 2000, if the user is following another user", async () => {
+      it("should respond with 200, if the user gets followed by another user", async () => {
         const { body, status, header } = await request(app)
           .put(`/users/followers/${signUpUserTwoId}`)
           .set("Authorization", `Bearer ${signUpUserOneToken}`);
@@ -387,6 +387,48 @@ describe("testing user routes with controllers", (done) => {
 
         expect(body.followedBy[0].confirm_password).toEqual(
           body.followedBy[0].confirm_password,
+        );
+      });
+
+      it("should respond with 200, if the user is following another user", async () => {
+        const { body, status, header } = await request(app)
+          .put(`/users/following/${signUpUserTwoId}`)
+          .set("Authorization", `Bearer ${signUpUserOneToken}`);
+
+        console.log(body);
+
+        expect(status).toBe(200);
+
+        expect(header["content-type"]).toMatch(/json/);
+
+        expect(body.username).toEqual("preslaw3");
+
+        expect(body.display_name).toEqual("preslaw3");
+
+        expect(body.bio).toEqual("");
+
+        expect(body.website).toEqual("");
+
+        expect(body.github).toEqual("");
+
+        expect(body.password).toEqual(body.password);
+
+        expect(body.confirm_password).toEqual(body.confirm_password);
+
+        expect(body.following[0].username).toEqual("preslaw4");
+
+        expect(body.following[0].display_name).toEqual("preslaw4");
+
+        expect(body.following[0].bio).toEqual("");
+
+        expect(body.following[0].website).toEqual("");
+
+        expect(body.following[0].github).toEqual("");
+
+        expect(body.following[0].password).toEqual(body.following[0].password);
+
+        expect(body.following[0].confirm_password).toEqual(
+          body.following[0].confirm_password,
         );
       });
     });
