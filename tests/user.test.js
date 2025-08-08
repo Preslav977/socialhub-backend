@@ -91,7 +91,7 @@ describe("testing user routes with controllers", (done) => {
       expect(header["content-type"]).toMatch(/json/);
     });
 
-    it("should should with status 200 when updating the user profile", async () => {
+    it("should respond with status 200 when updating the user profile", async () => {
       const { body, status, header } = await request(app)
         .put(`/users/${userId}`)
 
@@ -132,6 +132,39 @@ describe("testing user routes with controllers", (done) => {
       expect(body.password).toEqual(body.password);
 
       expect(body.confirm_password).toEqual(body.confirm_password);
+    });
+
+    it("should respond with status 400 if the username is not 1 characters long", async () => {
+      const { body, status, header } = await request(app)
+        .put(`/users/${userId}`)
+
+        .set("Authorization", `Bearer ${getToken}`)
+
+        .field("username", "")
+
+        .field("display_name", "preslaw-edited")
+
+        .field("bio", "1")
+
+        .field("website", "2")
+
+        .field("github", "3")
+
+        .field("password", "12345678BA")
+
+        .field("confirm_password", "12345678BA")
+
+        .attach("file", "public/cat.jpg");
+
+      const [error] = body;
+
+      const { msg } = error;
+
+      expect(msg).toEqual("Username must be between 1 and 30 characters");
+
+      expect(status).toBe(400);
+
+      expect(header["content-type"]).toMatch(/json/);
     });
   });
 });
