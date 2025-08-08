@@ -105,6 +105,38 @@ describe("testing user routes with controllers", (done) => {
       expect(header["content-type"]).toMatch(/json/);
     });
 
+    it("should respond with status 200, search for user", async () => {
+      const { body, status, header } = await request(app)
+        .get("/users/search?query=preslaw")
+        .set("Authorization", `Bearer ${getToken}`);
+
+      const [user] = body;
+
+      expect(status).toBe(200);
+
+      expect(header["content-type"]).toMatch(/json/);
+
+      expect(user.username).toEqual("preslaw3");
+
+      expect(user.display_name).toEqual("preslaw3");
+
+      expect(user.bio).toEqual("");
+
+      expect(user.website).toEqual("");
+
+      expect(user.github).toEqual("");
+
+      expect(user.profile_picture).toEqual(user.profile_picture);
+
+      expect(user.password).toEqual(user.password);
+
+      expect(user.confirm_password).toEqual(user.confirm_password);
+
+      expect(status).toBe(200);
+
+      expect(header["content-type"]).toMatch(/json/);
+    });
+
     describe("[PUT] /users", () => {
       it("should respond with status 200 when updating the user profile", async () => {
         const { body, status, header } = await request(app)
