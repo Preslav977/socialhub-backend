@@ -75,11 +75,11 @@ exports.posts_get = [
   asyncHandler(async (req, res, next) => {
     const getAllPosts = await prisma.post.findMany();
 
-    // if (getAllPosts.length === 0) {
-    // res.json({ message: "Failed to fetch all posts!" });
-    // } else {
-    res.json(getAllPosts);
-    // }
+    if (getAllPosts.length === 0) {
+      res.json({ message: "Failed to fetch all posts!" });
+    } else {
+      res.json(getAllPosts);
+    }
   }),
 ];
 

@@ -254,6 +254,78 @@ describe("testing post routes and controllers", (done) => {
 
         expect(header["content-type"]).toMatch(/json/);
       });
+
+      it("should respond with status 400 if post has been found by ID", async () => {
+        const signUpUser = await request(app).post("/signup").send({
+          username: "preslaw10",
+          display_name: "preslaw10",
+          bio: "",
+          website: "",
+          github: "",
+          password: "12345678B",
+          confirm_password: "12345678B",
+        });
+
+        const loginUser = await request(app).post("/login").send({
+          username: "preslaw10",
+          password: "12345678B",
+        });
+
+        const { token } = loginUser.body;
+
+        const createdPost = await request(app)
+          .post("/posts")
+          .send({
+            post_content: "test",
+            post_tag: "tag",
+            post_authorId: signUpUser.body.id,
+          })
+          .set("Authorization", `Bearer ${token}`);
+
+        const { id } = createdPost.body;
+
+        const { body, status, header } = await request(app)
+          .get(`/posts/${id}`)
+          .set("Authorization", `Bearer ${token}`);
+
+        expect(body.post_content).toEqual("test");
+
+        expect(body.post_imageURL).toEqual(null);
+
+        expect(body.post_tag).toEqual("tag");
+
+        expect(body.post_likes).toEqual(0);
+
+        expect(body.post_comments).toEqual(0);
+
+        expect(body.createdAt).toEqual(body.createdAt);
+
+        expect(body.post_authorId).toEqual(body.post_authorId);
+
+        expect(body.post_author.username).toEqual("preslaw10");
+
+        expect(body.post_author.display_name).toEqual("preslaw10");
+
+        expect(body.post_author.bio).toEqual("");
+
+        expect(body.post_author.website).toEqual("");
+
+        expect(body.post_author.github).toEqual("");
+
+        expect(body.post_author.password).toEqual(body.post_author.password);
+
+        expect(body.post_author.confirm_password).toEqual(
+          body.post_author.confirm_password,
+        );
+
+        expect(body.post_author.profile_picture).toEqual("");
+
+        expect(body.post_author.role).toEqual("USER");
+
+        expect(status).toBe(200);
+
+        expect(header["content-type"]).toMatch(/json/);
+      });
     });
   });
 });
