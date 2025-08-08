@@ -166,5 +166,38 @@ describe("testing user routes with controllers", (done) => {
 
       expect(header["content-type"]).toMatch(/json/);
     });
+
+    it("should respond with status 400 if the display name is not 1 characters long", async () => {
+      const { body, status, header } = await request(app)
+        .put(`/users/${userId}`)
+
+        .set("Authorization", `Bearer ${getToken}`)
+
+        .field("username", "preslaw-edited")
+
+        .field("display_name", "")
+
+        .field("bio", "1")
+
+        .field("website", "2")
+
+        .field("github", "3")
+
+        .field("password", "12345678BA")
+
+        .field("confirm_password", "12345678BA")
+
+        .attach("file", "public/cat.jpg");
+
+      const [error] = body;
+
+      const { msg } = error;
+
+      expect(msg).toEqual("Display name must be between 1 and 30 characters");
+
+      expect(status).toBe(400);
+
+      expect(header["content-type"]).toMatch(/json/);
+    });
   });
 });
