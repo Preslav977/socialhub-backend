@@ -93,6 +93,18 @@ describe("testing user routes with controllers", (done) => {
       expect(header["content-type"]).toMatch(/json/);
     });
 
+    it("should respond with status 200, and get all users", async () => {
+      const { body, status, header } = await request(app)
+        .get("/users")
+        .set("Authorization", `Bearer ${getToken}`);
+
+      expect(body).not.toBe(null);
+
+      expect(status).toBe(200);
+
+      expect(header["content-type"]).toMatch(/json/);
+    });
+
     describe("[PUT] /users", () => {
       it("should respond with status 200 when updating the user profile", async () => {
         const { body, status, header } = await request(app)
@@ -255,8 +267,6 @@ describe("testing user routes with controllers", (done) => {
           .field("confirm_password", "12345678BA")
 
           .attach("file", "public/document.txt");
-
-        console.log(body);
 
         expect(body).toEqual(
           "Image uploading failed: mime type text/plain is not supported",
