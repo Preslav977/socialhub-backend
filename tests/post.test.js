@@ -53,6 +53,10 @@ describe("testing post routes and controllers", (done) => {
       getToken = token;
     });
 
+    afterEach(async () => {
+      await prisma.user.deleteMany();
+    });
+
     it("should respond with status 200 when creating a post with text", async () => {
       const { body, status, header } = await request(app)
         .post("/posts")
@@ -69,6 +73,41 @@ describe("testing post routes and controllers", (done) => {
       expect(body.post_content).toEqual("test");
 
       expect(body.post_imageURL).toEqual(null);
+
+      expect(body.post_tag).toEqual("tag");
+
+      expect(body.post_likes).toEqual(0);
+
+      expect(body.post_comments).toEqual(0);
+
+      expect(body.createdAt).toEqual(body.createdAt);
+
+      expect(body.post_authorId).toEqual(body.post_authorId);
+
+      expect(status).toBe(200);
+
+      expect(header["content-type"]).toMatch(/json/);
+    });
+
+    it("should respond with status 200 when creating a post with image", async () => {
+      const { body, status, header } = await request(app)
+        .post("/posts/with-image")
+
+        .set("Authorization", `Bearer ${getToken}`)
+
+        .field("post_content", "testing")
+
+        .attach("file", "public/cat.jpg")
+
+        .field("post_tag", "tag")
+
+        .field("post_authorId", `${signUpUserId}`);
+
+      createdPostId = body.id;
+
+      expect(body.post_content).toEqual("testing");
+
+      expect(body.post_imageURL).toEqual(body.post_imageURL);
 
       expect(body.post_tag).toEqual("tag");
 
