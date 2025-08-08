@@ -175,7 +175,11 @@ exports.users_search = [
     const searchForAUser =
       await prisma.$queryRaw`SELECT * FROM "user" WHERE username ILIKE CONCAT('%', ${query}, '%') OR display_name ILIKE CONCAT('%', ${query}, '%')`;
 
-    res.json(searchForAUser);
+    if (searchForAUser.length === 0) {
+      res.json({ message: "User not found" });
+    } else {
+      res.json(searchForAUser);
+    }
   }),
 ];
 

@@ -137,6 +137,18 @@ describe("testing user routes with controllers", (done) => {
       expect(header["content-type"]).toMatch(/json/);
     });
 
+    it("should respond with status 200, if user has not been found", async () => {
+      const { body, status, header } = await request(app)
+        .get("/users/search?query=t")
+        .set("Authorization", `Bearer ${getToken}`);
+
+      expect(body.message).toEqual("User not found");
+
+      expect(status).toBe(200);
+
+      expect(header["content-type"]).toMatch(/json/);
+    });
+
     describe("[PUT] /users", () => {
       it("should respond with status 200 when updating the user profile", async () => {
         const { body, status, header } = await request(app)
