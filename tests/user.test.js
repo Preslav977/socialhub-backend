@@ -74,5 +74,19 @@ describe("testing user routes with controllers", (done) => {
 
       expect(body.confirm_password).toEqual(body.confirm_password);
     });
+
+    it("should get a message if the user is not found by ID", async () => {
+      const { body, status, header } = await request(app)
+        .get("/users/1")
+        .set("Authorization", `Bearer ${getToken}`);
+
+      expect(body.message).toEqual(
+        "Failed to get user information. Please try to login again.",
+      );
+
+      expect(status).toBe(200);
+
+      expect(header["content-type"]).toMatch(/json/);
+    });
   });
 });
