@@ -6,8 +6,6 @@ const userRouter = require("../routes/userRouter");
 
 const app = require("../app");
 
-const { body } = require("express-validator");
-
 app.use("/", userRouter);
 
 describe("testing user routes with controllers", (done) => {
@@ -30,8 +28,8 @@ describe("testing user routes with controllers", (done) => {
 
     beforeEach(async () => {
       const { body } = await request(app).post("/signup").send({
-        username: "preslaw",
-        display_name: "preslaw",
+        username: "preslaw3",
+        display_name: "preslaw3",
         bio: "",
         website: "",
         github: "",
@@ -42,13 +40,17 @@ describe("testing user routes with controllers", (done) => {
       userId = body.id;
 
       const loginAndGetToken = await request(app).post("/login").send({
-        username: "preslaw",
+        username: "preslaw3",
         password: "12345678B",
       });
 
       const { token } = loginAndGetToken.body;
 
       getToken = token;
+    });
+
+    afterEach(async () => {
+      await prisma.user.deleteMany();
     });
 
     it("should respond with status 200 and get user details", async () => {
@@ -60,9 +62,9 @@ describe("testing user routes with controllers", (done) => {
 
       expect(header["content-type"]).toMatch(/json/);
 
-      expect(body.username).toEqual("preslaw");
+      expect(body.username).toEqual("preslaw3");
 
-      expect(body.display_name).toEqual("preslaw");
+      expect(body.display_name).toEqual("preslaw3");
 
       expect(body.bio).toEqual("");
 
@@ -87,6 +89,49 @@ describe("testing user routes with controllers", (done) => {
       expect(status).toBe(200);
 
       expect(header["content-type"]).toMatch(/json/);
+    });
+
+    it("should should with status 200 when updating the user profile", async () => {
+      const { body, status, header } = await request(app)
+        .put(`/users/${userId}`)
+
+        .set("Authorization", `Bearer ${getToken}`)
+
+        .field("username", "preslaw-edited")
+
+        .field("display_name", "preslaw-edited")
+
+        .field("bio", "1")
+
+        .field("website", "2")
+
+        .field("github", "3")
+
+        .field("password", "12345678BA")
+
+        .field("confirm_password", "12345678BA")
+
+        .attach("file", "public/cat.jpg");
+
+      expect(status).toBe(200);
+
+      expect(header["content-type"]).toMatch(/json/);
+
+      expect(body.username).toEqual("preslaw-edited");
+
+      expect(body.display_name).toEqual("preslaw-edited");
+
+      expect(body.bio).toEqual("1");
+
+      expect(body.website).toEqual("2");
+
+      expect(body.github).toEqual("3");
+
+      expect(body.profile_picture).toEqual(body.profile_picture);
+
+      expect(body.password).toEqual(body.password);
+
+      expect(body.confirm_password).toEqual(body.confirm_password);
     });
   });
 });
