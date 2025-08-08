@@ -24,13 +24,7 @@ describe("testing post routes and controllers", (done) => {
   });
 
   describe("[POST], /posts", () => {
-    let signUpUserId;
-
-    let getToken;
-
-    let createdPostId;
-
-    beforeEach(async () => {
+    it("should respond with status 200 when creating a post with text", async () => {
       const signUpUser = await request(app).post("/signup").send({
         username: "preslaw5",
         display_name: "preslaw5",
@@ -41,8 +35,6 @@ describe("testing post routes and controllers", (done) => {
         confirm_password: "12345678B",
       });
 
-      signUpUserId = signUpUser.body.id;
-
       const loginUser = await request(app).post("/login").send({
         username: "preslaw5",
         password: "12345678B",
@@ -50,25 +42,15 @@ describe("testing post routes and controllers", (done) => {
 
       const { token } = loginUser.body;
 
-      getToken = token;
-    });
-
-    afterEach(async () => {
-      await prisma.user.deleteMany();
-    });
-
-    it("should respond with status 200 when creating a post with text", async () => {
       const { body, status, header } = await request(app)
         .post("/posts")
         .send({
           post_content: "test",
           post_tag: "tag",
-          post_authorId: signUpUserId,
+          post_authorId: signUpUser.body.id,
         })
 
-        .set("Authorization", `Bearer ${getToken}`);
-
-      createdPostId = body.id;
+        .set("Authorization", `Bearer ${token}`);
 
       expect(body.post_content).toEqual("test");
 
@@ -90,10 +72,27 @@ describe("testing post routes and controllers", (done) => {
     });
 
     it("should respond with status 200 when creating a post with image", async () => {
+      const signUpUser = await request(app).post("/signup").send({
+        username: "preslaw6",
+        display_name: "preslaw6",
+        bio: "",
+        website: "",
+        github: "",
+        password: "12345678B",
+        confirm_password: "12345678B",
+      });
+
+      const loginUser = await request(app).post("/login").send({
+        username: "preslaw6",
+        password: "12345678B",
+      });
+
+      const { token } = loginUser.body;
+
       const { body, status, header } = await request(app)
         .post("/posts/with-image")
 
-        .set("Authorization", `Bearer ${getToken}`)
+        .set("Authorization", `Bearer ${token}`)
 
         .field("post_content", "testing")
 
@@ -101,9 +100,7 @@ describe("testing post routes and controllers", (done) => {
 
         .field("post_tag", "tag")
 
-        .field("post_authorId", `${signUpUserId}`);
-
-      createdPostId = body.id;
+        .field("post_authorId", signUpUser.body.id);
 
       expect(body.post_content).toEqual("testing");
 
@@ -125,10 +122,27 @@ describe("testing post routes and controllers", (done) => {
     });
 
     it("should respond with message if the image is bigger than 5MB", async () => {
+      const signUpUser = await request(app).post("/signup").send({
+        username: "preslaw7",
+        display_name: "preslaw7",
+        bio: "",
+        website: "",
+        github: "",
+        password: "12345678B",
+        confirm_password: "12345678B",
+      });
+
+      const loginUser = await request(app).post("/login").send({
+        username: "preslaw7",
+        password: "12345678B",
+      });
+
+      const { token } = loginUser.body;
+
       const { body, status, header } = await request(app)
         .post("/posts/with-image")
 
-        .set("Authorization", `Bearer ${getToken}`)
+        .set("Authorization", `Bearer ${token}`)
 
         .field("post_content", "testing")
 
@@ -136,9 +150,7 @@ describe("testing post routes and controllers", (done) => {
 
         .field("post_tag", "tag")
 
-        .field("post_authorId", `${signUpUserId}`);
-
-      createdPostId = body.id;
+        .field("post_authorId", signUpUser.body.id);
 
       expect(body).toEqual(
         "Image uploading failed: The object exceeded the maximum allowed size",
@@ -150,10 +162,27 @@ describe("testing post routes and controllers", (done) => {
     });
 
     it("should respond with message if the uploaded file is not a image", async () => {
+      const signUpUser = await request(app).post("/signup").send({
+        username: "preslaw8",
+        display_name: "preslaw8",
+        bio: "",
+        website: "",
+        github: "",
+        password: "12345678B",
+        confirm_password: "12345678B",
+      });
+
+      const loginUser = await request(app).post("/login").send({
+        username: "preslaw8",
+        password: "12345678B",
+      });
+
+      const { token } = loginUser.body;
+
       const { body, status, header } = await request(app)
         .post("/posts/with-image")
 
-        .set("Authorization", `Bearer ${getToken}`)
+        .set("Authorization", `Bearer ${token}`)
 
         .field("post_content", "testing")
 
@@ -161,7 +190,7 @@ describe("testing post routes and controllers", (done) => {
 
         .field("post_tag", "tag")
 
-        .field("post_authorId", `${signUpUserId}`);
+        .field("post_authorId", signUpUser.body.id);
 
       createdPostId = body.id;
 
@@ -172,6 +201,59 @@ describe("testing post routes and controllers", (done) => {
       expect(status).toBe(200);
 
       expect(header["content-type"]).toMatch(/json/);
+    });
+
+    describe("[GET] /posts", () => {
+      it("should respond with status 200 when getting all posts", async () => {
+        const signUpUser = await request(app).post("/signup").send({
+          username: "preslaw9",
+          display_name: "preslaw9",
+          bio: "",
+          website: "",
+          github: "",
+          password: "12345678B",
+          confirm_password: "12345678B",
+        });
+
+        const loginUser = await request(app).post("/login").send({
+          username: "preslaw9",
+          password: "12345678B",
+        });
+
+        const { token } = loginUser.body;
+
+        await request(app)
+          .post("/posts")
+          .send({
+            post_content: "test",
+            post_tag: "tag",
+            post_authorId: signUpUser.body.id,
+          })
+
+          .set("Authorization", `Bearer ${token}`);
+
+        const { body, status, header } = await request(app)
+          .get("/posts/")
+          .set("Authorization", `Bearer ${token}`);
+
+        body.forEach((post) => {
+          expect(post.content_type).toEqual(post.content_type);
+
+          expect(post.content_imageURL).toEqual(post.content_imageURL);
+
+          expect(post.tag).toEqual(post.tag);
+
+          expect(post.post_likes).toEqual(post.post_likes);
+
+          expect(post.post_comments).toEqual(post.post_comments);
+
+          expect(post.post_authorId).toEqual(post.post_authorId);
+        });
+
+        expect(status).toBe(200);
+
+        expect(header["content-type"]).toMatch(/json/);
+      });
     });
   });
 });
