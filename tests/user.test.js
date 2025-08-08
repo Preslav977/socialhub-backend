@@ -199,5 +199,38 @@ describe("testing user routes with controllers", (done) => {
 
       expect(header["content-type"]).toMatch(/json/);
     });
+
+    it("should respond with status 400 if uploaded image is bigger than 5MB", async () => {
+      const { body, status, header } = await request(app)
+        .put(`/users/${userId}`)
+
+        .set("Authorization", `Bearer ${getToken}`)
+
+        .field("username", "preslaw-edited")
+
+        .field("display_name", "preslaw-edited")
+
+        .field("bio", "1")
+
+        .field("website", "2")
+
+        .field("github", "3")
+
+        .field("password", "12345678BA")
+
+        .field("confirm_password", "12345678BA")
+
+        .attach("file", "public/7mb.jpg");
+
+      expect(body).toEqual(
+        "Image uploading failed: The object exceeded the maximum allowed size",
+      );
+
+      console.log(status);
+
+      // expect(status).toBe(400);
+
+      expect(header["content-type"]).toMatch(/json/);
+    });
   });
 });

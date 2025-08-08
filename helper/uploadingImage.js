@@ -16,7 +16,7 @@ async function uploadingImage(file) {
     });
 
   if (error) {
-    throw new Error(error.message);
+    return `Image uploading failed: ${error.message}`;
   }
 
   const { data } = await supabase.storage

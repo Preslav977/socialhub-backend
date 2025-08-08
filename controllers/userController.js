@@ -127,27 +127,31 @@ exports.user_update_profile = [
     if (!errors.isEmpty()) {
       return res.status(400).send(errors.array());
     } else {
-      const updateUserProfile = await prisma.user.update({
-        where: {
-          id: Number(id),
-        },
-        data: {
-          username: username,
-          display_name: display_name,
-          bio: bio,
-          website: website,
-          github: github,
-          profile_picture: profile_picture,
-        },
-      });
+      if (!profile_picture.startsWith("https")) {
+        res.json(profile_picture);
+      } else {
+        const updateUserProfile = await prisma.user.update({
+          where: {
+            id: Number(id),
+          },
+          data: {
+            username: username,
+            display_name: display_name,
+            bio: bio,
+            website: website,
+            github: github,
+            profile_picture: profile_picture,
+          },
+        });
 
-      const fetchTheUpdatedUserProfile = await prisma.user.findFirst({
-        where: {
-          id: Number(updateUserProfile.id),
-        },
-      });
+        const fetchTheUpdatedUserProfile = await prisma.user.findFirst({
+          where: {
+            id: Number(updateUserProfile.id),
+          },
+        });
 
-      res.json(fetchTheUpdatedUserProfile);
+        res.json(fetchTheUpdatedUserProfile);
+      }
     }
   }),
 ];
