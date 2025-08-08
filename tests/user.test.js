@@ -93,177 +93,179 @@ describe("testing user routes with controllers", (done) => {
       expect(header["content-type"]).toMatch(/json/);
     });
 
-    it("should respond with status 200 when updating the user profile", async () => {
-      const { body, status, header } = await request(app)
-        .put(`/users/${userId}`)
+    describe("[PUT] /users", () => {
+      it("should respond with status 200 when updating the user profile", async () => {
+        const { body, status, header } = await request(app)
+          .put(`/users/${userId}`)
 
-        .set("Authorization", `Bearer ${getToken}`)
+          .set("Authorization", `Bearer ${getToken}`)
 
-        .field("username", "preslaw-edited")
+          .field("username", "preslaw-edited")
 
-        .field("display_name", "preslaw-edited")
+          .field("display_name", "preslaw-edited")
 
-        .field("bio", "1")
+          .field("bio", "1")
 
-        .field("website", "2")
+          .field("website", "2")
 
-        .field("github", "3")
+          .field("github", "3")
 
-        .field("password", "12345678BA")
+          .field("password", "12345678BA")
 
-        .field("confirm_password", "12345678BA")
+          .field("confirm_password", "12345678BA")
 
-        .attach("file", "public/cat.jpg");
+          .attach("file", "public/cat.jpg");
 
-      expect(status).toBe(200);
+        expect(status).toBe(200);
 
-      expect(header["content-type"]).toMatch(/json/);
+        expect(header["content-type"]).toMatch(/json/);
 
-      expect(body.username).toEqual("preslaw-edited");
+        expect(body.username).toEqual("preslaw-edited");
 
-      expect(body.display_name).toEqual("preslaw-edited");
+        expect(body.display_name).toEqual("preslaw-edited");
 
-      expect(body.bio).toEqual("1");
+        expect(body.bio).toEqual("1");
 
-      expect(body.website).toEqual("2");
+        expect(body.website).toEqual("2");
 
-      expect(body.github).toEqual("3");
+        expect(body.github).toEqual("3");
 
-      expect(body.profile_picture).toEqual(body.profile_picture);
+        expect(body.profile_picture).toEqual(body.profile_picture);
 
-      expect(body.password).toEqual(body.password);
+        expect(body.password).toEqual(body.password);
 
-      expect(body.confirm_password).toEqual(body.confirm_password);
-    });
+        expect(body.confirm_password).toEqual(body.confirm_password);
+      });
 
-    it("should respond with status 400 if the username is not 1 characters long", async () => {
-      const { body, status, header } = await request(app)
-        .put(`/users/${userId}`)
+      it("should respond with status 400 if the username is not 1 characters long", async () => {
+        const { body, status, header } = await request(app)
+          .put(`/users/${userId}`)
 
-        .set("Authorization", `Bearer ${getToken}`)
+          .set("Authorization", `Bearer ${getToken}`)
 
-        .field("username", "")
+          .field("username", "")
 
-        .field("display_name", "preslaw-edited")
+          .field("display_name", "preslaw-edited")
 
-        .field("bio", "1")
+          .field("bio", "1")
 
-        .field("website", "2")
+          .field("website", "2")
 
-        .field("github", "3")
+          .field("github", "3")
 
-        .field("password", "12345678BA")
+          .field("password", "12345678BA")
 
-        .field("confirm_password", "12345678BA")
+          .field("confirm_password", "12345678BA")
 
-        .attach("file", "public/cat.jpg");
+          .attach("file", "public/cat.jpg");
 
-      const [error] = body;
+        const [error] = body;
 
-      const { msg } = error;
+        const { msg } = error;
 
-      expect(msg).toEqual("Username must be between 1 and 30 characters");
+        expect(msg).toEqual("Username must be between 1 and 30 characters");
 
-      expect(status).toBe(400);
+        expect(status).toBe(400);
 
-      expect(header["content-type"]).toMatch(/json/);
-    });
+        expect(header["content-type"]).toMatch(/json/);
+      });
 
-    it("should respond with status 400 if the display name is not 1 characters long", async () => {
-      const { body, status, header } = await request(app)
-        .put(`/users/${userId}`)
+      it("should respond with status 400 if the display name is not 1 characters long", async () => {
+        const { body, status, header } = await request(app)
+          .put(`/users/${userId}`)
 
-        .set("Authorization", `Bearer ${getToken}`)
+          .set("Authorization", `Bearer ${getToken}`)
 
-        .field("username", "preslaw-edited")
+          .field("username", "preslaw-edited")
 
-        .field("display_name", "")
+          .field("display_name", "")
 
-        .field("bio", "1")
+          .field("bio", "1")
 
-        .field("website", "2")
+          .field("website", "2")
 
-        .field("github", "3")
+          .field("github", "3")
 
-        .field("password", "12345678BA")
+          .field("password", "12345678BA")
 
-        .field("confirm_password", "12345678BA")
+          .field("confirm_password", "12345678BA")
 
-        .attach("file", "public/cat.jpg");
+          .attach("file", "public/cat.jpg");
 
-      const [error] = body;
+        const [error] = body;
 
-      const { msg } = error;
+        const { msg } = error;
 
-      expect(msg).toEqual("Display name must be between 1 and 30 characters");
+        expect(msg).toEqual("Display name must be between 1 and 30 characters");
 
-      expect(status).toBe(400);
+        expect(status).toBe(400);
 
-      expect(header["content-type"]).toMatch(/json/);
-    });
+        expect(header["content-type"]).toMatch(/json/);
+      });
 
-    it("should respond with error if uploaded image is bigger than 5MB", async () => {
-      const { body, status, header } = await request(app)
-        .put(`/users/${userId}`)
+      it("should respond with error if uploaded image is bigger than 5MB", async () => {
+        const { body, status, header } = await request(app)
+          .put(`/users/${userId}`)
 
-        .set("Authorization", `Bearer ${getToken}`)
+          .set("Authorization", `Bearer ${getToken}`)
 
-        .field("username", "preslaw-edited")
+          .field("username", "preslaw-edited")
 
-        .field("display_name", "preslaw-edited")
+          .field("display_name", "preslaw-edited")
 
-        .field("bio", "1")
+          .field("bio", "1")
 
-        .field("website", "2")
+          .field("website", "2")
 
-        .field("github", "3")
+          .field("github", "3")
 
-        .field("password", "12345678BA")
+          .field("password", "12345678BA")
 
-        .field("confirm_password", "12345678BA")
+          .field("confirm_password", "12345678BA")
 
-        .attach("file", "public/7mb.jpg");
+          .attach("file", "public/7mb.jpg");
 
-      expect(body).toEqual(
-        "Image uploading failed: The object exceeded the maximum allowed size",
-      );
+        expect(body).toEqual(
+          "Image uploading failed: The object exceeded the maximum allowed size",
+        );
 
-      expect(status).toBe(200);
+        expect(status).toBe(200);
 
-      expect(header["content-type"]).toMatch(/json/);
-    });
+        expect(header["content-type"]).toMatch(/json/);
+      });
 
-    it("should respond with error if uploaded image is not a image", async () => {
-      const { body, status, header } = await request(app)
-        .put(`/users/${userId}`)
+      it("should respond with error if uploaded image is not a image", async () => {
+        const { body, status, header } = await request(app)
+          .put(`/users/${userId}`)
 
-        .set("Authorization", `Bearer ${getToken}`)
+          .set("Authorization", `Bearer ${getToken}`)
 
-        .field("username", "preslaw-edited")
+          .field("username", "preslaw-edited")
 
-        .field("display_name", "preslaw-edited")
+          .field("display_name", "preslaw-edited")
 
-        .field("bio", "1")
+          .field("bio", "1")
 
-        .field("website", "2")
+          .field("website", "2")
 
-        .field("github", "3")
+          .field("github", "3")
 
-        .field("password", "12345678BA")
+          .field("password", "12345678BA")
 
-        .field("confirm_password", "12345678BA")
+          .field("confirm_password", "12345678BA")
 
-        .attach("file", "public/document.txt");
+          .attach("file", "public/document.txt");
 
-      console.log(body);
+        console.log(body);
 
-      expect(body).toEqual(
-        "Image uploading failed: mime type text/plain is not supported",
-      );
+        expect(body).toEqual(
+          "Image uploading failed: mime type text/plain is not supported",
+        );
 
-      expect(status).toBe(200);
+        expect(status).toBe(200);
 
-      expect(header["content-type"]).toMatch(/json/);
+        expect(header["content-type"]).toMatch(/json/);
+      });
     });
   });
 });
