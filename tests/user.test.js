@@ -37,6 +37,8 @@ describe("testing user routes with controllers", (done) => {
         confirm_password: "12345678B",
       });
 
+      // console.log(body);
+
       userId = body.id;
 
       const loginAndGetToken = await request(app).post("/login").send({
@@ -200,7 +202,7 @@ describe("testing user routes with controllers", (done) => {
       expect(header["content-type"]).toMatch(/json/);
     });
 
-    it("should respond with status 400 if uploaded image is bigger than 5MB", async () => {
+    it("should respond with error if uploaded image is bigger than 5MB", async () => {
       const { body, status, header } = await request(app)
         .put(`/users/${userId}`)
 
@@ -226,9 +228,40 @@ describe("testing user routes with controllers", (done) => {
         "Image uploading failed: The object exceeded the maximum allowed size",
       );
 
-      console.log(status);
+      expect(status).toBe(200);
 
-      // expect(status).toBe(400);
+      expect(header["content-type"]).toMatch(/json/);
+    });
+
+    it("should respond with error if uploaded image is not a image", async () => {
+      const { body, status, header } = await request(app)
+        .put(`/users/${userId}`)
+
+        .set("Authorization", `Bearer ${getToken}`)
+
+        .field("username", "preslaw-edited")
+
+        .field("display_name", "preslaw-edited")
+
+        .field("bio", "1")
+
+        .field("website", "2")
+
+        .field("github", "3")
+
+        .field("password", "12345678BA")
+
+        .field("confirm_password", "12345678BA")
+
+        .attach("file", "public/document.txt");
+
+      console.log(body);
+
+      expect(body).toEqual(
+        "Image uploading failed: mime type text/plain is not supported",
+      );
+
+      expect(status).toBe(200);
 
       expect(header["content-type"]).toMatch(/json/);
     });
