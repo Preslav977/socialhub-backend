@@ -12,7 +12,7 @@ const app = require("../app");
 
 app.use("/", authRouter);
 
-describe("testing auth routers with controllers", (done) => {
+describe("testing auth routes with controllers", (done) => {
   beforeAll(async () => {
     await prisma.$connect();
   });
