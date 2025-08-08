@@ -22,12 +22,16 @@ describe("testing user routes with controllers", (done) => {
   });
 
   describe("[GET] /users", () => {
-    let userId;
+    let signUpUserOneId;
 
-    let getToken;
+    let signUpUserOneToken;
+
+    let signUpUserTwoId;
+
+    let signUpUserTwoToken;
 
     beforeEach(async () => {
-      const { body } = await request(app).post("/signup").send({
+      const signUpUserOne = await request(app).post("/signup").send({
         username: "preslaw3",
         display_name: "preslaw3",
         bio: "",
@@ -37,18 +41,41 @@ describe("testing user routes with controllers", (done) => {
         confirm_password: "12345678B",
       });
 
-      // console.log(body);
+      signUpUserOneId = signUpUserOne.body.id;
 
-      userId = body.id;
-
-      const loginAndGetToken = await request(app).post("/login").send({
+      const loginSignUpUserOne = await request(app).post("/login").send({
         username: "preslaw3",
         password: "12345678B",
       });
 
-      const { token } = loginAndGetToken.body;
+      const tokenSignUpUserOne = loginSignUpUserOne.body.token;
 
-      getToken = token;
+      signUpUserOneToken = tokenSignUpUserOne;
+
+      // console.log(signUpUserOneId, signUpUserOneToken);
+
+      const signUpUserTwo = await request(app).post("/signup").send({
+        username: "preslaw4",
+        display_name: "preslaw4",
+        bio: "",
+        website: "",
+        github: "",
+        password: "12345678B",
+        confirm_password: "12345678B",
+      });
+
+      signUpUserTwoId = signUpUserTwo.body.id;
+
+      const loginSignUpUserTwo = await request(app).post("/login").send({
+        username: "preslaw4",
+        password: "12345678B",
+      });
+
+      const tokenSignUpUserTwo = loginSignUpUserTwo.body.token;
+
+      signUpUserTwoToken = tokenSignUpUserTwo;
+
+      // console.log(signUpUserOneId, signUpUserTwoToken);
     });
 
     afterEach(async () => {
@@ -57,8 +84,8 @@ describe("testing user routes with controllers", (done) => {
 
     it("should respond with status 200 and get user details", async () => {
       const { body, status, header } = await request(app)
-        .get(`/users/${userId}`)
-        .set("Authorization", `Bearer ${getToken}`);
+        .get(`/users/${signUpUserOneId}`)
+        .set("Authorization", `Bearer ${signUpUserOneToken}`);
 
       expect(status).toBe(200);
 
@@ -82,7 +109,7 @@ describe("testing user routes with controllers", (done) => {
     it("should get a message if the user is not found by ID", async () => {
       const { body, status, header } = await request(app)
         .get("/users/1")
-        .set("Authorization", `Bearer ${getToken}`);
+        .set("Authorization", `Bearer ${signUpUserOneToken}`);
 
       expect(body.message).toEqual(
         "Failed to get user information. Please try to login again.",
@@ -96,7 +123,7 @@ describe("testing user routes with controllers", (done) => {
     it("should respond with status 200, and get all users", async () => {
       const { body, status, header } = await request(app)
         .get("/users")
-        .set("Authorization", `Bearer ${getToken}`);
+        .set("Authorization", `Bearer ${signUpUserOneToken}`);
 
       expect(body).not.toBe(null);
 
@@ -108,7 +135,7 @@ describe("testing user routes with controllers", (done) => {
     it("should respond with status 200, search for user", async () => {
       const { body, status, header } = await request(app)
         .get("/users/search?query=preslaw")
-        .set("Authorization", `Bearer ${getToken}`);
+        .set("Authorization", `Bearer ${signUpUserOneToken}`);
 
       const [user] = body;
 
@@ -140,7 +167,7 @@ describe("testing user routes with controllers", (done) => {
     it("should respond with status 200, if user has not been found", async () => {
       const { body, status, header } = await request(app)
         .get("/users/search?query=t")
-        .set("Authorization", `Bearer ${getToken}`);
+        .set("Authorization", `Bearer ${signUpUserOneToken}`);
 
       expect(body.message).toEqual("User not found");
 
@@ -152,9 +179,9 @@ describe("testing user routes with controllers", (done) => {
     describe("[PUT] /users", () => {
       it("should respond with status 200 when updating the user profile", async () => {
         const { body, status, header } = await request(app)
-          .put(`/users/${userId}`)
+          .put(`/users/${signUpUserOneId}`)
 
-          .set("Authorization", `Bearer ${getToken}`)
+          .set("Authorization", `Bearer ${signUpUserOneToken}`)
 
           .field("username", "preslaw-edited")
 
@@ -195,9 +222,9 @@ describe("testing user routes with controllers", (done) => {
 
       it("should respond with status 400 if the username is not 1 characters long", async () => {
         const { body, status, header } = await request(app)
-          .put(`/users/${userId}`)
+          .put(`/users/${signUpUserOneId}`)
 
-          .set("Authorization", `Bearer ${getToken}`)
+          .set("Authorization", `Bearer ${signUpUserOneToken}`)
 
           .field("username", "")
 
@@ -228,9 +255,9 @@ describe("testing user routes with controllers", (done) => {
 
       it("should respond with status 400 if the display name is not 1 characters long", async () => {
         const { body, status, header } = await request(app)
-          .put(`/users/${userId}`)
+          .put(`/users/${signUpUserOneId}`)
 
-          .set("Authorization", `Bearer ${getToken}`)
+          .set("Authorization", `Bearer ${signUpUserOneToken}`)
 
           .field("username", "preslaw-edited")
 
@@ -261,9 +288,9 @@ describe("testing user routes with controllers", (done) => {
 
       it("should respond with error if uploaded image is bigger than 5MB", async () => {
         const { body, status, header } = await request(app)
-          .put(`/users/${userId}`)
+          .put(`/users/${signUpUserOneId}`)
 
-          .set("Authorization", `Bearer ${getToken}`)
+          .set("Authorization", `Bearer ${signUpUserOneToken}`)
 
           .field("username", "preslaw-edited")
 
@@ -292,9 +319,9 @@ describe("testing user routes with controllers", (done) => {
 
       it("should respond with error if uploaded image is not a image", async () => {
         const { body, status, header } = await request(app)
-          .put(`/users/${userId}`)
+          .put(`/users/${signUpUserOneId}`)
 
-          .set("Authorization", `Bearer ${getToken}`)
+          .set("Authorization", `Bearer ${signUpUserOneToken}`)
 
           .field("username", "preslaw-edited")
 
@@ -319,6 +346,48 @@ describe("testing user routes with controllers", (done) => {
         expect(status).toBe(200);
 
         expect(header["content-type"]).toMatch(/json/);
+      });
+
+      it("should respond with 2000, if the user is following another user", async () => {
+        const { body, status, header } = await request(app)
+          .put(`/users/followers/${signUpUserTwoId}`)
+          .set("Authorization", `Bearer ${signUpUserOneToken}`);
+
+        expect(status).toBe(200);
+
+        expect(header["content-type"]).toMatch(/json/);
+
+        expect(body.username).toEqual("preslaw4");
+
+        expect(body.display_name).toEqual("preslaw4");
+
+        expect(body.bio).toEqual("");
+
+        expect(body.website).toEqual("");
+
+        expect(body.github).toEqual("");
+
+        expect(body.password).toEqual(body.password);
+
+        expect(body.confirm_password).toEqual(body.confirm_password);
+
+        expect(body.followedBy[0].username).toEqual("preslaw3");
+
+        expect(body.followedBy[0].display_name).toEqual("preslaw3");
+
+        expect(body.followedBy[0].bio).toEqual("");
+
+        expect(body.followedBy[0].website).toEqual("");
+
+        expect(body.followedBy[0].github).toEqual("");
+
+        expect(body.followedBy[0].password).toEqual(
+          body.followedBy[0].password,
+        );
+
+        expect(body.followedBy[0].confirm_password).toEqual(
+          body.followedBy[0].confirm_password,
+        );
       });
     });
   });
