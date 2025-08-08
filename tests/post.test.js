@@ -148,5 +148,30 @@ describe("testing post routes and controllers", (done) => {
 
       expect(header["content-type"]).toMatch(/json/);
     });
+
+    it("should respond with message if the uploaded file is not a image", async () => {
+      const { body, status, header } = await request(app)
+        .post("/posts/with-image")
+
+        .set("Authorization", `Bearer ${getToken}`)
+
+        .field("post_content", "testing")
+
+        .attach("file", "public/document.txt")
+
+        .field("post_tag", "tag")
+
+        .field("post_authorId", `${signUpUserId}`);
+
+      createdPostId = body.id;
+
+      expect(body).toEqual(
+        "Image uploading failed: mime type text/plain is not supported",
+      );
+
+      expect(status).toBe(200);
+
+      expect(header["content-type"]).toMatch(/json/);
+    });
   });
 });
