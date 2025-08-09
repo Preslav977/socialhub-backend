@@ -255,7 +255,7 @@ describe("testing post routes and controllers", (done) => {
         expect(header["content-type"]).toMatch(/json/);
       });
 
-      it("should respond with status 400 if post has been found by ID", async () => {
+      it("should respond with status 200 if post has been found by ID", async () => {
         const signUpUser = await request(app).post("/signup").send({
           username: "preslaw10",
           display_name: "preslaw10",
@@ -321,6 +321,81 @@ describe("testing post routes and controllers", (done) => {
         expect(body.post_author.profile_picture).toEqual("");
 
         expect(body.post_author.role).toEqual("USER");
+
+        expect(status).toBe(200);
+
+        expect(header["content-type"]).toMatch(/json/);
+      });
+    });
+
+    describe("[PUT] /posts", () => {
+      it("should respond with status 200, and user to a like the posts", async () => {
+        const signUpUser = await request(app).post("/signup").send({
+          username: "preslaw11",
+          display_name: "preslaw11",
+          bio: "",
+          website: "",
+          github: "",
+          password: "12345678B",
+          confirm_password: "12345678B",
+        });
+
+        const loginUser = await request(app).post("/login").send({
+          username: "preslaw11",
+          password: "12345678B",
+        });
+
+        const { token } = loginUser.body;
+
+        const createdPost = await request(app)
+          .post("/posts")
+          .send({
+            post_content: "test",
+            post_tag: "tag",
+            post_authorId: signUpUser.body.id,
+          })
+          .set("Authorization", `Bearer ${token}`);
+
+        const { id } = createdPost.body;
+
+        const { body, status, header } = await request(app)
+          .put(`/posts/like/${id}`)
+          .set("Authorization", `Bearer ${token}`)
+          .send({
+            id: id,
+          });
+
+        expect(body.post_content).toEqual("test");
+
+        expect(body.post_imageURL).toEqual(null);
+
+        expect(body.post_tag).toEqual("tag");
+
+        expect(body.post_likes).toEqual(1);
+
+        expect(body.post_authorId).toEqual(body.post_authorId);
+
+        expect(body.likedPostByUsers[0].username).toEqual("preslaw11");
+
+        expect(body.likedPostByUsers[0].display_name).toEqual("preslaw11");
+
+        expect(body.likedPostByUsers[0].bio).toEqual("");
+
+        expect(body.likedPostByUsers[0].website).toEqual("");
+
+        expect(body.likedPostByUsers[0].github).toEqual("");
+
+        expect(body.likedPostByUsers[0].password).toEqual(
+          body.likedPostByUsers[0].password,
+        );
+
+        expect(body.likedPostByUsers[0].confirm_password).toEqual(
+          body.likedPostByUsers[0].confirm_password,
+        );
+
+        expect(body.likedPostByUsers[0].profile_picture).toEqual("");
+
+        expect(body.likedPostByUsers[0].role).toEqual("USER");
 
         expect(status).toBe(200);
 

@@ -144,6 +144,10 @@ exports.post_like = [
         where: {
           id: postHasBeenLiked.id,
         },
+
+        include: {
+          likedPostByUsers: true,
+        },
       });
 
       res.json(fetchTheLikedPost);
@@ -169,7 +173,13 @@ exports.post_like = [
       });
 
       const fetchTheUnLikedPost = await prisma.post.findFirst({
-        id: postHasBeenDisliked.id,
+        where: {
+          id: postHasBeenDisliked.id,
+        },
+
+        include: {
+          likedPostByUsers: true,
+        },
       });
 
       res.json(fetchTheUnLikedPost);
