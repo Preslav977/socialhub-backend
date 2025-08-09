@@ -391,6 +391,66 @@ describe("testing chat routes and controllers", (done) => {
       expect(body).toEqual(
         "Image uploading failed: The object exceeded the maximum allowed size",
       );
+
+      expect(status).toBe(200);
+
+      expect(header["content-type"]).toMatch(/json/);
+    });
+
+    it("should respond with message when the upload file is not a image", async () => {
+      const signUpUser = await request(app).post("/signup").send({
+        username: "receiver3",
+        display_name: "receiver3",
+        bio: "",
+        website: "",
+        github: "",
+        password: "12345678B",
+        confirm_password: "12345678B",
+      });
+
+      const signUpUserTwo = await request(app).post("/signup").send({
+        username: "sender3",
+        display_name: "sender3",
+        bio: "",
+        website: "",
+        github: "",
+        password: "12345678B",
+        confirm_password: "12345678B",
+      });
+
+      const loginUser = await request(app).post("/login").send({
+        username: "receiver3",
+        password: "12345678B",
+      });
+
+      const { token } = loginUser.body;
+
+      const creatingChat = await request(app)
+        .post("/chats")
+        .send({
+          senderId: signUpUser.body.id,
+          receiverId: signUpUserTwo.body.id,
+        })
+
+        .set("Authorization", `Bearer ${token}`);
+
+      const { body, status, header } = await request(app)
+        .post(`/chats/${creatingChat.body.id}/image`)
+        .set("Authorization", `Bearer ${token}`)
+
+        .attach("file", "public/document.txt")
+
+        .field("receiverId", signUpUserTwo.body.id)
+
+        .field("chatId", creatingChat.body.id);
+
+      expect(body).toEqual(
+        "Image uploading failed: mime type text/plain is not supported",
+      );
+
+      expect(status).toBe(200);
+
+      expect(header["content-type"]).toMatch(/json/);
     });
   });
 
