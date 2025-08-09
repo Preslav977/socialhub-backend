@@ -168,32 +168,36 @@ exports.chat_send_image = [
 
     const message_image = await uploadImage(req.file);
 
-    await prisma.messages.create({
-      data: {
-        message_text: "",
-        message_imageURL: message_image,
-        senderMessageId: req.authData.id,
-        receiverMessageId: Number(receiverId),
-        chatId: id,
-      },
-    });
-
-    const fetchChatWithSendImage = await prisma.chat.findFirst({
-      where: {
-        id: id,
-      },
-
-      include: {
-        messages: {
-          orderBy: {
-            id: "asc",
-          },
+    if (!message_image.startsWith("https")) {
+      return res.json(message_image);
+    } else {
+      await prisma.messages.create({
+        data: {
+          message_text: "",
+          message_imageURL: message_image,
+          senderMessageId: req.authData.id,
+          receiverMessageId: Number(receiverId),
+          chatId: id,
         },
-        senderChat: true,
-        receiverChat: true,
-      },
-    });
+      });
 
-    res.json(fetchChatWithSendImage);
+      const fetchChatWithSendImage = await prisma.chat.findFirst({
+        where: {
+          id: id,
+        },
+
+        include: {
+          messages: {
+            orderBy: {
+              id: "asc",
+            },
+          },
+          senderChat: true,
+          receiverChat: true,
+        },
+      });
+
+      res.json(fetchChatWithSendImage);
+    }
   }),
 ];

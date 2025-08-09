@@ -340,6 +340,58 @@ describe("testing chat routes and controllers", (done) => {
 
       expect(header["content-type"]).toMatch(/json/);
     });
+
+    it("should respond with message when the image is bigger than 5MB", async () => {
+      const signUpUser = await request(app).post("/signup").send({
+        username: "receiver2",
+        display_name: "receiver2",
+        bio: "",
+        website: "",
+        github: "",
+        password: "12345678B",
+        confirm_password: "12345678B",
+      });
+
+      const signUpUserTwo = await request(app).post("/signup").send({
+        username: "sender2",
+        display_name: "sender2",
+        bio: "",
+        website: "",
+        github: "",
+        password: "12345678B",
+        confirm_password: "12345678B",
+      });
+
+      const loginUser = await request(app).post("/login").send({
+        username: "receiver2",
+        password: "12345678B",
+      });
+
+      const { token } = loginUser.body;
+
+      const creatingChat = await request(app)
+        .post("/chats")
+        .send({
+          senderId: signUpUser.body.id,
+          receiverId: signUpUserTwo.body.id,
+        })
+
+        .set("Authorization", `Bearer ${token}`);
+
+      const { body, status, header } = await request(app)
+        .post(`/chats/${creatingChat.body.id}/image`)
+        .set("Authorization", `Bearer ${token}`)
+
+        .attach("file", "public/7mb.jpg")
+
+        .field("receiverId", signUpUserTwo.body.id)
+
+        .field("chatId", creatingChat.body.id);
+
+      expect(body).toEqual(
+        "Image uploading failed: The object exceeded the maximum allowed size",
+      );
+    });
   });
 
   describe("[GET] /posts", () => {
