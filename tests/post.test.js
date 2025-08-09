@@ -497,6 +497,155 @@ describe("testing post routes and controllers", (done) => {
 
         expect(header["content-type"]).toMatch(/json/);
       });
+
+      it("should respond with status 200, when leaving a comment with a reply", async () => {
+        const signUpUser = await request(app).post("/signup").send({
+          username: "preslaw13",
+          display_name: "preslaw13",
+          bio: "",
+          website: "",
+          github: "",
+          password: "12345678B",
+          confirm_password: "12345678B",
+        });
+
+        const loginUser = await request(app).post("/login").send({
+          username: "preslaw13",
+          password: "12345678B",
+        });
+
+        const { token } = loginUser.body;
+
+        const createdPost = await request(app)
+          .post("/posts")
+          .send({
+            post_content: "test",
+            post_tag: "tag",
+            post_authorId: signUpUser.body.id,
+          })
+          .set("Authorization", `Bearer ${token}`);
+
+        const { id } = createdPost.body;
+
+        const creatingAComment = await request(app)
+          .post(`/posts/${id}/comment`)
+          .set("Authorization", `Bearer ${token}`)
+          .send({
+            comment_text: "hello",
+            commented_postId: id,
+          });
+
+        const { body, status, header } = await request(app)
+          .post(`/posts/${id}/comment/${creatingAComment.body.id}`)
+          .set("Authorization", `Bearer ${token}`)
+          .send({
+            comment_text: "hello again",
+            commented_postId: id,
+            commentId: creatingAComment.body.post_commentsByUsers[0].id,
+          });
+
+        expect(body.post_content).toEqual("test");
+
+        expect(body.post_imageURL).toEqual(null);
+
+        expect(body.post_tag).toEqual("tag");
+
+        expect(body.post_likes).toEqual(0);
+
+        expect(body.post_comments).toEqual(2);
+
+        expect(body.post_authorId).toEqual(body.post_authorId);
+
+        expect(body.post_commentsByUsers[0].comment_text).toEqual("hello");
+
+        expect(body.post_commentsByUsers[0].comment_userId).toEqual(
+          body.post_commentsByUsers[0].comment_userId,
+        );
+
+        expect(body.post_commentsByUsers[0].commented_postId).toEqual(
+          body.post_commentsByUsers[0].commented_postId,
+        );
+
+        expect(body.post_commentsByUsers[0].parentCommentId).toEqual(
+          body.post_commentsByUsers[0].parentCommentId,
+        );
+
+        expect(body.post_commentsByUsers[0].comments_user.username).toEqual(
+          "preslaw13",
+        );
+
+        expect(body.post_commentsByUsers[0].comments_user.display_name).toEqual(
+          "preslaw13",
+        );
+
+        expect(body.post_commentsByUsers[0].comments_user.bio).toEqual("");
+
+        expect(body.post_commentsByUsers[0].comments_user.website).toEqual("");
+
+        expect(body.post_commentsByUsers[0].comments_user.github).toEqual("");
+
+        expect(body.post_commentsByUsers[0].comments_user.password).toEqual(
+          body.post_commentsByUsers[0].comments_user.password,
+        );
+
+        expect(
+          body.post_commentsByUsers[0].comments_user.confirm_password,
+        ).toEqual(body.post_commentsByUsers[0].comments_user.confirm_password);
+
+        expect(
+          body.post_commentsByUsers[0].comments_user.profile_picture,
+        ).toEqual("");
+
+        expect(body.post_commentsByUsers[0].comments_user.role).toEqual("USER");
+
+        expect(body.post_commentsByUsers[1].comment_text).toEqual(
+          "hello again",
+        );
+
+        expect(body.post_commentsByUsers[1].comment_userId).toEqual(
+          body.post_commentsByUsers[1].comment_userId,
+        );
+
+        expect(body.post_commentsByUsers[1].commented_postId).toEqual(
+          body.post_commentsByUsers[1].commented_postId,
+        );
+
+        expect(body.post_commentsByUsers[1].parentCommentId).toEqual(
+          body.post_commentsByUsers[1].parentCommentId,
+        );
+
+        expect(body.post_commentsByUsers[1].comments_user.username).toEqual(
+          "preslaw13",
+        );
+
+        expect(body.post_commentsByUsers[1].comments_user.display_name).toEqual(
+          "preslaw13",
+        );
+
+        expect(body.post_commentsByUsers[1].comments_user.bio).toEqual("");
+
+        expect(body.post_commentsByUsers[1].comments_user.website).toEqual("");
+
+        expect(body.post_commentsByUsers[1].comments_user.github).toEqual("");
+
+        expect(body.post_commentsByUsers[1].comments_user.password).toEqual(
+          body.post_commentsByUsers[1].comments_user.password,
+        );
+
+        expect(
+          body.post_commentsByUsers[1].comments_user.confirm_password,
+        ).toEqual(body.post_commentsByUsers[1].comments_user.confirm_password);
+
+        expect(
+          body.post_commentsByUsers[1].comments_user.profile_picture,
+        ).toEqual("");
+
+        expect(body.post_commentsByUsers[1].comments_user.role).toEqual("USER");
+
+        expect(status).toBe(200);
+
+        expect(header["content-type"]).toMatch(/json/);
+      });
     });
   });
 });

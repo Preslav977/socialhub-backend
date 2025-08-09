@@ -277,13 +277,18 @@ exports.post_comment_reply = [
     });
 
     const fetchThePostWithACommentReply = await prisma.post.findFirst({
+      relationLoadStrategy: "join",
       where: {
         id: getPostById.id,
       },
 
       include: {
         likedPostByUsers: true,
-        post_commentsByUsers: true,
+        post_commentsByUsers: {
+          include: {
+            comments_user: true,
+          },
+        },
       },
     });
 
