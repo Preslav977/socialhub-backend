@@ -205,6 +205,10 @@ exports.post_comment = [
         comments_userId: req.authData.id,
         commented_postId: getPostById.id,
       },
+
+      include: {
+        comments_user: true,
+      },
     });
 
     await prisma.post.update({
@@ -220,13 +224,18 @@ exports.post_comment = [
     });
 
     const fetchThePostWithAComment = await prisma.post.findFirst({
+      relationLoadStrategy: "join",
       where: {
         id: Number(getPostById.id),
       },
 
       include: {
         likedPostByUsers: true,
-        post_commentsByUsers: true,
+        post_commentsByUsers: {
+          include: {
+            comments_user: true,
+          },
+        },
       },
     });
 

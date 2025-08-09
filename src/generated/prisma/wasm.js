@@ -133,6 +133,11 @@ exports.Prisma.UserScalarFieldEnum = {
   role: 'role'
 };
 
+exports.Prisma.RelationLoadStrategy = {
+  query: 'query',
+  join: 'join'
+};
+
 exports.Prisma.PostScalarFieldEnum = {
   id: 'id',
   post_content: 'post_content',
