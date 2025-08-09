@@ -226,6 +226,120 @@ describe("testing chat routes and controllers", (done) => {
 
       expect(header["content-type"]).toMatch(/json/);
     });
+
+    it("should respond with status 200 when sending a image in chat", async () => {
+      const signUpUser = await request(app).post("/signup").send({
+        username: "receiver1",
+        display_name: "receiver1",
+        bio: "",
+        website: "",
+        github: "",
+        password: "12345678B",
+        confirm_password: "12345678B",
+      });
+
+      const signUpUserTwo = await request(app).post("/signup").send({
+        username: "sender1",
+        display_name: "sender1",
+        bio: "",
+        website: "",
+        github: "",
+        password: "12345678B",
+        confirm_password: "12345678B",
+      });
+
+      const loginUser = await request(app).post("/login").send({
+        username: "receiver1",
+        password: "12345678B",
+      });
+
+      const { token } = loginUser.body;
+
+      const creatingChat = await request(app)
+        .post("/chats")
+        .send({
+          senderId: signUpUser.body.id,
+          receiverId: signUpUserTwo.body.id,
+        })
+
+        .set("Authorization", `Bearer ${token}`);
+
+      const { body, status, header } = await request(app)
+        .post(`/chats/${creatingChat.body.id}/image`)
+        .set("Authorization", `Bearer ${token}`)
+
+        .attach("file", "public/cat.jpg")
+
+        .field("receiverId", signUpUserTwo.body.id)
+
+        .field("chatId", creatingChat.body.id);
+
+      const { senderChat } = body;
+
+      const { receiverChat } = body;
+
+      expect(body.senderChatId).toEqual(senderChat.id);
+
+      expect(body.receiverChatId).toEqual(receiverChat.id);
+
+      expect(senderChat.username).toEqual("receiver1");
+
+      expect(senderChat.display_name).toEqual("receiver1");
+
+      expect(senderChat.bio).toEqual("");
+
+      expect(senderChat.website).toEqual("");
+
+      expect(senderChat.github).toEqual("");
+
+      expect(senderChat.password).toEqual(senderChat.password);
+
+      expect(senderChat.confirm_password).toEqual(senderChat.confirm_password);
+
+      expect(senderChat.profile_picture).toEqual("");
+
+      expect(receiverChat.role).toEqual("USER");
+
+      expect(receiverChat.username).toEqual("sender1");
+
+      expect(receiverChat.display_name).toEqual("sender1");
+
+      expect(receiverChat.bio).toEqual("");
+
+      expect(receiverChat.website).toEqual("");
+
+      expect(receiverChat.github).toEqual("");
+
+      expect(receiverChat.password).toEqual(receiverChat.password);
+
+      expect(receiverChat.confirm_password).toEqual(
+        receiverChat.confirm_password,
+      );
+
+      expect(receiverChat.profile_picture).toEqual("");
+
+      expect(receiverChat.role).toEqual("USER");
+
+      expect(body.messages[0].message_text).toEqual("");
+
+      expect(body.messages[0].message_imageURL).toEqual(
+        body.messages[0].message_imageURL,
+      );
+
+      expect(body.messages[0].senderMessageId).toEqual(
+        body.messages[0].senderMessageId,
+      );
+
+      expect(body.messages[0].receiverMessageId).toEqual(
+        body.messages[0].receiverMessageId,
+      );
+
+      expect(body.messages[0].chatId).toEqual(body.id);
+
+      expect(status).toBe(200);
+
+      expect(header["content-type"]).toMatch(/json/);
+    });
   });
 
   describe("[GET] /posts", () => {
