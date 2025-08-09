@@ -647,5 +647,47 @@ describe("testing post routes and controllers", (done) => {
         expect(header["content-type"]).toMatch(/json/);
       });
     });
+
+    describe("[DELETE] /posts", () => {
+      it("should respond with 200, and delete the post", async () => {
+        const signUpUser = await request(app).post("/signup").send({
+          username: "preslaw14",
+          display_name: "preslaw14",
+          bio: "",
+          website: "",
+          github: "",
+          password: "12345678B",
+          confirm_password: "12345678B",
+        });
+
+        const loginUser = await request(app).post("/login").send({
+          username: "preslaw14",
+          password: "12345678B",
+        });
+
+        const { token } = loginUser.body;
+
+        const createdPost = await request(app)
+          .post("/posts")
+          .send({
+            post_content: "test",
+            post_tag: "tag",
+            post_authorId: signUpUser.body.id,
+          })
+          .set("Authorization", `Bearer ${token}`);
+
+        const { id } = createdPost.body;
+
+        const { body, status, header } = await request(app)
+          .delete(`/posts/${id}`)
+          .set("Authorization", `Bearer ${token}`);
+
+        expect(body.message).toEqual("Post has been deleted!");
+
+        expect(status).toBe(200);
+
+        expect(header["content-type"]).toMatch(/json/);
+      });
+    });
   });
 });

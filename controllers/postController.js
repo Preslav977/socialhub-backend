@@ -300,13 +300,13 @@ exports.post_delete = [
   asyncHandler(async (req, res, next) => {
     const { id } = req.params;
 
-    const getPostById = await prisma.post.delete({
+    await prisma.post.delete({
       where: {
         id: Number(id),
         post_authorId: req.authData.id,
       },
     });
 
-    res.json(getPostById);
+    res.json({ message: "Post has been deleted!" });
   }),
 ];
