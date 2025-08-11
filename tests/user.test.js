@@ -52,8 +52,6 @@ describe("testing user routes with controllers", (done) => {
 
       signUpUserOneToken = tokenSignUpUserOne;
 
-      // console.log(signUpUserOneId, signUpUserOneToken);
-
       const signUpUserTwo = await request(app).post("/signup").send({
         username: "preslaw4",
         display_name: "preslaw4",
@@ -74,8 +72,6 @@ describe("testing user routes with controllers", (done) => {
       const tokenSignUpUserTwo = loginSignUpUserTwo.body.token;
 
       signUpUserTwoToken = tokenSignUpUserTwo;
-
-      // console.log(signUpUserOneId, signUpUserTwoToken);
     });
 
     afterEach(async () => {
@@ -112,7 +108,7 @@ describe("testing user routes with controllers", (done) => {
         .set("Authorization", `Bearer ${signUpUserOneToken}`);
 
       expect(body.message).toEqual(
-        "Failed to get user information. Please try to login again.",
+        "Failed to get user information. Please try to login again!",
       );
 
       expect(status).toBe(200);
@@ -169,7 +165,9 @@ describe("testing user routes with controllers", (done) => {
         .get("/users/search?query=t")
         .set("Authorization", `Bearer ${signUpUserOneToken}`);
 
-      expect(body.message).toEqual("User not found");
+      expect(body.message).toEqual(
+        "User has not been found! Try with different username or display name!",
+      );
 
       expect(status).toBe(200);
 
@@ -394,8 +392,6 @@ describe("testing user routes with controllers", (done) => {
         const { body, status, header } = await request(app)
           .put(`/users/following/${signUpUserTwoId}`)
           .set("Authorization", `Bearer ${signUpUserOneToken}`);
-
-        console.log(body);
 
         expect(status).toBe(200);
 

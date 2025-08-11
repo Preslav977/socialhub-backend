@@ -45,26 +45,26 @@ describe("testing post routes and controllers", (done) => {
       const { body, status, header } = await request(app)
         .post("/posts")
         .send({
-          post_content: "test",
-          post_tag: "tag",
-          post_authorId: signUpUser.body.id,
+          content: "test",
+          tag: "tag",
+          authorId: signUpUser.body.id,
         })
 
         .set("Authorization", `Bearer ${token}`);
 
-      expect(body.post_content).toEqual("test");
+      expect(body.content).toEqual("test");
 
-      expect(body.post_imageURL).toEqual(null);
+      expect(body.imageURL).toEqual(null);
 
-      expect(body.post_tag).toEqual("tag");
+      expect(body.tag).toEqual("tag");
 
-      expect(body.post_likes).toEqual(0);
+      expect(body.likes).toEqual(0);
 
-      expect(body.post_comments).toEqual(0);
+      expect(body.comments).toEqual(0);
 
       expect(body.createdAt).toEqual(body.createdAt);
 
-      expect(body.post_authorId).toEqual(body.post_authorId);
+      expect(body.authorId).toEqual(body.authorId);
 
       expect(status).toBe(200);
 
@@ -94,27 +94,27 @@ describe("testing post routes and controllers", (done) => {
 
         .set("Authorization", `Bearer ${token}`)
 
-        .field("post_content", "testing")
+        .field("content", "testing")
 
         .attach("file", "public/cat.jpg")
 
-        .field("post_tag", "tag")
+        .field("tag", "tag")
 
-        .field("post_authorId", signUpUser.body.id);
+        .field("authorId", signUpUser.body.id);
 
-      expect(body.post_content).toEqual("testing");
+      expect(body.content).toEqual("testing");
 
-      expect(body.post_imageURL).toEqual(body.post_imageURL);
+      expect(body.imageURL).toEqual(body.imageURL);
 
-      expect(body.post_tag).toEqual("tag");
+      expect(body.tag).toEqual("tag");
 
-      expect(body.post_likes).toEqual(0);
+      expect(body.likes).toEqual(0);
 
-      expect(body.post_comments).toEqual(0);
+      expect(body.comments).toEqual(0);
 
       expect(body.createdAt).toEqual(body.createdAt);
 
-      expect(body.post_authorId).toEqual(body.post_authorId);
+      expect(body.authorId).toEqual(body.authorId);
 
       expect(status).toBe(200);
 
@@ -144,13 +144,13 @@ describe("testing post routes and controllers", (done) => {
 
         .set("Authorization", `Bearer ${token}`)
 
-        .field("post_content", "testing")
+        .field("content", "testing")
 
         .attach("file", "public/7mb.jpg")
 
-        .field("post_tag", "tag")
+        .field("tag", "tag")
 
-        .field("post_authorId", signUpUser.body.id);
+        .field("authorId", signUpUser.body.id);
 
       expect(body).toEqual(
         "Image uploading failed: The object exceeded the maximum allowed size",
@@ -184,13 +184,13 @@ describe("testing post routes and controllers", (done) => {
 
         .set("Authorization", `Bearer ${token}`)
 
-        .field("post_content", "testing")
+        .field("content", "testing")
 
         .attach("file", "public/document.txt")
 
-        .field("post_tag", "tag")
+        .field("tag", "tag")
 
-        .field("post_authorId", signUpUser.body.id);
+        .field("authorId", signUpUser.body.id);
 
       createdPostId = body.id;
 
@@ -225,9 +225,9 @@ describe("testing post routes and controllers", (done) => {
         await request(app)
           .post("/posts")
           .send({
-            post_content: "test",
-            post_tag: "tag",
-            post_authorId: signUpUser.body.id,
+            content: "test",
+            tag: "tag",
+            authorId: signUpUser.body.id,
           })
 
           .set("Authorization", `Bearer ${token}`);
@@ -243,11 +243,11 @@ describe("testing post routes and controllers", (done) => {
 
           expect(post.tag).toEqual(post.tag);
 
-          expect(post.post_likes).toEqual(post.post_likes);
+          expect(post.likes).toEqual(post.likes);
 
-          expect(post.post_comments).toEqual(post.post_comments);
+          expect(post.comments).toEqual(post.comments);
 
-          expect(post.post_authorId).toEqual(post.post_authorId);
+          expect(post.authorId).toEqual(post.authorId);
         });
 
         expect(status).toBe(200);
@@ -276,9 +276,9 @@ describe("testing post routes and controllers", (done) => {
         const createdPost = await request(app)
           .post("/posts")
           .send({
-            post_content: "test",
-            post_tag: "tag",
-            post_authorId: signUpUser.body.id,
+            content: "test",
+            tag: "tag",
+            authorId: signUpUser.body.id,
           })
           .set("Authorization", `Bearer ${token}`);
 
@@ -288,39 +288,39 @@ describe("testing post routes and controllers", (done) => {
           .get(`/posts/${id}`)
           .set("Authorization", `Bearer ${token}`);
 
-        expect(body.post_content).toEqual("test");
+        expect(body.content).toEqual("test");
 
-        expect(body.post_imageURL).toEqual(null);
+        expect(body.imageURL).toEqual(null);
 
-        expect(body.post_tag).toEqual("tag");
+        expect(body.tag).toEqual("tag");
 
-        expect(body.post_likes).toEqual(0);
+        expect(body.likes).toEqual(0);
 
-        expect(body.post_comments).toEqual(0);
+        expect(body.comments).toEqual(0);
 
         expect(body.createdAt).toEqual(body.createdAt);
 
-        expect(body.post_authorId).toEqual(body.post_authorId);
+        expect(body.authorId).toEqual(body.authorId);
 
-        expect(body.post_author.username).toEqual("preslaw10");
+        expect(body.author.username).toEqual("preslaw10");
 
-        expect(body.post_author.display_name).toEqual("preslaw10");
+        expect(body.author.display_name).toEqual("preslaw10");
 
-        expect(body.post_author.bio).toEqual("");
+        expect(body.author.bio).toEqual("");
 
-        expect(body.post_author.website).toEqual("");
+        expect(body.author.website).toEqual("");
 
-        expect(body.post_author.github).toEqual("");
+        expect(body.author.github).toEqual("");
 
-        expect(body.post_author.password).toEqual(body.post_author.password);
+        expect(body.author.password).toEqual(body.author.password);
 
-        expect(body.post_author.confirm_password).toEqual(
-          body.post_author.confirm_password,
+        expect(body.author.confirm_password).toEqual(
+          body.author.confirm_password,
         );
 
-        expect(body.post_author.profile_picture).toEqual("");
+        expect(body.author.profile_picture).toEqual("");
 
-        expect(body.post_author.role).toEqual("USER");
+        expect(body.author.role).toEqual("USER");
 
         expect(status).toBe(200);
 
@@ -350,9 +350,9 @@ describe("testing post routes and controllers", (done) => {
         const createdPost = await request(app)
           .post("/posts")
           .send({
-            post_content: "test",
-            post_tag: "tag",
-            post_authorId: signUpUser.body.id,
+            content: "test",
+            tag: "tag",
+            authorId: signUpUser.body.id,
           })
           .set("Authorization", `Bearer ${token}`);
 
@@ -365,37 +365,37 @@ describe("testing post routes and controllers", (done) => {
             id: id,
           });
 
-        expect(body.post_content).toEqual("test");
+        expect(body.content).toEqual("test");
 
-        expect(body.post_imageURL).toEqual(null);
+        expect(body.imageURL).toEqual(null);
 
-        expect(body.post_tag).toEqual("tag");
+        expect(body.tag).toEqual("tag");
 
-        expect(body.post_likes).toEqual(1);
+        expect(body.likes).toEqual(1);
 
-        expect(body.post_authorId).toEqual(body.post_authorId);
+        expect(body.authorId).toEqual(body.authorId);
 
-        expect(body.likedPostByUsers[0].username).toEqual("preslaw11");
+        expect(body.postLikedByUsers[0].username).toEqual("preslaw11");
 
-        expect(body.likedPostByUsers[0].display_name).toEqual("preslaw11");
+        expect(body.postLikedByUsers[0].display_name).toEqual("preslaw11");
 
-        expect(body.likedPostByUsers[0].bio).toEqual("");
+        expect(body.postLikedByUsers[0].bio).toEqual("");
 
-        expect(body.likedPostByUsers[0].website).toEqual("");
+        expect(body.postLikedByUsers[0].website).toEqual("");
 
-        expect(body.likedPostByUsers[0].github).toEqual("");
+        expect(body.postLikedByUsers[0].github).toEqual("");
 
-        expect(body.likedPostByUsers[0].password).toEqual(
-          body.likedPostByUsers[0].password,
+        expect(body.postLikedByUsers[0].password).toEqual(
+          body.postLikedByUsers[0].password,
         );
 
-        expect(body.likedPostByUsers[0].confirm_password).toEqual(
-          body.likedPostByUsers[0].confirm_password,
+        expect(body.postLikedByUsers[0].confirm_password).toEqual(
+          body.postLikedByUsers[0].confirm_password,
         );
 
-        expect(body.likedPostByUsers[0].profile_picture).toEqual("");
+        expect(body.postLikedByUsers[0].profile_picture).toEqual("");
 
-        expect(body.likedPostByUsers[0].role).toEqual("USER");
+        expect(body.postLikedByUsers[0].role).toEqual("USER");
 
         expect(status).toBe(200);
 
@@ -423,9 +423,9 @@ describe("testing post routes and controllers", (done) => {
         const createdPost = await request(app)
           .post("/posts")
           .send({
-            post_content: "test",
-            post_tag: "tag",
-            post_authorId: signUpUser.body.id,
+            content: "test",
+            tag: "tag",
+            authorId: signUpUser.body.id,
           })
           .set("Authorization", `Bearer ${token}`);
 
@@ -435,63 +435,71 @@ describe("testing post routes and controllers", (done) => {
           .post(`/posts/${id}/comment`)
           .set("Authorization", `Bearer ${token}`)
           .send({
-            comment_text: "hello",
+            text: "hello",
             commented_postId: id,
           });
 
-        expect(body.post_content).toEqual("test");
+        expect(body.content).toEqual("test");
 
-        expect(body.post_imageURL).toEqual(null);
+        expect(body.imageURL).toEqual(null);
 
-        expect(body.post_tag).toEqual("tag");
+        expect(body.tag).toEqual("tag");
 
-        expect(body.post_likes).toEqual(0);
+        expect(body.likes).toEqual(0);
 
-        expect(body.post_comments).toEqual(1);
+        expect(body.comments).toEqual(1);
 
-        expect(body.post_authorId).toEqual(body.post_authorId);
+        expect(body.authorId).toEqual(body.authorId);
 
-        expect(body.post_commentsByUsers[0].comment_text).toEqual("hello");
+        expect(body.postCommentedByUsers[0].text).toEqual("hello");
 
-        expect(body.post_commentsByUsers[0].comment_userId).toEqual(
-          body.post_commentsByUsers[0].comment_userId,
+        expect(body.postCommentedByUsers[0].userId).toEqual(
+          body.postCommentedByUsers[0].userId,
         );
 
-        expect(body.post_commentsByUsers[0].commented_postId).toEqual(
-          body.post_commentsByUsers[0].commented_postId,
+        expect(body.postCommentedByUsers[0].commentRelatedToPostId).toEqual(
+          body.postCommentedByUsers[0].commentRelatedToPostId,
         );
 
-        expect(body.post_commentsByUsers[0].parentCommentId).toEqual(
-          body.post_commentsByUsers[0].parentCommentId,
+        expect(body.postCommentedByUsers[0].parentCommentId).toEqual(
+          body.postCommentedByUsers[0].parentCommentId,
         );
 
-        expect(body.post_commentsByUsers[0].comments_user.username).toEqual(
+        expect(body.postCommentedByUsers[0].commentLeftByUser.username).toEqual(
           "preslaw12",
         );
 
-        expect(body.post_commentsByUsers[0].comments_user.display_name).toEqual(
-          "preslaw12",
+        expect(
+          body.postCommentedByUsers[0].commentLeftByUser.display_name,
+        ).toEqual("preslaw12");
+
+        expect(body.postCommentedByUsers[0].commentLeftByUser.bio).toEqual("");
+
+        expect(body.postCommentedByUsers[0].commentLeftByUser.website).toEqual(
+          "",
         );
 
-        expect(body.post_commentsByUsers[0].comments_user.bio).toEqual("");
+        expect(body.postCommentedByUsers[0].commentLeftByUser.github).toEqual(
+          "",
+        );
 
-        expect(body.post_commentsByUsers[0].comments_user.website).toEqual("");
-
-        expect(body.post_commentsByUsers[0].comments_user.github).toEqual("");
-
-        expect(body.post_commentsByUsers[0].comments_user.password).toEqual(
-          body.post_commentsByUsers[0].comments_user.password,
+        expect(body.postCommentedByUsers[0].commentLeftByUser.password).toEqual(
+          body.postCommentedByUsers[0].commentLeftByUser.password,
         );
 
         expect(
-          body.post_commentsByUsers[0].comments_user.confirm_password,
-        ).toEqual(body.post_commentsByUsers[0].comments_user.confirm_password);
+          body.postCommentedByUsers[0].commentLeftByUser.confirm_password,
+        ).toEqual(
+          body.postCommentedByUsers[0].commentLeftByUser.confirm_password,
+        );
 
         expect(
-          body.post_commentsByUsers[0].comments_user.profile_picture,
+          body.postCommentedByUsers[0].commentLeftByUser.profile_picture,
         ).toEqual("");
 
-        expect(body.post_commentsByUsers[0].comments_user.role).toEqual("USER");
+        expect(body.postCommentedByUsers[0].commentLeftByUser.role).toEqual(
+          "USER",
+        );
 
         expect(status).toBe(200);
 
@@ -519,9 +527,9 @@ describe("testing post routes and controllers", (done) => {
         const createdPost = await request(app)
           .post("/posts")
           .send({
-            post_content: "test",
-            post_tag: "tag",
-            post_authorId: signUpUser.body.id,
+            content: "test",
+            tag: "tag",
+            authorId: signUpUser.body.id,
           })
           .set("Authorization", `Bearer ${token}`);
 
@@ -531,116 +539,130 @@ describe("testing post routes and controllers", (done) => {
           .post(`/posts/${id}/comment`)
           .set("Authorization", `Bearer ${token}`)
           .send({
-            comment_text: "hello",
-            commented_postId: id,
+            text: "hello",
+            commentRelatedToPostId: id,
           });
 
         const { body, status, header } = await request(app)
           .post(`/posts/${id}/comment/${creatingAComment.body.id}`)
           .set("Authorization", `Bearer ${token}`)
           .send({
-            comment_text: "hello again",
-            commented_postId: id,
-            commentId: creatingAComment.body.post_commentsByUsers[0].id,
+            text: "hello again",
+            commentRelatedToPostId: id,
+            commentId: creatingAComment.body.postCommentedByUsers[0].id,
           });
 
-        expect(body.post_content).toEqual("test");
+        expect(body.content).toEqual("test");
 
-        expect(body.post_imageURL).toEqual(null);
+        expect(body.imageURL).toEqual(null);
 
-        expect(body.post_tag).toEqual("tag");
+        expect(body.tag).toEqual("tag");
 
-        expect(body.post_likes).toEqual(0);
+        expect(body.likes).toEqual(0);
 
-        expect(body.post_comments).toEqual(2);
+        expect(body.comments).toEqual(2);
 
-        expect(body.post_authorId).toEqual(body.post_authorId);
+        expect(body.authorId).toEqual(body.authorId);
 
-        expect(body.post_commentsByUsers[0].comment_text).toEqual("hello");
+        expect(body.postCommentedByUsers[0].text).toEqual("hello");
 
-        expect(body.post_commentsByUsers[0].comment_userId).toEqual(
-          body.post_commentsByUsers[0].comment_userId,
+        expect(body.postCommentedByUsers[0].userId).toEqual(
+          body.postCommentedByUsers[0].userId,
         );
 
-        expect(body.post_commentsByUsers[0].commented_postId).toEqual(
-          body.post_commentsByUsers[0].commented_postId,
+        expect(body.postCommentedByUsers[0].commentRelatedToPostId).toEqual(
+          body.postCommentedByUsers[0].commentRelatedToPostId,
         );
 
-        expect(body.post_commentsByUsers[0].parentCommentId).toEqual(
-          body.post_commentsByUsers[0].parentCommentId,
+        expect(body.postCommentedByUsers[0].parentCommentId).toEqual(
+          body.postCommentedByUsers[0].parentCommentId,
         );
 
-        expect(body.post_commentsByUsers[0].comments_user.username).toEqual(
+        expect(body.postCommentedByUsers[0].commentLeftByUser.username).toEqual(
           "preslaw13",
         );
 
-        expect(body.post_commentsByUsers[0].comments_user.display_name).toEqual(
-          "preslaw13",
+        expect(
+          body.postCommentedByUsers[0].commentLeftByUser.display_name,
+        ).toEqual("preslaw13");
+
+        expect(body.postCommentedByUsers[0].commentLeftByUser.bio).toEqual("");
+
+        expect(body.postCommentedByUsers[0].commentLeftByUser.website).toEqual(
+          "",
         );
 
-        expect(body.post_commentsByUsers[0].comments_user.bio).toEqual("");
+        expect(body.postCommentedByUsers[0].commentLeftByUser.github).toEqual(
+          "",
+        );
 
-        expect(body.post_commentsByUsers[0].comments_user.website).toEqual("");
-
-        expect(body.post_commentsByUsers[0].comments_user.github).toEqual("");
-
-        expect(body.post_commentsByUsers[0].comments_user.password).toEqual(
-          body.post_commentsByUsers[0].comments_user.password,
+        expect(body.postCommentedByUsers[0].commentLeftByUser.password).toEqual(
+          body.postCommentedByUsers[0].commentLeftByUser.password,
         );
 
         expect(
-          body.post_commentsByUsers[0].comments_user.confirm_password,
-        ).toEqual(body.post_commentsByUsers[0].comments_user.confirm_password);
+          body.postCommentedByUsers[0].commentLeftByUser.confirm_password,
+        ).toEqual(
+          body.postCommentedByUsers[0].commentLeftByUser.confirm_password,
+        );
 
         expect(
-          body.post_commentsByUsers[0].comments_user.profile_picture,
+          body.postCommentedByUsers[0].commentLeftByUser.profile_picture,
         ).toEqual("");
 
-        expect(body.post_commentsByUsers[0].comments_user.role).toEqual("USER");
-
-        expect(body.post_commentsByUsers[1].comment_text).toEqual(
-          "hello again",
+        expect(body.postCommentedByUsers[0].commentLeftByUser.role).toEqual(
+          "USER",
         );
 
-        expect(body.post_commentsByUsers[1].comment_userId).toEqual(
-          body.post_commentsByUsers[1].comment_userId,
+        expect(body.postCommentedByUsers[1].text).toEqual("hello again");
+
+        expect(body.postCommentedByUsers[1].userId).toEqual(
+          body.postCommentedByUsers[1].userId,
         );
 
-        expect(body.post_commentsByUsers[1].commented_postId).toEqual(
-          body.post_commentsByUsers[1].commented_postId,
+        expect(body.postCommentedByUsers[1].commented_postId).toEqual(
+          body.postCommentedByUsers[1].commented_postId,
         );
 
-        expect(body.post_commentsByUsers[1].parentCommentId).toEqual(
-          body.post_commentsByUsers[1].parentCommentId,
+        expect(body.postCommentedByUsers[1].parentCommentId).toEqual(
+          body.postCommentedByUsers[1].parentCommentId,
         );
 
-        expect(body.post_commentsByUsers[1].comments_user.username).toEqual(
+        expect(body.postCommentedByUsers[1].commentLeftByUser.username).toEqual(
           "preslaw13",
         );
 
-        expect(body.post_commentsByUsers[1].comments_user.display_name).toEqual(
-          "preslaw13",
+        expect(
+          body.postCommentedByUsers[1].commentLeftByUser.display_name,
+        ).toEqual("preslaw13");
+
+        expect(body.postCommentedByUsers[1].commentLeftByUser.bio).toEqual("");
+
+        expect(body.postCommentedByUsers[1].commentLeftByUser.website).toEqual(
+          "",
         );
 
-        expect(body.post_commentsByUsers[1].comments_user.bio).toEqual("");
+        expect(body.postCommentedByUsers[1].commentLeftByUser.github).toEqual(
+          "",
+        );
 
-        expect(body.post_commentsByUsers[1].comments_user.website).toEqual("");
-
-        expect(body.post_commentsByUsers[1].comments_user.github).toEqual("");
-
-        expect(body.post_commentsByUsers[1].comments_user.password).toEqual(
-          body.post_commentsByUsers[1].comments_user.password,
+        expect(body.postCommentedByUsers[1].commentLeftByUser.password).toEqual(
+          body.postCommentedByUsers[1].commentLeftByUser.password,
         );
 
         expect(
-          body.post_commentsByUsers[1].comments_user.confirm_password,
-        ).toEqual(body.post_commentsByUsers[1].comments_user.confirm_password);
+          body.postCommentedByUsers[1].commentLeftByUser.confirm_password,
+        ).toEqual(
+          body.postCommentedByUsers[1].commentLeftByUser.confirm_password,
+        );
 
         expect(
-          body.post_commentsByUsers[1].comments_user.profile_picture,
+          body.postCommentedByUsers[1].commentLeftByUser.profile_picture,
         ).toEqual("");
 
-        expect(body.post_commentsByUsers[1].comments_user.role).toEqual("USER");
+        expect(body.postCommentedByUsers[1].commentLeftByUser.role).toEqual(
+          "USER",
+        );
 
         expect(status).toBe(200);
 
@@ -670,9 +692,9 @@ describe("testing post routes and controllers", (done) => {
         const createdPost = await request(app)
           .post("/posts")
           .send({
-            post_content: "test",
-            post_tag: "tag",
-            post_authorId: signUpUser.body.id,
+            content: "test",
+            tag: "tag",
+            authorId: signUpUser.body.id,
           })
           .set("Authorization", `Bearer ${token}`);
 

@@ -32,6 +32,18 @@ exports.post_create_text = [
         },
       });
 
+      await prisma.user.update({
+        where: {
+          id: Number(authorId),
+        },
+
+        data: {
+          posts: {
+            increment: 1,
+          },
+        },
+      });
+
       res.json(createPost);
     }
   }),
@@ -67,7 +79,7 @@ exports.post_create_with_image = [
 
         await prisma.user.update({
           where: {
-            id: authorId,
+            id: Number(authorId),
           },
 
           data: {
@@ -131,7 +143,7 @@ exports.post_like = [
       },
     });
 
-    const checkIfUserLikedThePost = postById.likedPostByUsers.some(
+    const checkIfUserLikedThePost = postById.postLikedByUsers.some(
       (user) => user.id === req.authData.id,
     );
 
@@ -285,7 +297,7 @@ exports.post_comment_reply = [
       },
 
       data: {
-        post_comments: {
+        comments: {
           increment: 1,
         },
       },
@@ -327,7 +339,7 @@ exports.post_delete = [
       },
     });
 
-    if (checkIfUserHasPosts.posts > 0) {
+    if (checkIfUserHasPosts && checkIfUserHasPosts.posts > 0) {
       await prisma.user.update({
         where: {
           id: deletePost.authorId,

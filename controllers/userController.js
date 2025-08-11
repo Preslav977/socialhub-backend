@@ -45,6 +45,7 @@ exports.user_signup = [
             password: hashedPassword,
             confirm_password: hashedPassword,
             profile_picture: "",
+            posts: 0,
           },
         });
 
@@ -104,7 +105,7 @@ exports.user_get_by_id = [
 
     if (!userById) {
       res.json({
-        message: "Failed to get user information. Please try to login again.",
+        message: "Failed to get user information. Please try to login again!",
       });
     } else {
       res.json(userById);
@@ -164,7 +165,7 @@ exports.users_get = [
       },
     });
 
-    if (getUsers.length === 0) {
+    if (users.length === 0) {
       res.json({ message: "Users have not been found!" });
     } else {
       res.json(users);

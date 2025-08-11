@@ -157,7 +157,7 @@ describe("testing chat routes and controllers", (done) => {
         .post(`/chats/${creatingChat.body.id}/message`)
         .set("Authorization", `Bearer ${token}`)
         .send({
-          message_text: "hello",
+          text: "hello",
           receiverId: signUpUserTwo.body.id,
           chatId: creatingChat.body.id,
         });
@@ -208,9 +208,9 @@ describe("testing chat routes and controllers", (done) => {
 
       expect(receiverChat.role).toEqual("USER");
 
-      expect(body.messages[0].message_text).toEqual("hello");
+      expect(body.messages[0].text).toEqual("hello");
 
-      expect(body.messages[0].message_imageURL).toEqual(null);
+      expect(body.messages[0].imageURL).toEqual(null);
 
       expect(body.messages[0].senderMessageId).toEqual(
         body.messages[0].senderMessageId,
@@ -320,11 +320,9 @@ describe("testing chat routes and controllers", (done) => {
 
       expect(receiverChat.role).toEqual("USER");
 
-      expect(body.messages[0].message_text).toEqual("");
+      expect(body.messages[0].text).toEqual("");
 
-      expect(body.messages[0].message_imageURL).toEqual(
-        body.messages[0].message_imageURL,
-      );
+      expect(body.messages[0].imageURL).toEqual(body.messages[0].imageURL);
 
       expect(body.messages[0].senderMessageId).toEqual(
         body.messages[0].senderMessageId,
