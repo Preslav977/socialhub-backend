@@ -18,7 +18,11 @@ const bcrypt = require("bcryptjs");
 
 const asyncHandler = require("express-async-handler");
 
+const cors = require("cors");
+
 const app = express();
+
+app.use(cors());
 
 app.set("views", path.join(__dirname, "views"));
 
@@ -108,15 +112,15 @@ passport.deserializeUser(async (id, done) => {
 });
 
 app.post(
-  "users/login",
+  "/login",
   passport.authenticate("local", {
     successRedirect: "/",
-    failureRedirect: "/",
+    failureRedirect: "/login",
   }),
 );
 
 app.get(
-  "users/logout",
+  "/logout",
   asyncHandler(async (req, res, next) => {
     req.logout((err) => {
       if (err) {
