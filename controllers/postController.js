@@ -16,19 +16,19 @@ exports.post_create_text = [
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
 
-    const { post_content, post_tag, post_authorId } = req.body;
+    const { content, tag, authorId } = req.body;
 
     if (!errors.isEmpty()) {
       return res.status(400).send(errors.array());
     } else {
       const createPost = await prisma.post.create({
         data: {
-          post_content: post_content,
-          post_tag: post_tag,
-          post_likes: 0,
-          post_comments: 0,
+          content: content,
+          tag: tag,
+          likes: 0,
+          comments: 0,
           createdAt: new Date(),
-          post_authorId: Number(post_authorId),
+          authorId: Number(authorId),
         },
       });
 
@@ -43,25 +43,37 @@ exports.post_create_with_image = [
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
 
-    const { post_content, post_tag, post_authorId } = req.body;
+    const { content, tag, authorId } = req.body;
 
-    const post_imageURL = await uploadingImage(req.file);
+    const imageURL = await uploadingImage(req.file);
 
     if (!errors.isEmpty()) {
       return res.status(400).send(errors.array());
     } else {
-      if (!post_imageURL.startsWith("https")) {
-        res.json(post_imageURL);
+      if (!imageURL.startsWith("https")) {
+        res.json(imageURL);
       } else {
         const createPost = await prisma.post.create({
           data: {
-            post_content: post_content,
-            post_imageURL: post_imageURL,
-            post_tag: post_tag,
-            post_likes: 0,
-            post_comments: 0,
+            content: content,
+            imageURL: imageURL,
+            tag: tag,
+            likes: 0,
+            comments: 0,
             createdAt: new Date(),
-            post_authorId: Number(post_authorId),
+            authorId: Number(authorId),
+          },
+        });
+
+        await prisma.user.update({
+          where: {
+            id: authorId,
+          },
+
+          data: {
+            posts: {
+              increment: 1,
+            },
           },
         });
 
@@ -73,12 +85,12 @@ exports.post_create_with_image = [
 
 exports.posts_get = [
   asyncHandler(async (req, res, next) => {
-    const getAllPosts = await prisma.post.findMany();
+    const posts = await prisma.post.findMany();
 
-    if (getAllPosts.length === 0) {
-      res.json({ message: "Failed to fetch all posts!" });
+    if (posts.length === 0) {
+      res.json({ message: "Failed to get all posts!" });
     } else {
-      res.json(getAllPosts);
+      res.json(posts);
     }
   }),
 ];
@@ -87,17 +99,21 @@ exports.post_get_by_id = [
   asyncHandler(async (req, res, next) => {
     const { id } = req.params;
 
-    const getPostById = await prisma.post.findFirst({
+    const postById = await prisma.post.findFirst({
       where: {
         id: Number(id),
       },
       include: {
-        post_author: true,
-        post_commentsByUsers: true,
+        author: true,
+        postCommentedByUsers: true,
       },
     });
 
-    res.json(getPostById);
+    if (!postById) {
+      res.json({ message: "Failed to get a post by ID" });
+    } else {
+      res.json(postById);
+    }
   }),
 ];
 
@@ -105,52 +121,52 @@ exports.post_like = [
   asyncHandler(async (req, res, next) => {
     const { id } = req.body;
 
-    const getPostById = await prisma.post.findFirst({
+    const postById = await prisma.post.findFirst({
       where: {
         id: Number(id),
       },
 
       include: {
-        likedPostByUsers: true,
+        postLikedByUsers: true,
       },
     });
 
-    const checkIfUserLikedThePost = getPostById.likedPostByUsers.some(
+    const checkIfUserLikedThePost = postById.likedPostByUsers.some(
       (user) => user.id === req.authData.id,
     );
 
-    if (!checkIfUserLikedThePost && getPostById.post_likes >= 0) {
+    if (!checkIfUserLikedThePost && postById.likes >= 0) {
       const postHasBeenLiked = await prisma.post.update({
         where: {
           id: Number(id),
         },
 
         include: {
-          likedPostByUsers: true,
+          postLikedByUsers: true,
         },
 
         data: {
-          post_likes: {
+          likes: {
             increment: 1,
           },
 
-          likedPostByUsers: {
+          postLikedByUsers: {
             connect: [{ id: req.authData.id }],
           },
         },
       });
 
-      const fetchTheLikedPost = await prisma.post.findFirst({
+      const likedPost = await prisma.post.findFirst({
         where: {
           id: postHasBeenLiked.id,
         },
 
         include: {
-          likedPostByUsers: true,
+          postLikedByUsers: true,
         },
       });
 
-      res.json(fetchTheLikedPost);
+      res.json(likedPost);
     } else {
       const postHasBeenDisliked = await prisma.post.update({
         where: {
@@ -158,31 +174,31 @@ exports.post_like = [
         },
 
         include: {
-          likedPostByUsers: true,
+          postLikedByUsers: true,
         },
 
         data: {
-          post_likes: {
+          likes: {
             decrement: 1,
           },
 
-          likedPostByUsers: {
+          postLikedByUsers: {
             disconnect: [{ id: req.authData.id }],
           },
         },
       });
 
-      const fetchTheUnLikedPost = await prisma.post.findFirst({
+      const unLikedPost = await prisma.post.findFirst({
         where: {
           id: postHasBeenDisliked.id,
         },
 
         include: {
-          likedPostByUsers: true,
+          postLikedByUsers: true,
         },
       });
 
-      res.json(fetchTheUnLikedPost);
+      res.json(unLikedPost);
     }
   }),
 ];
@@ -191,9 +207,9 @@ exports.post_comment = [
   asyncHandler(async (req, res, next) => {
     const { id } = req.params;
 
-    const { comment_text } = req.body;
+    const { text } = req.body;
 
-    const getPostById = await prisma.post.findFirst({
+    const postById = await prisma.post.findFirst({
       where: {
         id: Number(id),
       },
@@ -201,45 +217,44 @@ exports.post_comment = [
 
     await prisma.comments.create({
       data: {
-        comment_text: comment_text,
-        comments_userId: req.authData.id,
-        commented_postId: getPostById.id,
+        text: text,
+        commentLeftByUserId: req.authData.id,
+        commentRelatedToPostId: postById.id,
       },
 
       include: {
-        comments_user: true,
+        commentLeftByUser: true,
       },
     });
 
     await prisma.post.update({
       where: {
-        id: getPostById.id,
+        id: postById.id,
       },
 
       data: {
-        post_comments: {
+        comments: {
           increment: 1,
         },
       },
     });
 
-    const fetchThePostWithAComment = await prisma.post.findFirst({
-      relationLoadStrategy: "join",
+    const postWithAComment = await prisma.post.findFirst({
       where: {
-        id: Number(getPostById.id),
+        id: Number(postById.id),
       },
 
       include: {
-        likedPostByUsers: true,
-        post_commentsByUsers: {
+        postLikedByUsers: true,
+        postCommentedByUsers: {
           include: {
-            comments_user: true,
+            commentLeftByUser: true,
           },
         },
       },
     });
 
-    res.json(fetchThePostWithAComment);
+    res.json(postWithAComment);
   }),
 ];
 
@@ -247,9 +262,9 @@ exports.post_comment_reply = [
   asyncHandler(async (req, res, next) => {
     const { id } = req.params;
 
-    const { comment_text, commentId } = req.body;
+    const { text, commentId } = req.body;
 
-    const getPostById = await prisma.post.findFirst({
+    const postById = await prisma.post.findFirst({
       where: {
         id: Number(id),
       },
@@ -257,16 +272,16 @@ exports.post_comment_reply = [
 
     await prisma.comments.create({
       data: {
-        comment_text: comment_text,
-        comments_userId: req.authData.id,
-        commented_postId: getPostById.id,
+        text: text,
+        commentLeftByUserId: req.authData.id,
+        commentRelatedToPostId: postById.id,
         parentCommentId: Number(commentId),
       },
     });
 
     await prisma.post.update({
       where: {
-        id: getPostById.id,
+        id: postById.id,
       },
 
       data: {
@@ -276,23 +291,22 @@ exports.post_comment_reply = [
       },
     });
 
-    const fetchThePostWithACommentReply = await prisma.post.findFirst({
-      relationLoadStrategy: "join",
+    const postWithACommentReply = await prisma.post.findFirst({
       where: {
-        id: getPostById.id,
+        id: postById.id,
       },
 
       include: {
-        likedPostByUsers: true,
-        post_commentsByUsers: {
+        postLikedByUsers: true,
+        postCommentedByUsers: {
           include: {
-            comments_user: true,
+            commentLeftByUser: true,
           },
         },
       },
     });
 
-    res.json(fetchThePostWithACommentReply);
+    res.json(postWithACommentReply);
   }),
 ];
 
@@ -303,7 +317,7 @@ exports.post_delete = [
     await prisma.post.delete({
       where: {
         id: Number(id),
-        post_authorId: req.authData.id,
+        authorId: req.authData.id,
       },
     });
 
