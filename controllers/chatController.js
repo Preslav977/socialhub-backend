@@ -55,7 +55,7 @@ exports.chat_create = [
         },
       });
 
-      const fetchTheCreatedChat = await prisma.chat.findFirst({
+      const chat = await prisma.chat.findFirst({
         where: {
           id: createChat.id,
         },
@@ -67,14 +67,14 @@ exports.chat_create = [
         },
       });
 
-      res.json(fetchTheCreatedChat);
+      res.json(chat);
     }
   }),
 ];
 
 exports.chat_get = [
   asyncHandler(async (req, res, next) => {
-    const getChats = await prisma.chat.findMany({
+    const chats = await prisma.chat.findMany({
       where: {
         OR: [
           { senderChatId: req.authData.id },
@@ -89,7 +89,7 @@ exports.chat_get = [
       },
     });
 
-    res.json(getChats);
+    res.json(chats);
   }),
 ];
 
@@ -97,7 +97,7 @@ exports.chat_get_by_id = [
   asyncHandler(async (req, res, next) => {
     const { id } = req.params;
 
-    const findChatById = await prisma.chat.findFirst({
+    const chatById = await prisma.chat.findFirst({
       where: {
         id: id,
       },
@@ -113,7 +113,7 @@ exports.chat_get_by_id = [
       },
     });
 
-    res.json(findChatById);
+    res.json(chatById);
   }),
 ];
 
@@ -124,21 +124,21 @@ exports.chat_send_message = [
 
     const { id } = req.params;
 
-    const { message_text, receiverId } = req.body;
+    const { text, receiverId } = req.body;
 
     if (!errors.isEmpty()) {
       return res.status(400).send(errors.array());
     } else {
       await prisma.messages.create({
         data: {
-          message_text: message_text,
+          text: text,
           senderMessageId: req.authData.id,
           receiverMessageId: Number(receiverId),
           chatId: id,
         },
       });
 
-      const fetchChatWithSendMessage = await prisma.chat.findFirst({
+      const chatWithSendMessage = await prisma.chat.findFirst({
         where: {
           id: id,
         },
@@ -154,7 +154,7 @@ exports.chat_send_message = [
         },
       });
 
-      res.json(fetchChatWithSendMessage);
+      res.json(chatWithSendMessage);
     }
   }),
 ];
@@ -166,22 +166,22 @@ exports.chat_send_image = [
 
     const { receiverId } = req.body;
 
-    const message_image = await uploadImage(req.file);
+    const imageURL = await uploadImage(req.file);
 
-    if (!message_image.startsWith("https")) {
-      return res.json(message_image);
+    if (!imageURL.startsWith("https")) {
+      return res.json(imageURL);
     } else {
       await prisma.messages.create({
         data: {
-          message_text: "",
-          message_imageURL: message_image,
+          text: "",
+          imageURL: imageURL,
           senderMessageId: req.authData.id,
           receiverMessageId: Number(receiverId),
           chatId: id,
         },
       });
 
-      const fetchChatWithSendImage = await prisma.chat.findFirst({
+      const chatWithSendImage = await prisma.chat.findFirst({
         where: {
           id: id,
         },
@@ -197,7 +197,7 @@ exports.chat_send_image = [
         },
       });
 
-      res.json(fetchChatWithSendImage);
+      res.json(chatWithSendImage);
     }
   }),
 ];

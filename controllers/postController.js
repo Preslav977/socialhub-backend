@@ -314,12 +314,34 @@ exports.post_delete = [
   asyncHandler(async (req, res, next) => {
     const { id } = req.params;
 
-    await prisma.post.delete({
+    const deletePost = await prisma.post.delete({
       where: {
         id: Number(id),
         authorId: req.authData.id,
       },
     });
+
+    const checkIfUserHasPosts = await prisma.user.findFirst({
+      where: {
+        id: deletePost.authorId,
+      },
+    });
+
+    if (checkIfUserHasPosts.posts > 0) {
+      await prisma.user.update({
+        where: {
+          id: deletePost.authorId,
+        },
+
+        data: {
+          posts: {
+            decrement: 1,
+          },
+        },
+      });
+    } else {
+      return;
+    }
 
     res.json({ message: "Post has been deleted!" });
   }),
