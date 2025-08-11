@@ -89,25 +89,25 @@ exports.user_get_by_id = [
   asyncHandler(async (req, res, next) => {
     const { id } = req.params;
 
-    const getUserById = await prisma.user.findFirst({
+    const userById = await prisma.user.findFirst({
       where: {
         id: Number(id),
       },
       include: {
         followedBy: true,
         following: true,
-        likedPost: true,
-        createdPosts: true,
-        commentsOnPost: true,
+        likedPosts: true,
+        createdPostsByUser: true,
+        commentsOnPosts: true,
       },
     });
 
-    if (!getUserById) {
+    if (!userById) {
       res.json({
         message: "Failed to get user information. Please try to login again.",
       });
     } else {
-      res.json(getUserById);
+      res.json(userById);
     }
   }),
 ];
@@ -144,13 +144,13 @@ exports.user_update_profile = [
           },
         });
 
-        const fetchTheUpdatedUserProfile = await prisma.user.findFirst({
+        const updatedUserProfile = await prisma.user.findFirst({
           where: {
             id: Number(updateUserProfile.id),
           },
         });
 
-        res.json(fetchTheUpdatedUserProfile);
+        res.json(updatedUserProfile);
       }
     }
   }),
@@ -158,13 +158,17 @@ exports.user_update_profile = [
 
 exports.users_get = [
   asyncHandler(async (req, res, next) => {
-    const getUsers = await prisma.user.findMany({
+    const users = await prisma.user.findMany({
       orderBy: {
         username: "asc",
       },
     });
 
-    res.json(getUsers);
+    if (getUsers.length === 0) {
+      res.json({ message: "Users have not been found!" });
+    } else {
+      res.json(users);
+    }
   }),
 ];
 
@@ -176,7 +180,10 @@ exports.users_search = [
       await prisma.$queryRaw`SELECT * FROM "user" WHERE username ILIKE CONCAT('%', ${query}, '%') OR display_name ILIKE CONCAT('%', ${query}, '%')`;
 
     if (searchForAUser.length === 0) {
-      res.json({ message: "User not found" });
+      res.json({
+        message:
+          "User has not been found! Try with different username or display name!",
+      });
     } else {
       res.json(searchForAUser);
     }
@@ -187,7 +194,7 @@ exports.user_followers = [
   asyncHandler(async (req, res, next) => {
     const { id } = req.params;
 
-    const getUserById = await prisma.user.findFirst({
+    const userById = await prisma.user.findFirst({
       where: {
         id: Number(id),
       },
@@ -196,14 +203,14 @@ exports.user_followers = [
       },
     });
 
-    const checkIfUserHasBeenFollowed = getUserById.followedBy.some(
+    const checkIfUserHasBeenFollowed = userById.followedBy.some(
       (user) => user.id === req.authData.id,
     );
 
     if (!checkIfUserHasBeenFollowed) {
       const followTheUser = await prisma.user.update({
         where: {
-          id: getUserById.id,
+          id: userById.id,
         },
 
         include: {
@@ -217,7 +224,7 @@ exports.user_followers = [
         },
       });
 
-      const fetchTheFollowedUser = await prisma.user.findFirst({
+      const followedUser = await prisma.user.findFirst({
         where: {
           id: followTheUser.id,
         },
@@ -227,11 +234,11 @@ exports.user_followers = [
         },
       });
 
-      res.json(fetchTheFollowedUser);
+      res.json(followedUser);
     } else {
       const unFollowTheUser = await prisma.user.update({
         where: {
-          id: getUserById.id,
+          id: userById.id,
         },
 
         include: {
@@ -245,7 +252,7 @@ exports.user_followers = [
         },
       });
 
-      const fetchTheUnFollowedUser = await prisma.user.findFirst({
+      const unFollowedUser = await prisma.user.findFirst({
         where: {
           id: unFollowTheUser.id,
         },
@@ -255,7 +262,7 @@ exports.user_followers = [
         },
       });
 
-      res.json(fetchTheUnFollowedUser);
+      res.json(unFollowedUser);
     }
   }),
 ];
@@ -278,7 +285,7 @@ exports.user_following = [
       },
     });
 
-    const fetchTheFollowingUser = await prisma.user.findFirst({
+    const followingUser = await prisma.user.findFirst({
       where: {
         id: followingTheUser.id,
       },
@@ -288,6 +295,6 @@ exports.user_following = [
       },
     });
 
-    res.json(fetchTheFollowingUser);
+    res.json(followingUser);
   }),
 ];

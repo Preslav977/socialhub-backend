@@ -5,14 +5,14 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["relationJoins"]
-  output          = "../src/generated/prisma"
+  provider = "prisma-client-js"
+  // previewFeatures = ["relationJoins"]
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("TEST_DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 enum Role {
@@ -22,56 +22,57 @@ enum Role {
 }
 
 model User {
-  id               Int        @id @default(autoincrement())
-  username         String     @unique
-  display_name     String     @unique
-  bio              String
-  website          String
-  github           String
-  password         String
-  confirm_password String
-  profile_picture  String
-  role             Role       @default(USER)
-  followedBy       User[]     @relation("UserFollows")
-  following        User[]     @relation("UserFollows")
-  likedPost        Post[]     @relation("UserLikedPosts")
-  createdPosts     Post[]
-  commentsOnPost   Comments[]
-  senderChat       Chat[]     @relation("senderChat")
-  receiverChat     Chat[]     @relation("receiverChat")
-  senderMessage    Messages[] @relation("senderMessage")
-  receiverMessage  Messages[] @relation("receiverMessage")
+  id                 Int        @id @default(autoincrement())
+  username           String     @unique
+  display_name       String     @unique
+  bio                String
+  website            String
+  github             String
+  password           String
+  confirm_password   String
+  profile_picture    String
+  role               Role       @default(USER)
+  followedBy         User[]     @relation("UserFollows")
+  following          User[]     @relation("UserFollows")
+  posts              Int?
+  likedPosts         Post[]     @relation("UserLikedPosts")
+  createdPostsByUser Post[]
+  commentsOnPosts    Comments[]
+  senderChat         Chat[]     @relation("senderChat")
+  receiverChat       Chat[]     @relation("receiverChat")
+  senderMessage      Messages[] @relation("senderMessage")
+  receiverMessage    Messages[] @relation("receiverMessage")
 
   @@map("user")
 }
 
 model Post {
   id                   Int        @id @default(autoincrement())
-  post_content         String
-  post_imageURL        String?
-  post_tag             String
-  post_likes           Int
-  post_comments        Int
+  content              String
+  imageURL             String?
+  tag                  String
+  likes                Int
+  comments             Int
   createdAt            DateTime   @default(now())
-  likedPostByUsers     User[]     @relation("UserLikedPosts")
-  post_author          User       @relation(fields: [post_authorId], references: [id], onDelete: Cascade)
-  post_authorId        Int
-  post_commentsByUsers Comments[]
+  postLikedByUsers     User[]     @relation("UserLikedPosts")
+  author               User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId             Int
+  postCommentedByUsers Comments[]
 
   @@map("post")
 }
 
 model Comments {
-  id                Int        @id @default(autoincrement())
-  comment_text      String
-  comments_user     User       @relation(fields: [comments_userId], references: [id], onDelete: Cascade)
-  comments_userId   Int
-  createdAt         DateTime   @default(now())
-  commented_post    Post?      @relation(fields: [commented_postId], references: [id], onDelete: Cascade)
-  commented_postId  Int?
-  parentComment     Comments?  @relation("CommentReply", fields: [parentCommentId], references: [id], onDelete: Cascade)
-  parentCommentId   Int?
-  childCommentReply Comments[] @relation("CommentReply")
+  id                     Int        @id @default(autoincrement())
+  text                   String
+  commentLeftByUser      User       @relation(fields: [commentLeftByUserId], references: [id], onDelete: Cascade)
+  commentLeftByUserId    Int
+  createdAt              DateTime   @default(now())
+  commentRelatedToPost   Post?      @relation(fields: [commentRelatedToPostId], references: [id], onDelete: Cascade)
+  commentRelatedToPostId Int?
+  parentComment          Comments?  @relation("CommentReply", fields: [parentCommentId], references: [id], onDelete: Cascade)
+  parentCommentId        Int?
+  childCommentReply      Comments[] @relation("CommentReply")
 
   @@map("comments")
 }
@@ -89,8 +90,8 @@ model Chat {
 
 model Messages {
   id                Int      @id @default(autoincrement())
-  message_text      String
-  message_imageURL  String?
+  text              String
+  imageURL          String?
   createdAt         DateTime @default(now())
   senderMessageId   Int
   senderMessage     User     @relation("senderMessage", fields: [senderMessageId], references: [id], onDelete: Cascade)

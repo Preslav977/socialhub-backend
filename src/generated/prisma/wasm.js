@@ -130,31 +130,27 @@ exports.Prisma.UserScalarFieldEnum = {
   password: 'password',
   confirm_password: 'confirm_password',
   profile_picture: 'profile_picture',
-  role: 'role'
-};
-
-exports.Prisma.RelationLoadStrategy = {
-  query: 'query',
-  join: 'join'
+  role: 'role',
+  posts: 'posts'
 };
 
 exports.Prisma.PostScalarFieldEnum = {
   id: 'id',
-  post_content: 'post_content',
-  post_imageURL: 'post_imageURL',
-  post_tag: 'post_tag',
-  post_likes: 'post_likes',
-  post_comments: 'post_comments',
+  content: 'content',
+  imageURL: 'imageURL',
+  tag: 'tag',
+  likes: 'likes',
+  comments: 'comments',
   createdAt: 'createdAt',
-  post_authorId: 'post_authorId'
+  authorId: 'authorId'
 };
 
 exports.Prisma.CommentsScalarFieldEnum = {
   id: 'id',
-  comment_text: 'comment_text',
-  comments_userId: 'comments_userId',
+  text: 'text',
+  commentLeftByUserId: 'commentLeftByUserId',
   createdAt: 'createdAt',
-  commented_postId: 'commented_postId',
+  commentRelatedToPostId: 'commentRelatedToPostId',
   parentCommentId: 'parentCommentId'
 };
 
@@ -166,8 +162,8 @@ exports.Prisma.ChatScalarFieldEnum = {
 
 exports.Prisma.MessagesScalarFieldEnum = {
   id: 'id',
-  message_text: 'message_text',
-  message_imageURL: 'message_imageURL',
+  text: 'text',
+  imageURL: 'imageURL',
   createdAt: 'createdAt',
   senderMessageId: 'senderMessageId',
   receiverMessageId: 'receiverMessageId',
