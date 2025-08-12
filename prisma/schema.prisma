@@ -33,6 +33,8 @@ model User {
   role               Role       @default(USER)
   followedBy         User[]     @relation("UserFollows")
   following          User[]     @relation("UserFollows")
+  followersNumber    Int?
+  followingNumber    Int?
   posts              Int?
   likedPosts         Post[]     @relation("UserLikedPosts")
   createdPostsByUser Post[]

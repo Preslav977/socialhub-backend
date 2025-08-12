@@ -45,6 +45,8 @@ exports.user_signup = [
             password: hashedPassword,
             confirm_password: hashedPassword,
             profile_picture: "",
+            followersNumber: 0,
+            followingNumber: 0,
             posts: 0,
           },
         });
@@ -222,6 +224,10 @@ exports.user_followers = [
           followedBy: {
             connect: [{ id: req.authData.id }],
           },
+
+          followersNumber: {
+            increment: 1,
+          },
         },
       });
 
@@ -249,6 +255,10 @@ exports.user_followers = [
         data: {
           followedBy: {
             disconnect: [{ id: req.authData.id }],
+          },
+
+          followingNumber: {
+            decrement: 1,
           },
         },
       });
@@ -282,6 +292,10 @@ exports.user_following = [
       data: {
         following: {
           connect: [{ id: Number(id) }],
+        },
+
+        followingNumber: {
+          increment: 1,
         },
       },
     });
