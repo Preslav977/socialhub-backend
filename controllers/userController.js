@@ -115,6 +115,18 @@ exports.user_get_by_id = [
   }),
 ];
 
+exports.user_get_details = [
+  asyncHandler(async (req, res, next) => {
+    const loggedInUser = await prisma.user.findFirst({
+      where: {
+        id: req.authData.id,
+      },
+    });
+
+    res.json(loggedInUser);
+  }),
+];
+
 exports.user_update_profile = [
   upload.single("file"),
   userUpdateProfile,
