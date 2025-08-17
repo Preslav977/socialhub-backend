@@ -4,6 +4,8 @@ const userRouter = Router();
 
 const userController = require("../controllers/userController");
 
+userRouter.get("/followed", userController.users_get_followed);
+
 userRouter.get("/latest", userController.users_get_latest);
 
 userRouter.get("/details", userController.user_get_details);

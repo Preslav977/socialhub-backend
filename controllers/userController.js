@@ -195,6 +195,39 @@ exports.users_get_latest = [
   }),
 ];
 
+exports.users_get_followed = [
+  asyncHandler(async (req, res, next) => {
+    const getUsers = await prisma.user.findMany();
+
+    const userWithMostFollowers = Math.max(
+      ...getUsers.map((user) => user.followersNumber),
+    );
+
+    const users = await prisma.user.findMany({
+      take: 3,
+      where: {
+        OR: [
+          {
+            followersNumber: {
+              gte: userWithMostFollowers,
+            },
+          },
+          {
+            followersNumber: {
+              lt: userWithMostFollowers,
+            },
+          },
+        ],
+      },
+      orderBy: {
+        followersNumber: "desc",
+      },
+    });
+
+    res.json(users);
+  }),
+];
+
 exports.users_search = [
   asyncHandler(async (req, res, next) => {
     const { query } = req.query;
