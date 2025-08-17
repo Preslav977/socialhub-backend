@@ -33,9 +33,10 @@ model User {
   role               Role       @default(USER)
   followedBy         User[]     @relation("UserFollows")
   following          User[]     @relation("UserFollows")
-  followersNumber    Int?
-  followingNumber    Int?
-  posts              Int?
+  followersNumber    Int?       @default(0)
+  followingNumber    Int?       @default(0)
+  posts              Int?       @default(0)
+  createdAt          DateTime   @default(now())
   likedPosts         Post[]     @relation("UserLikedPosts")
   createdPostsByUser Post[]
   commentsOnPosts    Comments[]
@@ -52,8 +53,8 @@ model Post {
   content              String
   imageURL             String?
   tag                  String
-  likes                Int
-  comments             Int
+  likes                Int        @default(0)
+  comments             Int        @default(0)
   createdAt            DateTime   @default(now())
   postLikedByUsers     User[]     @relation("UserLikedPosts")
   author               User       @relation(fields: [authorId], references: [id], onDelete: Cascade)

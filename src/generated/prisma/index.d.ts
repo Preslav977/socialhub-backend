@@ -111,13 +111,6 @@ export class PrismaClient<
    */
   $disconnect(): $Utils.JsPromise<void>;
 
-  /**
-   * Add a middleware
-   * @deprecated since 4.16.0. For new code, prefer client extensions instead.
-   * @see https://pris.ly/d/extensions
-   */
-  $use(cb: Prisma.Middleware): void
-
 /**
    * Executes a prepared raw query and returns the number of affected rows.
    * @example
@@ -304,8 +297,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.13.0
-   * Query Engine version: 361e86d0ea4987e9f53a565309b3eed797a6bcbd
+   * Prisma Client JS version: 6.14.0
+   * Query Engine version: 717184b7b35ea05dfa71a3236b7af656013e1e49
    */
   export type PrismaVersion = {
     client: string
@@ -1314,25 +1307,6 @@ export namespace Prisma {
     | 'findRaw'
     | 'groupBy'
 
-  /**
-   * These options are being passed into the middleware as "params"
-   */
-  export type MiddlewareParams = {
-    model?: ModelName
-    action: PrismaAction
-    args: any
-    dataPath: string[]
-    runInTransaction: boolean
-  }
-
-  /**
-   * The `T` type makes sure, that the `return proceed` is not forgotten in the middleware implementation
-   */
-  export type Middleware<T = any> = (
-    params: MiddlewareParams,
-    next: (params: MiddlewareParams) => $Utils.JsPromise<T>,
-  ) => $Utils.JsPromise<T>
-
   // tested in getLogLevel.test.ts
   export function getLogLevel(log: Array<LogLevel | LogDefinition>): LogLevel | undefined;
 
@@ -1599,6 +1573,7 @@ export namespace Prisma {
     followersNumber: number | null
     followingNumber: number | null
     posts: number | null
+    createdAt: Date | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1615,6 +1590,7 @@ export namespace Prisma {
     followersNumber: number | null
     followingNumber: number | null
     posts: number | null
+    createdAt: Date | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1631,6 +1607,7 @@ export namespace Prisma {
     followersNumber: number
     followingNumber: number
     posts: number
+    createdAt: number
     _all: number
   }
 
@@ -1663,6 +1640,7 @@ export namespace Prisma {
     followersNumber?: true
     followingNumber?: true
     posts?: true
+    createdAt?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1679,6 +1657,7 @@ export namespace Prisma {
     followersNumber?: true
     followingNumber?: true
     posts?: true
+    createdAt?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1695,6 +1674,7 @@ export namespace Prisma {
     followersNumber?: true
     followingNumber?: true
     posts?: true
+    createdAt?: true
     _all?: true
   }
 
@@ -1798,6 +1778,7 @@ export namespace Prisma {
     followersNumber: number | null
     followingNumber: number | null
     posts: number | null
+    createdAt: Date
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -1833,6 +1814,7 @@ export namespace Prisma {
     followersNumber?: boolean
     followingNumber?: boolean
     posts?: boolean
+    createdAt?: boolean
     followedBy?: boolean | User$followedByArgs<ExtArgs>
     following?: boolean | User$followingArgs<ExtArgs>
     likedPosts?: boolean | User$likedPostsArgs<ExtArgs>
@@ -1859,6 +1841,7 @@ export namespace Prisma {
     followersNumber?: boolean
     followingNumber?: boolean
     posts?: boolean
+    createdAt?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1875,6 +1858,7 @@ export namespace Prisma {
     followersNumber?: boolean
     followingNumber?: boolean
     posts?: boolean
+    createdAt?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -1891,9 +1875,10 @@ export namespace Prisma {
     followersNumber?: boolean
     followingNumber?: boolean
     posts?: boolean
+    createdAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "display_name" | "bio" | "website" | "github" | "password" | "confirm_password" | "profile_picture" | "role" | "followersNumber" | "followingNumber" | "posts", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "display_name" | "bio" | "website" | "github" | "password" | "confirm_password" | "profile_picture" | "role" | "followersNumber" | "followingNumber" | "posts" | "createdAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     followedBy?: boolean | User$followedByArgs<ExtArgs>
     following?: boolean | User$followingArgs<ExtArgs>
@@ -1936,6 +1921,7 @@ export namespace Prisma {
       followersNumber: number | null
       followingNumber: number | null
       posts: number | null
+      createdAt: Date
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -2381,6 +2367,7 @@ export namespace Prisma {
     readonly followersNumber: FieldRef<"User", 'Int'>
     readonly followingNumber: FieldRef<"User", 'Int'>
     readonly posts: FieldRef<"User", 'Int'>
+    readonly createdAt: FieldRef<"User", 'DateTime'>
   }
     
 
@@ -8664,7 +8651,8 @@ export namespace Prisma {
     role: 'role',
     followersNumber: 'followersNumber',
     followingNumber: 'followingNumber',
-    posts: 'posts'
+    posts: 'posts',
+    createdAt: 'createdAt'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -8847,6 +8835,7 @@ export namespace Prisma {
     followersNumber?: IntNullableFilter<"User"> | number | null
     followingNumber?: IntNullableFilter<"User"> | number | null
     posts?: IntNullableFilter<"User"> | number | null
+    createdAt?: DateTimeFilter<"User"> | Date | string
     followedBy?: UserListRelationFilter
     following?: UserListRelationFilter
     likedPosts?: PostListRelationFilter
@@ -8872,6 +8861,7 @@ export namespace Prisma {
     followersNumber?: SortOrderInput | SortOrder
     followingNumber?: SortOrderInput | SortOrder
     posts?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
     followedBy?: UserOrderByRelationAggregateInput
     following?: UserOrderByRelationAggregateInput
     likedPosts?: PostOrderByRelationAggregateInput
@@ -8900,6 +8890,7 @@ export namespace Prisma {
     followersNumber?: IntNullableFilter<"User"> | number | null
     followingNumber?: IntNullableFilter<"User"> | number | null
     posts?: IntNullableFilter<"User"> | number | null
+    createdAt?: DateTimeFilter<"User"> | Date | string
     followedBy?: UserListRelationFilter
     following?: UserListRelationFilter
     likedPosts?: PostListRelationFilter
@@ -8925,6 +8916,7 @@ export namespace Prisma {
     followersNumber?: SortOrderInput | SortOrder
     followingNumber?: SortOrderInput | SortOrder
     posts?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -8949,6 +8941,7 @@ export namespace Prisma {
     followersNumber?: IntNullableWithAggregatesFilter<"User"> | number | null
     followingNumber?: IntNullableWithAggregatesFilter<"User"> | number | null
     posts?: IntNullableWithAggregatesFilter<"User"> | number | null
+    createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
 
   export type PostWhereInput = {
@@ -9286,6 +9279,7 @@ export namespace Prisma {
     followersNumber?: number | null
     followingNumber?: number | null
     posts?: number | null
+    createdAt?: Date | string
     followedBy?: UserCreateNestedManyWithoutFollowingInput
     following?: UserCreateNestedManyWithoutFollowedByInput
     likedPosts?: PostCreateNestedManyWithoutPostLikedByUsersInput
@@ -9311,6 +9305,7 @@ export namespace Prisma {
     followersNumber?: number | null
     followingNumber?: number | null
     posts?: number | null
+    createdAt?: Date | string
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     likedPosts?: PostUncheckedCreateNestedManyWithoutPostLikedByUsersInput
@@ -9335,6 +9330,7 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUpdateManyWithoutFollowingNestedInput
     following?: UserUpdateManyWithoutFollowedByNestedInput
     likedPosts?: PostUpdateManyWithoutPostLikedByUsersNestedInput
@@ -9360,6 +9356,7 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     likedPosts?: PostUncheckedUpdateManyWithoutPostLikedByUsersNestedInput
@@ -9385,6 +9382,7 @@ export namespace Prisma {
     followersNumber?: number | null
     followingNumber?: number | null
     posts?: number | null
+    createdAt?: Date | string
   }
 
   export type UserUpdateManyMutationInput = {
@@ -9400,6 +9398,7 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -9416,14 +9415,15 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PostCreateInput = {
     content: string
     imageURL?: string | null
     tag: string
-    likes: number
-    comments: number
+    likes?: number
+    comments?: number
     createdAt?: Date | string
     postLikedByUsers?: UserCreateNestedManyWithoutLikedPostsInput
     author: UserCreateNestedOneWithoutCreatedPostsByUserInput
@@ -9435,8 +9435,8 @@ export namespace Prisma {
     content: string
     imageURL?: string | null
     tag: string
-    likes: number
-    comments: number
+    likes?: number
+    comments?: number
     createdAt?: Date | string
     authorId: number
     postLikedByUsers?: UserUncheckedCreateNestedManyWithoutLikedPostsInput
@@ -9473,8 +9473,8 @@ export namespace Prisma {
     content: string
     imageURL?: string | null
     tag: string
-    likes: number
-    comments: number
+    likes?: number
+    comments?: number
     createdAt?: Date | string
     authorId: number
   }
@@ -9761,6 +9761,17 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type DateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
   export type UserListRelationFilter = {
     every?: UserWhereInput
     some?: UserWhereInput
@@ -9830,6 +9841,7 @@ export namespace Prisma {
     followersNumber?: SortOrder
     followingNumber?: SortOrder
     posts?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -9853,6 +9865,7 @@ export namespace Prisma {
     followersNumber?: SortOrder
     followingNumber?: SortOrder
     posts?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -9869,6 +9882,7 @@ export namespace Prisma {
     followersNumber?: SortOrder
     followingNumber?: SortOrder
     posts?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
@@ -9938,6 +9952,20 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -9951,17 +9979,6 @@ export namespace Prisma {
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     mode?: QueryMode
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type DateTimeFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
   export type UserScalarRelationFilter = {
@@ -10032,20 +10049,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
-  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type PostNullableScalarRelationFilter = {
@@ -10329,6 +10332,10 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
   }
 
   export type UserUpdateManyWithoutFollowingNestedInput = {
@@ -10619,10 +10626,6 @@ export namespace Prisma {
 
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
-  }
-
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
   }
 
   export type UserUpdateManyWithoutLikedPostsNestedInput = {
@@ -10930,6 +10933,17 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedDateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -11011,6 +11025,20 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -11023,17 +11051,6 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type NestedDateTimeFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -11053,20 +11070,6 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
   export type UserCreateWithoutFollowingInput = {
     username: string
     display_name: string
@@ -11080,6 +11083,7 @@ export namespace Prisma {
     followersNumber?: number | null
     followingNumber?: number | null
     posts?: number | null
+    createdAt?: Date | string
     followedBy?: UserCreateNestedManyWithoutFollowingInput
     likedPosts?: PostCreateNestedManyWithoutPostLikedByUsersInput
     createdPostsByUser?: PostCreateNestedManyWithoutAuthorInput
@@ -11104,6 +11108,7 @@ export namespace Prisma {
     followersNumber?: number | null
     followingNumber?: number | null
     posts?: number | null
+    createdAt?: Date | string
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
     likedPosts?: PostUncheckedCreateNestedManyWithoutPostLikedByUsersInput
     createdPostsByUser?: PostUncheckedCreateNestedManyWithoutAuthorInput
@@ -11132,6 +11137,7 @@ export namespace Prisma {
     followersNumber?: number | null
     followingNumber?: number | null
     posts?: number | null
+    createdAt?: Date | string
     following?: UserCreateNestedManyWithoutFollowedByInput
     likedPosts?: PostCreateNestedManyWithoutPostLikedByUsersInput
     createdPostsByUser?: PostCreateNestedManyWithoutAuthorInput
@@ -11156,6 +11162,7 @@ export namespace Prisma {
     followersNumber?: number | null
     followingNumber?: number | null
     posts?: number | null
+    createdAt?: Date | string
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     likedPosts?: PostUncheckedCreateNestedManyWithoutPostLikedByUsersInput
     createdPostsByUser?: PostUncheckedCreateNestedManyWithoutAuthorInput
@@ -11175,8 +11182,8 @@ export namespace Prisma {
     content: string
     imageURL?: string | null
     tag: string
-    likes: number
-    comments: number
+    likes?: number
+    comments?: number
     createdAt?: Date | string
     author: UserCreateNestedOneWithoutCreatedPostsByUserInput
     postCommentedByUsers?: CommentsCreateNestedManyWithoutCommentRelatedToPostInput
@@ -11187,8 +11194,8 @@ export namespace Prisma {
     content: string
     imageURL?: string | null
     tag: string
-    likes: number
-    comments: number
+    likes?: number
+    comments?: number
     createdAt?: Date | string
     authorId: number
     postCommentedByUsers?: CommentsUncheckedCreateNestedManyWithoutCommentRelatedToPostInput
@@ -11203,8 +11210,8 @@ export namespace Prisma {
     content: string
     imageURL?: string | null
     tag: string
-    likes: number
-    comments: number
+    likes?: number
+    comments?: number
     createdAt?: Date | string
     postLikedByUsers?: UserCreateNestedManyWithoutLikedPostsInput
     postCommentedByUsers?: CommentsCreateNestedManyWithoutCommentRelatedToPostInput
@@ -11215,8 +11222,8 @@ export namespace Prisma {
     content: string
     imageURL?: string | null
     tag: string
-    likes: number
-    comments: number
+    likes?: number
+    comments?: number
     createdAt?: Date | string
     postLikedByUsers?: UserUncheckedCreateNestedManyWithoutLikedPostsInput
     postCommentedByUsers?: CommentsUncheckedCreateNestedManyWithoutCommentRelatedToPostInput
@@ -11390,6 +11397,7 @@ export namespace Prisma {
     followersNumber?: IntNullableFilter<"User"> | number | null
     followingNumber?: IntNullableFilter<"User"> | number | null
     posts?: IntNullableFilter<"User"> | number | null
+    createdAt?: DateTimeFilter<"User"> | Date | string
   }
 
   export type UserUpsertWithWhereUniqueWithoutFollowedByInput = {
@@ -11581,6 +11589,7 @@ export namespace Prisma {
     followersNumber?: number | null
     followingNumber?: number | null
     posts?: number | null
+    createdAt?: Date | string
     followedBy?: UserCreateNestedManyWithoutFollowingInput
     following?: UserCreateNestedManyWithoutFollowedByInput
     createdPostsByUser?: PostCreateNestedManyWithoutAuthorInput
@@ -11605,6 +11614,7 @@ export namespace Prisma {
     followersNumber?: number | null
     followingNumber?: number | null
     posts?: number | null
+    createdAt?: Date | string
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     createdPostsByUser?: PostUncheckedCreateNestedManyWithoutAuthorInput
@@ -11633,6 +11643,7 @@ export namespace Prisma {
     followersNumber?: number | null
     followingNumber?: number | null
     posts?: number | null
+    createdAt?: Date | string
     followedBy?: UserCreateNestedManyWithoutFollowingInput
     following?: UserCreateNestedManyWithoutFollowedByInput
     likedPosts?: PostCreateNestedManyWithoutPostLikedByUsersInput
@@ -11657,6 +11668,7 @@ export namespace Prisma {
     followersNumber?: number | null
     followingNumber?: number | null
     posts?: number | null
+    createdAt?: Date | string
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     likedPosts?: PostUncheckedCreateNestedManyWithoutPostLikedByUsersInput
@@ -11739,6 +11751,7 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUpdateManyWithoutFollowingNestedInput
     following?: UserUpdateManyWithoutFollowedByNestedInput
     likedPosts?: PostUpdateManyWithoutPostLikedByUsersNestedInput
@@ -11763,6 +11776,7 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     likedPosts?: PostUncheckedUpdateManyWithoutPostLikedByUsersNestedInput
@@ -11802,6 +11816,7 @@ export namespace Prisma {
     followersNumber?: number | null
     followingNumber?: number | null
     posts?: number | null
+    createdAt?: Date | string
     followedBy?: UserCreateNestedManyWithoutFollowingInput
     following?: UserCreateNestedManyWithoutFollowedByInput
     likedPosts?: PostCreateNestedManyWithoutPostLikedByUsersInput
@@ -11826,6 +11841,7 @@ export namespace Prisma {
     followersNumber?: number | null
     followingNumber?: number | null
     posts?: number | null
+    createdAt?: Date | string
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     likedPosts?: PostUncheckedCreateNestedManyWithoutPostLikedByUsersInput
@@ -11845,8 +11861,8 @@ export namespace Prisma {
     content: string
     imageURL?: string | null
     tag: string
-    likes: number
-    comments: number
+    likes?: number
+    comments?: number
     createdAt?: Date | string
     postLikedByUsers?: UserCreateNestedManyWithoutLikedPostsInput
     author: UserCreateNestedOneWithoutCreatedPostsByUserInput
@@ -11857,8 +11873,8 @@ export namespace Prisma {
     content: string
     imageURL?: string | null
     tag: string
-    likes: number
-    comments: number
+    likes?: number
+    comments?: number
     createdAt?: Date | string
     authorId: number
     postLikedByUsers?: UserUncheckedCreateNestedManyWithoutLikedPostsInput
@@ -11942,6 +11958,7 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUpdateManyWithoutFollowingNestedInput
     following?: UserUpdateManyWithoutFollowedByNestedInput
     likedPosts?: PostUpdateManyWithoutPostLikedByUsersNestedInput
@@ -11966,6 +11983,7 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     likedPosts?: PostUncheckedUpdateManyWithoutPostLikedByUsersNestedInput
@@ -12067,6 +12085,7 @@ export namespace Prisma {
     followersNumber?: number | null
     followingNumber?: number | null
     posts?: number | null
+    createdAt?: Date | string
     followedBy?: UserCreateNestedManyWithoutFollowingInput
     following?: UserCreateNestedManyWithoutFollowedByInput
     likedPosts?: PostCreateNestedManyWithoutPostLikedByUsersInput
@@ -12091,6 +12110,7 @@ export namespace Prisma {
     followersNumber?: number | null
     followingNumber?: number | null
     posts?: number | null
+    createdAt?: Date | string
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     likedPosts?: PostUncheckedCreateNestedManyWithoutPostLikedByUsersInput
@@ -12119,6 +12139,7 @@ export namespace Prisma {
     followersNumber?: number | null
     followingNumber?: number | null
     posts?: number | null
+    createdAt?: Date | string
     followedBy?: UserCreateNestedManyWithoutFollowingInput
     following?: UserCreateNestedManyWithoutFollowedByInput
     likedPosts?: PostCreateNestedManyWithoutPostLikedByUsersInput
@@ -12143,6 +12164,7 @@ export namespace Prisma {
     followersNumber?: number | null
     followingNumber?: number | null
     posts?: number | null
+    createdAt?: Date | string
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     likedPosts?: PostUncheckedCreateNestedManyWithoutPostLikedByUsersInput
@@ -12209,6 +12231,7 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUpdateManyWithoutFollowingNestedInput
     following?: UserUpdateManyWithoutFollowedByNestedInput
     likedPosts?: PostUpdateManyWithoutPostLikedByUsersNestedInput
@@ -12233,6 +12256,7 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     likedPosts?: PostUncheckedUpdateManyWithoutPostLikedByUsersNestedInput
@@ -12267,6 +12291,7 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUpdateManyWithoutFollowingNestedInput
     following?: UserUpdateManyWithoutFollowedByNestedInput
     likedPosts?: PostUpdateManyWithoutPostLikedByUsersNestedInput
@@ -12291,6 +12316,7 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     likedPosts?: PostUncheckedUpdateManyWithoutPostLikedByUsersNestedInput
@@ -12330,6 +12356,7 @@ export namespace Prisma {
     followersNumber?: number | null
     followingNumber?: number | null
     posts?: number | null
+    createdAt?: Date | string
     followedBy?: UserCreateNestedManyWithoutFollowingInput
     following?: UserCreateNestedManyWithoutFollowedByInput
     likedPosts?: PostCreateNestedManyWithoutPostLikedByUsersInput
@@ -12354,6 +12381,7 @@ export namespace Prisma {
     followersNumber?: number | null
     followingNumber?: number | null
     posts?: number | null
+    createdAt?: Date | string
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     likedPosts?: PostUncheckedCreateNestedManyWithoutPostLikedByUsersInput
@@ -12382,6 +12410,7 @@ export namespace Prisma {
     followersNumber?: number | null
     followingNumber?: number | null
     posts?: number | null
+    createdAt?: Date | string
     followedBy?: UserCreateNestedManyWithoutFollowingInput
     following?: UserCreateNestedManyWithoutFollowedByInput
     likedPosts?: PostCreateNestedManyWithoutPostLikedByUsersInput
@@ -12406,6 +12435,7 @@ export namespace Prisma {
     followersNumber?: number | null
     followingNumber?: number | null
     posts?: number | null
+    createdAt?: Date | string
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     likedPosts?: PostUncheckedCreateNestedManyWithoutPostLikedByUsersInput
@@ -12462,6 +12492,7 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUpdateManyWithoutFollowingNestedInput
     following?: UserUpdateManyWithoutFollowedByNestedInput
     likedPosts?: PostUpdateManyWithoutPostLikedByUsersNestedInput
@@ -12486,6 +12517,7 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     likedPosts?: PostUncheckedUpdateManyWithoutPostLikedByUsersNestedInput
@@ -12520,6 +12552,7 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUpdateManyWithoutFollowingNestedInput
     following?: UserUpdateManyWithoutFollowedByNestedInput
     likedPosts?: PostUpdateManyWithoutPostLikedByUsersNestedInput
@@ -12544,6 +12577,7 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     likedPosts?: PostUncheckedUpdateManyWithoutPostLikedByUsersNestedInput
@@ -12582,8 +12616,8 @@ export namespace Prisma {
     content: string
     imageURL?: string | null
     tag: string
-    likes: number
-    comments: number
+    likes?: number
+    comments?: number
     createdAt?: Date | string
   }
 
@@ -12636,6 +12670,7 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUpdateManyWithoutFollowingNestedInput
     likedPosts?: PostUpdateManyWithoutPostLikedByUsersNestedInput
     createdPostsByUser?: PostUpdateManyWithoutAuthorNestedInput
@@ -12660,6 +12695,7 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
     likedPosts?: PostUncheckedUpdateManyWithoutPostLikedByUsersNestedInput
     createdPostsByUser?: PostUncheckedUpdateManyWithoutAuthorNestedInput
@@ -12684,6 +12720,7 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserUpdateWithoutFollowedByInput = {
@@ -12699,6 +12736,7 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     following?: UserUpdateManyWithoutFollowedByNestedInput
     likedPosts?: PostUpdateManyWithoutPostLikedByUsersNestedInput
     createdPostsByUser?: PostUpdateManyWithoutAuthorNestedInput
@@ -12723,6 +12761,7 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     likedPosts?: PostUncheckedUpdateManyWithoutPostLikedByUsersNestedInput
     createdPostsByUser?: PostUncheckedUpdateManyWithoutAuthorNestedInput
@@ -12747,6 +12786,7 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PostUpdateWithoutPostLikedByUsersInput = {
@@ -12948,6 +12988,7 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUpdateManyWithoutFollowingNestedInput
     following?: UserUpdateManyWithoutFollowedByNestedInput
     createdPostsByUser?: PostUpdateManyWithoutAuthorNestedInput
@@ -12972,6 +13013,7 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     createdPostsByUser?: PostUncheckedUpdateManyWithoutAuthorNestedInput
@@ -12996,6 +13038,7 @@ export namespace Prisma {
     followersNumber?: NullableIntFieldUpdateOperationsInput | number | null
     followingNumber?: NullableIntFieldUpdateOperationsInput | number | null
     posts?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CommentsUpdateWithoutCommentRelatedToPostInput = {
