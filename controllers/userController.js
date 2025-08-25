@@ -116,6 +116,14 @@ exports.user_get_details = [
       where: {
         id: req.authData.id,
       },
+
+      include: {
+        followedBy: true,
+        following: true,
+        likedPosts: true,
+        createdPostsByUser: true,
+        commentsOnPosts: true,
+      },
     });
 
     res.json(loggedInUser);
@@ -313,11 +321,11 @@ exports.user_followers = [
 
 exports.user_following = [
   asyncHandler(async (req, res, next) => {
-    const { id } = req.params;
+    const { id } = req.body;
 
     const userById = await prisma.user.findFirst({
       where: {
-        id: Number(id),
+        id: req.authData.id,
       },
       include: {
         following: true,
@@ -325,7 +333,7 @@ exports.user_following = [
     });
 
     checkIfUserAlreadyFollowingUser = userById.following.some(
-      (user) => user.id === req.authData.id,
+      (user) => user.id === Number(id),
     );
 
     if (!checkIfUserAlreadyFollowingUser) {

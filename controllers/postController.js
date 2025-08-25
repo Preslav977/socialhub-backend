@@ -114,6 +114,7 @@ exports.post_get_by_id = [
     const postById = await prisma.post.findFirst({
       where: {
         id: Number(id),
+        authorId: req.authData.id,
       },
       include: {
         author: true,
@@ -126,6 +127,26 @@ exports.post_get_by_id = [
     } else {
       res.json(postById);
     }
+  }),
+];
+
+exports.posts_get_by_liked_user = [
+  asyncHandler(async (req, res, next) => {
+    const posts = await prisma.post.findMany({
+      where: {
+        postLikedByUsers: {
+          some: {
+            id: req.authData.id,
+          },
+        },
+      },
+
+      include: {
+        postLikedByUsers: true,
+      },
+    });
+
+    res.json(posts);
   }),
 ];
 

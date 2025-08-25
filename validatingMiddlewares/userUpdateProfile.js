@@ -21,7 +21,7 @@ const userUpdateProfile = [
     });
 
     if (isUsernameTaken) {
-      throw new Error(`First name ${takenError}`);
+      throw new Error(`Username ${takenError}`);
     }
   }),
 

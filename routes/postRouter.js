@@ -4,6 +4,8 @@ const postRouter = Router();
 
 const postController = require("../controllers/postController");
 
+postRouter.get("/liked", postController.posts_get_by_liked_user);
+
 postRouter.post("/", postController.post_create_text);
 
 postRouter.post("/with-image", postController.post_create_with_image);
