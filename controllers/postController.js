@@ -150,6 +150,22 @@ exports.posts_get_by_liked_user = [
   }),
 ];
 
+exports.posts_get_by_author = [
+  asyncHandler(async (req, res, next) => {
+    const posts = await prisma.post.findMany({
+      where: {
+        authorId: req.authData.id,
+      },
+    });
+
+    if (posts.length === 0) {
+      res.json({ message: "Failed to get all author posts!" });
+    } else {
+      res.json(posts);
+    }
+  }),
+];
+
 exports.post_like = [
   asyncHandler(async (req, res, next) => {
     const { id } = req.body;
