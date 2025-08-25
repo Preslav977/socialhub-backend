@@ -4,11 +4,13 @@ const postRouter = Router();
 
 const postController = require("../controllers/postController");
 
+postRouter.post("/", postController.post_create_text);
+
+postRouter.get("/following", postController.posts_get_by_following_authors);
+
 postRouter.get("/author", postController.posts_get_by_author);
 
 postRouter.get("/liked", postController.posts_get_by_liked_user);
-
-postRouter.post("/", postController.post_create_text);
 
 postRouter.post("/with-image", postController.post_create_with_image);
 

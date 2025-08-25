@@ -9,7 +9,7 @@ const creatingPost = [
     .trim()
     .isLength({ min: 1, max: 2000 })
     .escape()
-    .withMessage(`Post content $${lengthContentError}`),
+    .withMessage(`Post content ${lengthContentError}`),
 
   body("tag")
     .trim()

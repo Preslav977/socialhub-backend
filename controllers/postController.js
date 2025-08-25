@@ -18,6 +18,8 @@ exports.post_create_text = [
 
     const { content, tag, authorId } = req.body;
 
+    console.log(content, tag, authorId);
+
     if (!errors.isEmpty()) {
       return res.status(400).send(errors.array());
     } else {
@@ -163,6 +165,34 @@ exports.posts_get_by_author = [
     } else {
       res.json(posts);
     }
+  }),
+];
+
+exports.posts_get_by_following_authors = [
+  asyncHandler(async (req, res, next) => {
+    const users = await prisma.user.findFirst({
+      where: {
+        id: req.authData.id,
+      },
+
+      include: {
+        following: true,
+      },
+    });
+
+    const usersFollowersId = users.following.map(
+      (followingUser) => followingUser.id,
+    );
+
+    const posts = await prisma.post.findMany({
+      where: {
+        authorId: {
+          in: usersFollowersId,
+        },
+      },
+    });
+
+    res.json(posts);
   }),
 ];
 
