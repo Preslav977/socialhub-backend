@@ -104,6 +104,10 @@ exports.posts_get = [
         postLikedByUsers: true,
         postCommentedByUsers: true,
       },
+
+      orderBy: {
+        id: "asc",
+      },
     });
 
     if (posts.length === 0) {
@@ -171,11 +175,7 @@ exports.posts_get_by_author = [
       },
     });
 
-    if (posts.length === 0) {
-      res.json({ message: "Failed to get all author posts!" });
-    } else {
-      res.json(posts);
-    }
+    res.json(posts);
   }),
 ];
 
@@ -254,6 +254,10 @@ exports.post_like = [
         include: {
           postLikedByUsers: true,
         },
+
+        orderBy: {
+          id: "asc",
+        },
       });
 
       res.json(likedPost);
@@ -285,6 +289,10 @@ exports.post_like = [
 
         include: {
           postLikedByUsers: true,
+        },
+
+        orderBy: {
+          id: "asc",
         },
       });
 
@@ -342,6 +350,10 @@ exports.post_comment = [
           },
         },
       },
+
+      orderBy: {
+        id: "asc",
+      },
     });
 
     res.json(postWithAComment);
@@ -393,6 +405,10 @@ exports.post_comment_reply = [
             commentLeftByUser: true,
           },
         },
+      },
+
+      orderBy: {
+        id: "asc",
       },
     });
 

@@ -166,6 +166,10 @@ exports.user_update_profile = [
           where: {
             id: Number(updateUserProfile.id),
           },
+
+          orderBy: {
+            id: "asc",
+          },
         });
 
         res.json(updatedUserProfile);
@@ -244,6 +248,7 @@ exports.user_following = [
       },
       include: {
         followedBy: true,
+        following: true,
       },
     });
 
@@ -278,6 +283,7 @@ exports.user_following = [
 
         include: {
           followedBy: true,
+          following: true,
         },
 
         data: {
@@ -296,6 +302,7 @@ exports.user_following = [
           id: req.authData.id,
         },
         include: {
+          followedBy: true,
           following: true,
         },
 
@@ -316,6 +323,10 @@ exports.user_following = [
         },
         include: {
           followedBy: true,
+          following: true,
+        },
+        orderBy: {
+          id: "asc",
         },
       });
 
@@ -325,32 +336,33 @@ exports.user_following = [
         },
 
         include: {
+          followedBy: true,
           following: true,
+        },
+
+        orderBy: {
+          id: "asc",
         },
       });
 
-      res.json(findFollower, findFollowing);
+      res.json([findFollower, findFollowing]);
     } else {
       const unFollowerUser = await prisma.user.update({
         where: {
           id: userById.id,
         },
-
         include: {
           followedBy: true,
         },
-
         data: {
           followedBy: {
             disconnect: [{ id: req.authData.id }],
           },
-
           followersNumber: {
             decrement: 1,
           },
         },
       });
-
       const unFollowingUser = await prisma.user.update({
         where: {
           id: req.authData.id,
@@ -358,38 +370,41 @@ exports.user_following = [
         include: {
           following: true,
         },
-
         data: {
           following: {
             disconnect: [{ id: Number(id) }],
           },
-
           followingNumber: {
             decrement: 1,
           },
         },
       });
-
       const findUnFollower = await prisma.user.findFirst({
         where: {
           id: unFollowerUser.id,
         },
         include: {
           followedBy: true,
+          following: true,
+        },
+        orderBy: {
+          id: "asc",
         },
       });
-
       const findUnFollowing = await prisma.user.findFirst({
         where: {
           id: unFollowingUser.id,
         },
-
         include: {
+          followedBy: true,
           following: true,
+        },
+        orderBy: {
+          id: "asc",
         },
       });
 
-      res.json(findUnFollower, findUnFollowing);
+      res.json([findUnFollower, findUnFollowing]);
     }
   }),
 ];

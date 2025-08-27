@@ -65,6 +65,10 @@ exports.chat_create = [
           receiverChat: true,
           messages: true,
         },
+
+        orderBy: {
+          id: "asc",
+        },
       });
 
       res.json(chat);
