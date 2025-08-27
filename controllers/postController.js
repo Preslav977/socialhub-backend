@@ -99,7 +99,12 @@ exports.post_create_with_image = [
 
 exports.posts_get = [
   asyncHandler(async (req, res, next) => {
-    const posts = await prisma.post.findMany();
+    const posts = await prisma.post.findMany({
+      include: {
+        postLikedByUsers: true,
+        postCommentedByUsers: true,
+      },
+    });
 
     if (posts.length === 0) {
       res.json({ message: "Failed to get all posts!" });
@@ -157,6 +162,12 @@ exports.posts_get_by_author = [
     const posts = await prisma.post.findMany({
       where: {
         authorId: req.authData.id,
+      },
+
+      include: {
+        author: true,
+        postLikedByUsers: true,
+        postCommentedByUsers: true,
       },
     });
 
