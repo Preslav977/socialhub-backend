@@ -18,7 +18,9 @@ postRouter.get("/", postController.posts_get);
 
 postRouter.get("/:id", postController.post_get_by_id);
 
-postRouter.put("/like/:id", postController.post_like);
+postRouter.put("/:id/like", postController.post_like);
+
+postRouter.put("/:id/like/:commentId", postController.post_like_comment);
 
 postRouter.post("/:id/comment", postController.post_comment);
 

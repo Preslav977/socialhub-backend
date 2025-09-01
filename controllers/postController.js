@@ -439,6 +439,86 @@ exports.post_comment_reply = [
   }),
 ];
 
+exports.post_like_comment = [
+  asyncHandler(async (req, res, next) => {
+    const { id, commentId } = req.body;
+
+    const commentById = await prisma.comments.findFirst({
+      where: {
+        id: Number(commentId),
+        commentRelatedToPostId: Number(id),
+      },
+
+      include: {
+        commentLikedByUsers: true,
+        commentRelatedToPost: true,
+      },
+    });
+
+    const checkIfUserLikedTheComment = commentById.commentLikedByUsers.some(
+      (user) => user.id === req.authData.id,
+    );
+
+    if (!checkIfUserLikedTheComment && commentById.likes >= 0) {
+      const commentHasBeenLiked = await prisma.comments.update({
+        where: {
+          id: Number(commentId),
+          commentRelatedToPostId: Number(id),
+        },
+        data: {
+          likes: {
+            increment: 1,
+          },
+          commentLikedByUsers: {
+            connect: [{ id: req.authData.id }],
+          },
+        },
+      });
+
+      const likedComment = await prisma.comments.findFirst({
+        where: {
+          id: commentHasBeenLiked.id,
+          commentRelatedToPostId: commentHasBeenLiked.commentRelatedToPostId,
+        },
+        include: {
+          commentLikedByUsers: true,
+          commentRelatedToPost: true,
+        },
+      });
+
+      res.json(likedComment);
+    } else {
+      const commentHasBeenDisliked = await prisma.comments.update({
+        where: {
+          id: Number(commentId),
+          commentRelatedToPostId: Number(id),
+        },
+        data: {
+          likes: {
+            decrement: 1,
+          },
+          commentLikedByUsers: {
+            disconnect: [{ id: req.authData.id }],
+          },
+        },
+      });
+
+      const unLikedComment = await prisma.comments.findFirst({
+        where: {
+          id: commentHasBeenDisliked.id,
+          commentRelatedToPostId: commentHasBeenDisliked.commentRelatedToPostId,
+        },
+        include: {
+          commentLikedByUsers: true,
+          commentRelatedToPost: true,
+        },
+      });
+
+      res.json(unLikedComment);
+    }
+  }),
+];
+
 exports.post_delete = [
   asyncHandler(async (req, res, next) => {
     const { id } = req.params;
