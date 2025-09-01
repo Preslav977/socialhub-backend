@@ -101,6 +101,7 @@ exports.posts_get = [
   asyncHandler(async (req, res, next) => {
     const posts = await prisma.post.findMany({
       include: {
+        author: true,
         postLikedByUsers: true,
         postCommentedByUsers: true,
       },
@@ -111,7 +112,7 @@ exports.posts_get = [
     });
 
     if (posts.length === 0) {
-      res.json({ message: "Failed to get all posts!" });
+      res.json({ message: "No posts has been created!" });
     } else {
       res.json(posts);
     }
@@ -129,7 +130,12 @@ exports.post_get_by_id = [
       },
       include: {
         author: true,
-        postCommentedByUsers: true,
+        postCommentedByUsers: {
+          include: {
+            commentLeftByUser: true,
+          },
+        },
+        postLikedByUsers: true,
       },
     });
 
@@ -154,18 +160,28 @@ exports.posts_get_by_liked_user = [
 
       include: {
         postLikedByUsers: true,
+        postCommentedByUsers: true,
+        author: true,
       },
     });
 
-    res.json(posts);
+    if (posts.length === 0) {
+      res.json({ message: "No liked posts!" });
+    } else {
+      res.json(posts);
+    }
   }),
 ];
 
 exports.posts_get_by_author = [
   asyncHandler(async (req, res, next) => {
+    const { id } = req.params;
+
     const posts = await prisma.post.findMany({
       where: {
-        authorId: req.authData.id,
+        author: {
+          id: Number(id),
+        },
       },
 
       include: {
@@ -175,7 +191,9 @@ exports.posts_get_by_author = [
       },
     });
 
-    res.json(posts);
+    if (posts.length === 0) {
+      res.json({ message: "No posts has been created by the author!" });
+    }
   }),
 ];
 
@@ -203,7 +221,11 @@ exports.posts_get_by_following_authors = [
       },
     });
 
-    res.json(posts);
+    if (posts.length === 0) {
+      res.json({
+        message: "No posts has been created by the following authors!",
+      });
+    }
   }),
 ];
 
@@ -303,7 +325,7 @@ exports.post_like = [
 
 exports.post_comment = [
   asyncHandler(async (req, res, next) => {
-    const { id } = req.params;
+    const { id } = req.body;
 
     const { text } = req.body;
 
@@ -318,6 +340,7 @@ exports.post_comment = [
         text: text,
         commentLeftByUserId: req.authData.id,
         commentRelatedToPostId: postById.id,
+        createdAt: new Date(),
       },
 
       include: {
