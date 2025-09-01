@@ -130,12 +130,13 @@ exports.post_get_by_id = [
       },
       include: {
         author: true,
+        postLikedByUsers: true,
         postCommentedByUsers: {
           include: {
             commentLeftByUser: true,
+            commentLikedByUsers: true,
           },
         },
-        postLikedByUsers: true,
       },
     });
 
@@ -275,6 +276,7 @@ exports.post_like = [
 
         include: {
           postLikedByUsers: true,
+          author: true,
         },
 
         orderBy: {
@@ -291,6 +293,7 @@ exports.post_like = [
 
         include: {
           postLikedByUsers: true,
+          author: true,
         },
 
         data: {
@@ -369,6 +372,7 @@ exports.post_comment = [
         postLikedByUsers: true,
         postCommentedByUsers: {
           include: {
+            commentLikedByUsers: true,
             commentLeftByUser: true,
           },
         },
@@ -460,7 +464,7 @@ exports.post_like_comment = [
     );
 
     if (!checkIfUserLikedTheComment && commentById.likes >= 0) {
-      const commentHasBeenLiked = await prisma.comments.update({
+      await prisma.comments.update({
         where: {
           id: Number(commentId),
           commentRelatedToPostId: Number(id),
@@ -475,20 +479,24 @@ exports.post_like_comment = [
         },
       });
 
-      const likedComment = await prisma.comments.findFirst({
+      const likedCommentOnPost = await prisma.post.findFirst({
         where: {
-          id: commentHasBeenLiked.id,
-          commentRelatedToPostId: commentHasBeenLiked.commentRelatedToPostId,
+          id: Number(id),
         },
         include: {
-          commentLikedByUsers: true,
-          commentRelatedToPost: true,
+          postLikedByUsers: true,
+          postCommentedByUsers: {
+            include: {
+              commentLikedByUsers: true,
+              commentLeftByUser: true,
+            },
+          },
         },
       });
 
-      res.json(likedComment);
+      res.json(likedCommentOnPost);
     } else {
-      const commentHasBeenDisliked = await prisma.comments.update({
+      await prisma.comments.update({
         where: {
           id: Number(commentId),
           commentRelatedToPostId: Number(id),
@@ -503,18 +511,21 @@ exports.post_like_comment = [
         },
       });
 
-      const unLikedComment = await prisma.comments.findFirst({
+      const dislikedCommentOnPost = await prisma.post.findFirst({
         where: {
-          id: commentHasBeenDisliked.id,
-          commentRelatedToPostId: commentHasBeenDisliked.commentRelatedToPostId,
+          id: Number(id),
         },
         include: {
-          commentLikedByUsers: true,
-          commentRelatedToPost: true,
+          postLikedByUsers: true,
+          postCommentedByUsers: {
+            include: {
+              commentLikedByUsers: true,
+              commentLeftByUser: true,
+            },
+          },
         },
       });
-
-      res.json(unLikedComment);
+      res.json(dislikedCommentOnPost);
     }
   }),
 ];
