@@ -67,7 +67,7 @@ model Post {
 
 model Comments {
   id                     Int        @id @default(autoincrement())
-  text                   String
+  text                   String?
   commentLeftByUser      User       @relation(fields: [commentLeftByUserId], references: [id], onDelete: Cascade)
   commentLeftByUserId    Int
   createdAt              DateTime   @default(now())
@@ -78,6 +78,7 @@ model Comments {
   parentComment          Comments?  @relation("CommentReply", fields: [parentCommentId], references: [id], onDelete: Cascade)
   parentCommentId        Int?
   childCommentReply      Comments[] @relation("CommentReply")
+  textReply String?
 
   @@map("comments")
 }

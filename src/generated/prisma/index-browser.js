@@ -155,7 +155,8 @@ exports.Prisma.CommentsScalarFieldEnum = {
   createdAt: 'createdAt',
   commentRelatedToPostId: 'commentRelatedToPostId',
   likes: 'likes',
-  parentCommentId: 'parentCommentId'
+  parentCommentId: 'parentCommentId',
+  textReply: 'textReply'
 };
 
 exports.Prisma.ChatScalarFieldEnum = {

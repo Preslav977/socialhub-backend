@@ -131,10 +131,17 @@ exports.post_get_by_id = [
       include: {
         author: true,
         postLikedByUsers: true,
+
         postCommentedByUsers: {
           include: {
             commentLeftByUser: true,
             commentLikedByUsers: true,
+            childCommentReply: {
+              include: {
+                commentLeftByUser: true,
+                commentLikedByUsers: true,
+              },
+            },
           },
         },
       },
@@ -194,6 +201,8 @@ exports.posts_get_by_author = [
 
     if (posts.length === 0) {
       res.json({ message: "No posts has been created by the author!" });
+    } else {
+      res.json(posts);
     }
   }),
 ];
@@ -226,6 +235,8 @@ exports.posts_get_by_following_authors = [
       res.json({
         message: "No posts has been created by the following authors!",
       });
+    } else {
+      res.json(posts);
     }
   }),
 ];
@@ -255,7 +266,21 @@ exports.post_like = [
         },
 
         include: {
+          author: true,
           postLikedByUsers: true,
+
+          postCommentedByUsers: {
+            include: {
+              commentLeftByUser: true,
+              commentLikedByUsers: true,
+              childCommentReply: {
+                include: {
+                  commentLeftByUser: true,
+                  commentLikedByUsers: true,
+                },
+              },
+            },
+          },
         },
 
         data: {
@@ -275,10 +300,22 @@ exports.post_like = [
         },
 
         include: {
-          postLikedByUsers: true,
           author: true,
-        },
+          postLikedByUsers: true,
 
+          postCommentedByUsers: {
+            include: {
+              commentLeftByUser: true,
+              commentLikedByUsers: true,
+              childCommentReply: {
+                include: {
+                  commentLeftByUser: true,
+                  commentLikedByUsers: true,
+                },
+              },
+            },
+          },
+        },
         orderBy: {
           id: "asc",
         },
@@ -313,7 +350,21 @@ exports.post_like = [
         },
 
         include: {
+          author: true,
           postLikedByUsers: true,
+
+          postCommentedByUsers: {
+            include: {
+              commentLeftByUser: true,
+              commentLikedByUsers: true,
+              childCommentReply: {
+                include: {
+                  commentLeftByUser: true,
+                  commentLikedByUsers: true,
+                },
+              },
+            },
+          },
         },
 
         orderBy: {
@@ -369,11 +420,18 @@ exports.post_comment = [
       },
 
       include: {
+        author: true,
         postLikedByUsers: true,
         postCommentedByUsers: {
           include: {
-            commentLikedByUsers: true,
             commentLeftByUser: true,
+            commentLikedByUsers: true,
+            childCommentReply: {
+              include: {
+                commentLeftByUser: true,
+                commentLikedByUsers: true,
+              },
+            },
           },
         },
       },
@@ -391,7 +449,7 @@ exports.post_comment_reply = [
   asyncHandler(async (req, res, next) => {
     const { id } = req.params;
 
-    const { text, commentId } = req.body;
+    const { textReply, commentId } = req.body;
 
     const postById = await prisma.post.findFirst({
       where: {
@@ -401,7 +459,7 @@ exports.post_comment_reply = [
 
     await prisma.comments.create({
       data: {
-        text: text,
+        textReply: textReply,
         commentLeftByUserId: req.authData.id,
         commentRelatedToPostId: postById.id,
         parentCommentId: Number(commentId),
@@ -426,10 +484,18 @@ exports.post_comment_reply = [
       },
 
       include: {
+        author: true,
         postLikedByUsers: true,
         postCommentedByUsers: {
           include: {
             commentLeftByUser: true,
+            commentLikedByUsers: true,
+            childCommentReply: {
+              include: {
+                commentLeftByUser: true,
+                commentLikedByUsers: true,
+              },
+            },
           },
         },
       },
@@ -484,13 +550,23 @@ exports.post_like_comment = [
           id: Number(id),
         },
         include: {
+          author: true,
           postLikedByUsers: true,
           postCommentedByUsers: {
             include: {
-              commentLikedByUsers: true,
               commentLeftByUser: true,
+              commentLikedByUsers: true,
+              childCommentReply: {
+                include: {
+                  commentLeftByUser: true,
+                  commentLikedByUsers: true,
+                },
+              },
             },
           },
+        },
+        orderBy: {
+          id: "asc",
         },
       });
 
@@ -516,13 +592,23 @@ exports.post_like_comment = [
           id: Number(id),
         },
         include: {
+          author: true,
           postLikedByUsers: true,
           postCommentedByUsers: {
             include: {
-              commentLikedByUsers: true,
               commentLeftByUser: true,
+              commentLikedByUsers: true,
+              childCommentReply: {
+                include: {
+                  commentLeftByUser: true,
+                  commentLikedByUsers: true,
+                },
+              },
             },
           },
+        },
+        orderBy: {
+          id: "asc",
         },
       });
       res.json(dislikedCommentOnPost);
