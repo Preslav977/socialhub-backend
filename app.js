@@ -28,7 +28,10 @@ app.use(cors());
 
 app.use(
   cors({
-    origin: [],
+    origin: [
+      "https://socialhub-backend-d9kn.onrender.com/",
+      "https://socialhub-frontend-seven.vercel.app",
+    ],
   }),
 );
 
@@ -146,7 +149,7 @@ const RateLimit = require("express-rate-limit");
 
 const limiter = RateLimit({
   windowMs: 1 * 60 * 1000,
-  max: 30,
+  max: 100,
 });
 
 app.use(limiter);
