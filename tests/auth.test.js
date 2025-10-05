@@ -61,6 +61,16 @@ describe("testing auth routes with controllers", (done) => {
     });
 
     it("should respond with status 400, if the username and display name is taken", async () => {
+      await request(app).post("/signup").send({
+        username: "preslaw",
+        display_name: "preslaw",
+        bio: "",
+        website: "",
+        github: "",
+        password: "12345678B",
+        confirm_password: "12345678B",
+      });
+
       const { body, header, status } = await request(app).post("/signup").send({
         username: "preslaw",
         display_name: "preslaw",
@@ -71,7 +81,11 @@ describe("testing auth routes with controllers", (done) => {
         confirm_password: "12345678B",
       });
 
-      const findTheSignUpUser = await prisma.user.findFirst();
+      const findTheSignUpUser = await prisma.user.findFirst({
+        where: {
+          username: body.username,
+        },
+      });
 
       expect(status).toBe(400);
 
@@ -81,7 +95,7 @@ describe("testing auth routes with controllers", (done) => {
 
       const [username, display_name] = body;
 
-      expect(username.msg).toEqual("First name is already taken");
+      expect(username.msg).toEqual("Username is already taken");
 
       expect(display_name.msg).toEqual("Display name is already taken");
     });

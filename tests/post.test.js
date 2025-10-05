@@ -359,7 +359,7 @@ describe("testing post routes and controllers", (done) => {
         const { id } = createdPost.body;
 
         const { body, status, header } = await request(app)
-          .put(`/posts/like/${id}`)
+          .put(`/posts/${id}/like`)
           .set("Authorization", `Bearer ${token}`)
           .send({
             id: id,
@@ -436,7 +436,7 @@ describe("testing post routes and controllers", (done) => {
           .set("Authorization", `Bearer ${token}`)
           .send({
             text: "hello",
-            commented_postId: id,
+            id: id,
           });
 
         expect(body.content).toEqual("test");
@@ -540,15 +540,15 @@ describe("testing post routes and controllers", (done) => {
           .set("Authorization", `Bearer ${token}`)
           .send({
             text: "hello",
-            commentRelatedToPostId: id,
+            id: id,
           });
 
         const { body, status, header } = await request(app)
           .post(`/posts/${id}/comment/${creatingAComment.body.id}`)
           .set("Authorization", `Bearer ${token}`)
           .send({
-            text: "hello again",
-            commentRelatedToPostId: id,
+            textReply: "hello again",
+            id: creatingAComment.body.id,
             commentId: creatingAComment.body.postCommentedByUsers[0].id,
           });
 
@@ -614,7 +614,7 @@ describe("testing post routes and controllers", (done) => {
           "USER",
         );
 
-        expect(body.postCommentedByUsers[1].text).toEqual("hello again");
+        expect(body.postCommentedByUsers[1].textReply).toEqual("hello again");
 
         expect(body.postCommentedByUsers[1].userId).toEqual(
           body.postCommentedByUsers[1].userId,
