@@ -10,7 +10,7 @@ SocialHub is a full-stack social media clone that allows the users to create use
 
 # Live Preview
 
-- [View the live site here]()
+- [View the live site here](https://socialhub-frontend-seven.vercel.app/)
 - [View the front-end API repository here](https://github.com/Preslav977/socialhub-frontend)
 
 # Features
