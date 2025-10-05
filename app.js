@@ -22,7 +22,15 @@ const cors = require("cors");
 
 const app = express();
 
+const compression = require("compression");
+
 app.use(cors());
+
+app.use(
+  cors({
+    origin: [],
+  }),
+);
 
 app.set("views", path.join(__dirname, "views"));
 
@@ -131,6 +139,17 @@ app.get(
     });
   }),
 );
+
+app.use(compression());
+
+const RateLimit = require("express-rate-limit");
+
+const limiter = RateLimit({
+  windowMs: 1 * 60 * 1000,
+  max: 30,
+});
+
+app.use(limiter);
 
 app.use(authRouter);
 

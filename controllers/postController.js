@@ -105,7 +105,7 @@ exports.posts_get = [
       },
 
       orderBy: {
-        id: "asc",
+        createdAt: "desc",
       },
     });
 
@@ -124,7 +124,6 @@ exports.post_get_by_id = [
     const postById = await prisma.post.findFirst({
       where: {
         id: Number(id),
-        authorId: req.authData.id,
       },
       include: {
         author: true,
@@ -142,6 +141,10 @@ exports.post_get_by_id = [
             },
           },
         },
+      },
+
+      orderBy: {
+        createdAt: "desc",
       },
     });
 
@@ -226,6 +229,12 @@ exports.posts_get_by_following_authors = [
         authorId: {
           in: usersFollowersId,
         },
+      },
+
+      include: {
+        author: true,
+        postLikedByUsers: true,
+        postCommentedByUsers: true,
       },
     });
 

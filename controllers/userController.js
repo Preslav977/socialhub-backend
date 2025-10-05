@@ -167,6 +167,14 @@ exports.user_update_profile = [
             id: Number(updateUserProfile.id),
           },
 
+          include: {
+            followedBy: true,
+            following: true,
+            likedPosts: true,
+            createdPostsByUser: true,
+            commentsOnPosts: true,
+          },
+
           orderBy: {
             id: "asc",
           },
