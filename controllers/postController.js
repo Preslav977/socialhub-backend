@@ -18,8 +18,6 @@ exports.post_create_text = [
 
     const { content, tag, authorId } = req.body;
 
-    console.log(content, tag, authorId);
-
     if (!errors.isEmpty()) {
       return res.status(400).send(errors.array());
     } else {
