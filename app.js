@@ -29,8 +29,8 @@ app.use(cors());
 app.use(
   cors({
     origin: [
-      "https://socialhub-backend-d9kn.onrender.com/",
-      "https://socialhub-frontend-seven.vercel.app",
+      // "https://socialhub-backend-d9kn.onrender.com/",
+      // "https://socialhub-frontend-seven.vercel.app",
     ],
   }),
 );

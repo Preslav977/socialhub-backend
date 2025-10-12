@@ -1,11 +1,12 @@
 const { body } = require("express-validator");
 
-const messageLengthErr = "must not be more than 666 characters";
+const messageLengthErr = "must be between 1 and 666 characters";
 
 const sendingAMessage = [
-  body("message_text")
+  body("text")
     .trim()
-    .isLength({ max: 666 })
+    .isLength({ min: 1, max: 666 })
+    .escape()
     .withMessage(`Message text ${messageLengthErr}`),
 ];
 

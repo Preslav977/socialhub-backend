@@ -328,7 +328,7 @@ exports.post_like = [
         },
       });
 
-      res.json(likedPost);
+      return res.json(likedPost);
     } else {
       const postHasBeenDisliked = await prisma.post.update({
         where: {
@@ -379,7 +379,7 @@ exports.post_like = [
         },
       });
 
-      res.json(unLikedPost);
+      return res.json(unLikedPost);
     }
   }),
 ];
