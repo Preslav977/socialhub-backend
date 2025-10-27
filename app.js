@@ -14,6 +14,8 @@ const passport = require("passport");
 
 const LocalStrategy = require("passport-local").Strategy;
 
+const GitHubStrategy = require("passport-github2").Strategy;
+
 const bcrypt = require("bcryptjs");
 
 const asyncHandler = require("express-async-handler");
@@ -22,6 +24,10 @@ const cors = require("cors");
 
 const app = express();
 
+const GITHUB_CLIENT_ID = process.env.CLIENT_ID;
+
+const GITHUB_CLIENT_SECRET = process.env.CLIENT_SECRET;
+
 const compression = require("compression");
 
 app.use(cors());
@@ -29,8 +35,8 @@ app.use(cors());
 app.use(
   cors({
     origin: [
-      "https://socialhub-backend-d9kn.onrender.com/",
-      "https://socialhub-frontend-seven.vercel.app",
+      // "https://socialhub-backend-d9kn.onrender.com/",
+      // "https://socialhub-frontend-seven.vercel.app",
     ],
   }),
 );
@@ -105,6 +111,29 @@ passport.use(
   }),
 );
 
+passport.use(
+  new GitHubStrategy(
+    {
+      clientID: GITHUB_CLIENT_ID,
+      clientSecret: GITHUB_CLIENT_SECRET,
+      callbackURL: "http://localhost:5000/auth/github/callback",
+    },
+    function (accessToken, refreshToken, profile, done) {
+      console.log(
+        "accessToken",
+        accessToken,
+        "refreshToken",
+        refreshToken,
+        "profile",
+        profile,
+      );
+      process.nextTick(function () {
+        return done(null, profile);
+      });
+    },
+  ),
+);
+
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
@@ -155,6 +184,22 @@ const limiter = RateLimit({
 // app.use(limiter);
 
 app.use(authRouter);
+
+app.get(
+  "/auth/github",
+  passport.authenticate("github", { scope: ["user:email"] }),
+  function (req, res) {
+    console.log("Req", req);
+  },
+);
+
+app.get(
+  "/auth/github/callback",
+  passport.authenticate("github", { failureRedirect: "/login" }),
+  function (req, res) {
+    res.redirect("/login");
+  },
+);
 
 app.use(verifyToken);
 
