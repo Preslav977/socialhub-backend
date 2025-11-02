@@ -112,6 +112,8 @@ exports.user_get_by_id = [
 
 exports.user_get_details = [
   asyncHandler(async (req, res, next) => {
+    console.log(req.authData);
+
     const loggedInUser = await prisma.user.findFirst({
       where: {
         id: req.authData.id,
