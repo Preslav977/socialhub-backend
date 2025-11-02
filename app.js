@@ -112,26 +112,14 @@ passport.use(
       callbackURL: "http://localhost:5000/auth/github/callback",
     },
     async function (accessToken, refreshToken, profile, done) {
-      console.log(
-        // "accessToken",
-        // accessToken,
-        // "refreshToken",
-        // refreshToken,
-        // "profile",
-        // profile,
-
-        profile,
-      );
       try {
-        const findUserByID = await prisma.user.findFirst({
+        const findUserByUsername = await prisma.user.findFirst({
           where: {
             username: profile.username,
           },
         });
 
-        console.log(findUserByID);
-
-        if (!findUserByID) {
+        if (!findUserByUsername) {
           bcrypt.hash(profile.id, 10, async (error, hashedPassword) => {
             if (error) {
               console.error("Failed to hash the password", error);
@@ -139,7 +127,7 @@ passport.use(
               throw error;
             }
 
-            const createUser = await prisma.user.create({
+            const signUpUserFromGitHubCredentials = await prisma.user.create({
               data: {
                 username: profile.username,
                 display_name: profile.displayName,
@@ -148,32 +136,30 @@ passport.use(
                 github: "",
                 password: hashedPassword,
                 confirm_password: hashedPassword,
-                profile_picture: "",
+                profile_picture: profile.photos[0].value,
                 followersNumber: 0,
                 followingNumber: 0,
                 posts: 0,
               },
             });
 
-            asyncHandler(async (req, res, next) => {
-              res.json(createUser);
-            });
-          });
+            async (req, res, next) => {
+              res.json(signUpUserFromGitHubCredentials);
+            };
 
-          // console.log(createUser);
+            return done(null, signUpUserFromGitHubCredentials);
+          });
         } else {
-          console.log(findUserByID);
-          return done(null, findUserByID);
+          return done(null, findUserByUsername);
         }
       } catch (error) {
-        console.log(error);
+        return done(error);
       }
     },
   ),
 );
 
 passport.serializeUser((user, done) => {
-  console.log(user.id);
   done(null, user.id);
 });
 
@@ -184,7 +170,7 @@ passport.deserializeUser(async (id, done) => {
         id: Number(id),
       },
     });
-    console.log(findUserById);
+
     done(null, findUserById);
   } catch (error) {
     done(error);
@@ -223,7 +209,7 @@ const limiter = RateLimit({
 
 // app.use(limiter);
 
-// app.use(authRouter);
+app.use(authRouter);
 
 app.get(
   "/auth/github",
