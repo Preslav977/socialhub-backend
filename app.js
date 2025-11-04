@@ -32,14 +32,16 @@ const jwt = require("jsonwebtoken");
 
 const compression = require("compression");
 
-app.use(
-  cors({
-    origin: [
-      "https://socialhub-backend-d9kn.onrender.com/",
-      "https://socialhub-frontend-seven.vercel.app",
-    ],
-  }),
-);
+app.use(cors());
+
+// app.use(
+//   cors({
+//     origin: [
+//       "https://socialhub-backend-d9kn.onrender.com/",
+//       "https://socialhub-frontend-seven.vercel.app",
+//     ],
+//   }),
+// );
 
 app.set("views", path.join(__dirname, "views"));
 
