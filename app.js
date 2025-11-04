@@ -14,6 +14,8 @@ const passport = require("passport");
 
 const LocalStrategy = require("passport-local").Strategy;
 
+const GitHubStrategy = require("passport-github2").Strategy;
+
 const bcrypt = require("bcryptjs");
 
 const asyncHandler = require("express-async-handler");
@@ -22,9 +24,13 @@ const cors = require("cors");
 
 const app = express();
 
-const compression = require("compression");
+const GITHUB_CLIENT_ID = process.env.CLIENT_ID;
 
-app.use(cors());
+const GITHUB_CLIENT_SECRET = process.env.CLIENT_SECRET;
+
+const jwt = require("jsonwebtoken");
+
+const compression = require("compression");
 
 app.use(
   cors({
@@ -105,6 +111,62 @@ passport.use(
   }),
 );
 
+passport.use(
+  new GitHubStrategy(
+    {
+      clientID: GITHUB_CLIENT_ID,
+      clientSecret: GITHUB_CLIENT_SECRET,
+      callbackURL:
+        "https://socialhub-backend-d9kn.onrender.com/auth/github/callback",
+    },
+    async function (accessToken, refreshToken, profile, done) {
+      try {
+        const findUserByUsername = await prisma.user.findFirst({
+          where: {
+            username: profile.username,
+          },
+        });
+
+        if (!findUserByUsername) {
+          bcrypt.hash(profile.id, 10, async (error, hashedPassword) => {
+            if (error) {
+              console.error("Failed to hash the password", error);
+
+              throw error;
+            }
+
+            const signUpUserFromGitHubCredentials = await prisma.user.create({
+              data: {
+                username: profile.username,
+                display_name: profile.displayName,
+                bio: "",
+                website: "",
+                github: "",
+                password: hashedPassword,
+                confirm_password: hashedPassword,
+                profile_picture: profile.photos[0].value,
+                followersNumber: 0,
+                followingNumber: 0,
+                posts: 0,
+              },
+            });
+
+            async (req, res, next) => {
+              res.json(signUpUserFromGitHubCredentials);
+            };
+
+            return done(null, signUpUserFromGitHubCredentials);
+          });
+        } else {
+          return done(null, findUserByUsername);
+        }
+      } catch (error) {
+        return done(error);
+      }
+    },
+  ),
+);
+
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
@@ -116,6 +178,7 @@ passport.deserializeUser(async (id, done) => {
         id: Number(id),
       },
     });
+
     done(null, findUserById);
   } catch (error) {
     done(error);
@@ -155,6 +218,32 @@ const limiter = RateLimit({
 // app.use(limiter);
 
 app.use(authRouter);
+
+app.get(
+  "/auth/github",
+  passport.authenticate("github", { scope: ["user:email"] }),
+);
+
+app.get(
+  "/auth/github/callback",
+  passport.authenticate("github", {
+    failureRedirect: "https://socialhub-frontend-seven.vercel.app/login",
+  }),
+
+  (req, res) => {
+    const { id } = req.user;
+
+    const token = jwt.sign({ id }, process.env.SECRET, {
+      expiresIn: "25m",
+    });
+
+    if (token) {
+      res.redirect(
+        `https://socialhub-frontend-seven.vercel.app/token/${token}`,
+      );
+    }
+  },
+);
 
 app.use(verifyToken);
 
