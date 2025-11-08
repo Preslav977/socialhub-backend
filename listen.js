@@ -1,19 +1,19 @@
 require("dotenv").config();
 
-const { createServer } = require("http");
+const { initSocket } = require("./utility/socket");
 
-const { Server } = require("socket.io");
+const { createServer } = require("node:http");
 
 const app = require("./app");
 
 const httpServer = createServer(app);
 
-const PORT = process.env.PORT || 3000;
+initSocket(httpServer);
 
-const io = new Server(httpServer);
+const PORT = process.env.PORT || 3000;
 
 httpServer.listen(PORT, () =>
   console.log(`Express app - listening on port ${PORT}`),
 );
 
-module.exports = io;
+module.exports = httpServer;

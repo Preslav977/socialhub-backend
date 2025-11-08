@@ -32,6 +32,34 @@ const jwt = require("jsonwebtoken");
 
 const compression = require("compression");
 
+const httpServer = require("./listen");
+
+// console.log(emitEvent());
+
+// console.log(io.emit("123"));
+
+const { initSocket, getIO, socketEmit } = require("./utility/socket");
+
+initSocket(httpServer);
+
+// initSocket(httpServer);
+
+// getIO();
+
+// socketEmit(httpServer);
+
+// console.log(test());
+
+// initSocket(httpServer);
+
+// getIO();
+
+// io.emit("hello", "world");
+
+// socketEmit("hello", "world");
+
+// console.log(socketEmit("hello", "world"));
+
 app.use(cors());
 
 // app.use(

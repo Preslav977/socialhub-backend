@@ -10,8 +10,6 @@ const uploadingImage = require("../helper/uploadingImage");
 
 const creatingPost = require("../validatingMiddlewares/creatingPost");
 
-const io = require("../listen");
-
 exports.post_create_text = [
   creatingPost,
 
@@ -44,10 +42,6 @@ exports.post_create_text = [
             increment: 1,
           },
         },
-      });
-
-      io.on("creating a post", (post) => {
-        console.log(post);
       });
 
       res.json(createPost);
