@@ -28,7 +28,12 @@ const getIO = () => {
   return io;
 };
 
+const socketEmit = (event, payload) => {
+  io.emit(event, payload);
+};
+
 module.exports = {
   initSocket,
   getIO,
+  socketEmit,
 };
