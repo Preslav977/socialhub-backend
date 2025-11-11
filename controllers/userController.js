@@ -183,6 +183,8 @@ exports.user_update_profile = [
         });
 
         res.json(updatedUserProfile);
+
+        socketEmit("user:update-profile", updateUserProfile);
       }
     }
   }),
