@@ -389,7 +389,7 @@ exports.post_like = [
 
       res.json(unLikedPost);
 
-      socketEmit("post:disliked", unLikedPost);
+      socketEmit("post:liked", unLikedPost);
     }
   }),
 ];
@@ -459,6 +459,8 @@ exports.post_comment = [
     });
 
     res.json(postWithAComment);
+
+    socketEmit("post:comment", postWithAComment);
   }),
 ];
 
@@ -523,6 +525,8 @@ exports.post_comment_reply = [
     });
 
     res.json(postWithACommentReply);
+
+    socketEmit("post:comment-reply", postWithACommentReply);
   }),
 ];
 
@@ -588,6 +592,8 @@ exports.post_like_comment = [
       });
 
       res.json(likedCommentOnPost);
+
+      socketEmit("post:comment-liked", likedCommentOnPost);
     } else {
       await prisma.comments.update({
         where: {
@@ -629,6 +635,8 @@ exports.post_like_comment = [
         },
       });
       res.json(dislikedCommentOnPost);
+
+      socketEmit("post:comment-liked", dislikedCommentOnPost);
     }
   }),
 ];
