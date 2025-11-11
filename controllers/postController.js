@@ -334,7 +334,9 @@ exports.post_like = [
         },
       });
 
-      return res.json(likedPost);
+      res.json(likedPost);
+
+      socketEmit("post:liked", likedPost);
     } else {
       const postHasBeenDisliked = await prisma.post.update({
         where: {
@@ -385,7 +387,9 @@ exports.post_like = [
         },
       });
 
-      return res.json(unLikedPost);
+      res.json(unLikedPost);
+
+      socketEmit("post:disliked", unLikedPost);
     }
   }),
 ];

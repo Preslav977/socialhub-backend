@@ -73,6 +73,7 @@ app.use(
     secret: process.env.sessionSecret,
     resave: false,
     saveUninitialized: false,
+
     store: new PrismaSessionStore(prisma, {
       checkPeriod: 2 * 60 * 1000,
       dbRecordIdIsSessionId: true,
@@ -118,8 +119,7 @@ passport.use(
     {
       clientID: GITHUB_CLIENT_ID,
       clientSecret: GITHUB_CLIENT_SECRET,
-      callbackURL:
-        "https://socialhub-backend-d9kn.onrender.com/auth/github/callback",
+      callbackURL: "http://localhost:5000/auth/github/callback",
     },
     async function (accessToken, refreshToken, profile, done) {
       try {
@@ -229,7 +229,7 @@ app.get(
 app.get(
   "/auth/github/callback",
   passport.authenticate("github", {
-    failureRedirect: "https://socialhub-frontend-seven.vercel.app/login",
+    failureRedirect: "http://localhost:5000/login",
   }),
 
   (req, res) => {
@@ -240,9 +240,7 @@ app.get(
     });
 
     if (token) {
-      res.redirect(
-        `https://socialhub-frontend-seven.vercel.app/token/${token}`,
-      );
+      res.redirect(`http://localhost:5173/token/${token}`);
     }
   },
 );
