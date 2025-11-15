@@ -13,8 +13,14 @@ const initSocket = (server) => {
   io.on("connection", (socket) => {
     console.log("a user connected");
 
+    socket.once("join", (roomID) => {
+      socket.join(roomID);
+
+      console.log("a user join room", roomID);
+    });
+
     socket.on("disconnect", () => {
-      console.log("user disconnected");
+      console.log("a user disconnected");
     });
   });
 
@@ -33,14 +39,6 @@ const socketEmit = (event, payload) => {
   io.emit(event, payload);
 };
 
-const socketJoinChatRoom = (payload) => {
-  io.on("connection", (socket) => {
-    socket.join(payload);
-  });
-
-  return "User connects to room " + payload;
-};
-
 const socketEmitChatRoomMessage = (roomID, event, payload) => {
   io.to(roomID).emit(event, payload);
 };
@@ -49,6 +47,6 @@ module.exports = {
   initSocket,
   getIO,
   socketEmit,
-  socketJoinChatRoom,
+
   socketEmitChatRoomMessage,
 };

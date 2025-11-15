@@ -10,10 +10,7 @@ const uploadImage = require("../helper/uploadingImage");
 
 const sendingAMessage = require("../validatingMiddlewares/sendingAMessage");
 
-const {
-  socketEmitChatRoomMessage,
-  socketJoinChatRoom,
-} = require("../utility/socket");
+const { socketEmitChatRoomMessage, socketEmit } = require("../utility/socket");
 
 exports.chat_create = [
   asyncHandler(async (req, res, next) => {
@@ -77,6 +74,8 @@ exports.chat_create = [
       });
 
       res.json(chat);
+
+      socketEmit("chat:created", chat);
     }
   }),
 ];
@@ -123,8 +122,6 @@ exports.chat_get_by_id = [
     });
 
     res.json(chatById);
-
-    socketJoinChatRoom(id);
   }),
 ];
 
