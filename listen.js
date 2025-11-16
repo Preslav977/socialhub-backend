@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const { initSocket } = require("./utility/socket");
 
-const { createServer } = require("https");
+const { createServer } = require("node:http");
 
 const app = require("./app");
 
