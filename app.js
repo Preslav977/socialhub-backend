@@ -32,16 +32,18 @@ const jwt = require("jsonwebtoken");
 
 const compression = require("compression");
 
-app.use(cors());
+const localhostURL = require("./utility/localhostURL");
 
-// app.use(
-//   cors({
-//     origin: [
-//       "https://socialhub-backend-d9kn.onrender.com/",
-//       "https://socialhub-frontend-seven.vercel.app",
-//     ],
-//   }),
-// );
+// app.use(cors());
+
+app.use(
+  cors({
+    origin: [
+      "https://socialhub-backend-d9kn.onrender.com/",
+      "https://socialhub-frontend-seven.vercel.app",
+    ],
+  }),
+);
 
 app.set("views", path.join(__dirname, "views"));
 
@@ -119,7 +121,7 @@ passport.use(
     {
       clientID: GITHUB_CLIENT_ID,
       clientSecret: GITHUB_CLIENT_SECRET,
-      callbackURL: "http://localhost:5000/auth/github/callback",
+      callbackURL: `${localhostURL}/auth/github/callback`,
     },
     async function (accessToken, refreshToken, profile, done) {
       try {
@@ -229,7 +231,7 @@ app.get(
 app.get(
   "/auth/github/callback",
   passport.authenticate("github", {
-    failureRedirect: "http://localhost:5000/login",
+    failureRedirect: `${localhostURL}/login`,
   }),
 
   (req, res) => {
@@ -240,7 +242,9 @@ app.get(
     });
 
     if (token) {
-      res.redirect(`http://localhost:5173/token/${token}`);
+      res.redirect(
+        `https://socialhub-frontend-seven.vercel.app/token/${token}`,
+      );
     }
   },
 );

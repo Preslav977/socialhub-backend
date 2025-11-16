@@ -1,26 +1,27 @@
 const { Server } = require("socket.io");
+const localhostURL = require("./localhostURL");
 
 let io;
 
 const initSocket = (server) => {
   io = new Server(server, {
     cors: {
-      origin: "http://localhost:5173",
+      origin: `${localhostURL}`,
       methods: ["GET", "POST"],
     },
   });
 
   io.on("connection", (socket) => {
-    console.log("a user connected");
+    // console.log("a user connected");
 
     socket.once("join-room", (roomID) => {
       socket.join(roomID);
 
-      console.log("a user join room", roomID);
+      // console.log("a user join room", roomID);
     });
 
     socket.on("disconnect", () => {
-      console.log("a user disconnected");
+      // console.log("a user disconnected");
     });
   });
 
