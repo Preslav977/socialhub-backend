@@ -34,8 +34,8 @@ exports.chat_create = [
             receiverChatId: Number(receiverId),
           },
           {
-            senderChatId: Number(senderId),
-            receiverChatId: Number(receiverId),
+            receiverChatId: Number(senderId),
+            senderChatId: Number(receiverId),
           },
         ],
       },

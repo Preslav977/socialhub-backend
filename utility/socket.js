@@ -13,7 +13,7 @@ const initSocket = (server) => {
   io.on("connection", (socket) => {
     console.log("a user connected");
 
-    socket.once("join", (roomID) => {
+    socket.once("join-room", (roomID) => {
       socket.join(roomID);
 
       console.log("a user join room", roomID);

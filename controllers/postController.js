@@ -47,8 +47,6 @@ exports.post_create_text = [
       });
 
       res.json(createPost);
-
-      socketEmit("post:created", createPost);
     }
   }),
 ];
@@ -94,8 +92,6 @@ exports.post_create_with_image = [
         });
 
         res.json(createPost);
-
-        socketEmit("post:created-image", createPost);
       }
     }
   }),
