@@ -6,7 +6,8 @@ const initSocket = (server) => {
   io = new Server(server, {
     cors: {
       origin: "https://socialhub-frontend-seven.vercel.app",
-      methods: ["GET", "POST", "PUT", "DELETE"],
+      methods: ["GET", "POST"],
+      allowedHeaders: ["Content-Type", "Access-Control-Allow-Origin"],
     },
   });
 
