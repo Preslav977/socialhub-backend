@@ -174,6 +174,10 @@ exports.posts_get_by_liked_user = [
         postCommentedByUsers: true,
         author: true,
       },
+
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     if (posts.length === 0) {
@@ -199,6 +203,10 @@ exports.posts_get_by_author = [
         author: true,
         postLikedByUsers: true,
         postCommentedByUsers: true,
+      },
+
+      orderBy: {
+        createdAt: "desc",
       },
     });
 
@@ -237,6 +245,10 @@ exports.posts_get_by_following_authors = [
         author: true,
         postLikedByUsers: true,
         postCommentedByUsers: true,
+      },
+
+      orderBy: {
+        createdAt: "desc",
       },
     });
 
@@ -326,7 +338,7 @@ exports.post_like = [
           },
         },
         orderBy: {
-          id: "asc",
+          createdAt: "desc",
         },
       });
 
@@ -379,7 +391,7 @@ exports.post_like = [
         },
 
         orderBy: {
-          id: "asc",
+          createdAt: "desc",
         },
       });
 
@@ -450,7 +462,7 @@ exports.post_comment = [
       },
 
       orderBy: {
-        id: "asc",
+        createdAt: "desc",
       },
     });
 
@@ -516,7 +528,7 @@ exports.post_comment_reply = [
       },
 
       orderBy: {
-        id: "asc",
+        createdAt: "desc",
       },
     });
 
@@ -583,7 +595,7 @@ exports.post_like_comment = [
           },
         },
         orderBy: {
-          id: "asc",
+          createdAt: "desc",
         },
       });
 
@@ -627,7 +639,7 @@ exports.post_like_comment = [
           },
         },
         orderBy: {
-          id: "asc",
+          createdAt: "desc",
         },
       });
       res.json(dislikedCommentOnPost);
