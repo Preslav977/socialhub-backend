@@ -1,13 +1,12 @@
 const { Server } = require("socket.io");
-const localhostURL = require("./localhostURL");
 
 let io;
 
 const initSocket = (server) => {
   io = new Server(server, {
     cors: {
-      origin: `${localhostURL}`,
-      methods: ["GET", "POST"],
+      origin: "https://socialhub-frontend-seven.vercel.app",
+      methods: ["GET", "POST", "PUT", "DELETE"],
     },
   });
 
