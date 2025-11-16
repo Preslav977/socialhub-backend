@@ -18,6 +18,8 @@ const userSignUp = require("../validatingMiddlewares/userSignUp");
 
 const userUpdateProfile = require("../validatingMiddlewares/userUpdateProfile");
 
+const { socketEmit } = require("../utility/socket");
+
 exports.user_signup = [
   userSignUp,
   asyncHandler(async (req, res, next) => {
@@ -181,6 +183,8 @@ exports.user_update_profile = [
         });
 
         res.json(updatedUserProfile);
+
+        socketEmit("user:update-profile", updateUserProfile);
       }
     }
   }),
@@ -354,6 +358,8 @@ exports.user_following = [
       });
 
       res.json([findFollower, findFollowing]);
+
+      socketEmit("user:followed", [findFollower, findFollowing]);
     } else {
       const unFollowerUser = await prisma.user.update({
         where: {
@@ -413,6 +419,8 @@ exports.user_following = [
       });
 
       res.json([findUnFollower, findUnFollowing]);
+
+      socketEmit("user:followed", [findUnFollower, findUnFollowing]);
     }
   }),
 ];

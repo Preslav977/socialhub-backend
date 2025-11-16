@@ -32,6 +32,10 @@ const jwt = require("jsonwebtoken");
 
 const compression = require("compression");
 
+const localhostURL = require("./utility/localhostURL");
+
+// app.use(cors());
+
 app.use(
   cors({
     origin: [
@@ -71,6 +75,7 @@ app.use(
     secret: process.env.sessionSecret,
     resave: false,
     saveUninitialized: false,
+
     store: new PrismaSessionStore(prisma, {
       checkPeriod: 2 * 60 * 1000,
       dbRecordIdIsSessionId: true,
@@ -116,8 +121,7 @@ passport.use(
     {
       clientID: GITHUB_CLIENT_ID,
       clientSecret: GITHUB_CLIENT_SECRET,
-      callbackURL:
-        "https://socialhub-backend-d9kn.onrender.com/auth/github/callback",
+      callbackURL: `${localhostURL}/auth/github/callback`,
     },
     async function (accessToken, refreshToken, profile, done) {
       try {
@@ -227,7 +231,7 @@ app.get(
 app.get(
   "/auth/github/callback",
   passport.authenticate("github", {
-    failureRedirect: "https://socialhub-frontend-seven.vercel.app/login",
+    failureRedirect: `${localhostURL}/login`,
   }),
 
   (req, res) => {
@@ -257,6 +261,10 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
 
   res.status(500).send(err.stack);
+});
+
+process.on("warning", (e) => {
+  console.warn(e.stack);
 });
 
 module.exports = app;

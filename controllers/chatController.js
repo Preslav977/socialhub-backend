@@ -10,6 +10,8 @@ const uploadImage = require("../helper/uploadingImage");
 
 const sendingAMessage = require("../validatingMiddlewares/sendingAMessage");
 
+const { socketEmitChatRoomMessage, socketEmit } = require("../utility/socket");
+
 exports.chat_create = [
   asyncHandler(async (req, res, next) => {
     const { senderId, receiverId } = req.body;
@@ -32,8 +34,8 @@ exports.chat_create = [
             receiverChatId: Number(receiverId),
           },
           {
-            senderChatId: Number(senderId),
-            receiverChatId: Number(receiverId),
+            receiverChatId: Number(senderId),
+            senderChatId: Number(receiverId),
           },
         ],
       },
@@ -72,6 +74,8 @@ exports.chat_create = [
       });
 
       res.json(chat);
+
+      socketEmit("chat:created", chat);
     }
   }),
 ];
@@ -159,6 +163,8 @@ exports.chat_send_message = [
       });
 
       res.json(chatWithSendMessage);
+
+      socketEmitChatRoomMessage(id, "chat:message", chatWithSendMessage);
     }
   }),
 ];
@@ -202,6 +208,8 @@ exports.chat_send_image = [
       });
 
       res.json(chatWithSendImage);
+
+      socketEmitChatRoomMessage(id, "chat:message-image", chatWithSendImage);
     }
   }),
 ];

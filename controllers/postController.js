@@ -10,6 +10,8 @@ const uploadingImage = require("../helper/uploadingImage");
 
 const creatingPost = require("../validatingMiddlewares/creatingPost");
 
+const { socketEmit } = require("../utility/socket");
+
 exports.post_create_text = [
   creatingPost,
 
@@ -172,6 +174,10 @@ exports.posts_get_by_liked_user = [
         postCommentedByUsers: true,
         author: true,
       },
+
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     if (posts.length === 0) {
@@ -197,6 +203,10 @@ exports.posts_get_by_author = [
         author: true,
         postLikedByUsers: true,
         postCommentedByUsers: true,
+      },
+
+      orderBy: {
+        createdAt: "desc",
       },
     });
 
@@ -235,6 +245,10 @@ exports.posts_get_by_following_authors = [
         author: true,
         postLikedByUsers: true,
         postCommentedByUsers: true,
+      },
+
+      orderBy: {
+        createdAt: "desc",
       },
     });
 
@@ -324,11 +338,13 @@ exports.post_like = [
           },
         },
         orderBy: {
-          id: "asc",
+          createdAt: "desc",
         },
       });
 
-      return res.json(likedPost);
+      res.json(likedPost);
+
+      socketEmit("post:liked", likedPost);
     } else {
       const postHasBeenDisliked = await prisma.post.update({
         where: {
@@ -375,11 +391,13 @@ exports.post_like = [
         },
 
         orderBy: {
-          id: "asc",
+          createdAt: "desc",
         },
       });
 
-      return res.json(unLikedPost);
+      res.json(unLikedPost);
+
+      socketEmit("post:liked", unLikedPost);
     }
   }),
 ];
@@ -444,11 +462,13 @@ exports.post_comment = [
       },
 
       orderBy: {
-        id: "asc",
+        createdAt: "desc",
       },
     });
 
     res.json(postWithAComment);
+
+    socketEmit("post:comment", postWithAComment);
   }),
 ];
 
@@ -508,11 +528,13 @@ exports.post_comment_reply = [
       },
 
       orderBy: {
-        id: "asc",
+        createdAt: "desc",
       },
     });
 
     res.json(postWithACommentReply);
+
+    socketEmit("post:comment-reply", postWithACommentReply);
   }),
 ];
 
@@ -573,11 +595,13 @@ exports.post_like_comment = [
           },
         },
         orderBy: {
-          id: "asc",
+          createdAt: "desc",
         },
       });
 
       res.json(likedCommentOnPost);
+
+      socketEmit("post:comment-liked", likedCommentOnPost);
     } else {
       await prisma.comments.update({
         where: {
@@ -615,10 +639,12 @@ exports.post_like_comment = [
           },
         },
         orderBy: {
-          id: "asc",
+          createdAt: "desc",
         },
       });
       res.json(dislikedCommentOnPost);
+
+      socketEmit("post:comment-liked", dislikedCommentOnPost);
     }
   }),
 ];
