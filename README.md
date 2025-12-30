@@ -34,6 +34,8 @@ SocialHub is a full-stack social media clone that allows the users to create use
 - modal that pops up on created post
 - guest login
 - mobile menu
+- Github authentication
+- live updates (Socket IO)
 
 # Technology Used
 
@@ -64,5 +66,3 @@ SocialHub is a full-stack social media clone that allows the users to create use
 
 - Would look for an alternative to deal with creating global variables / signing up each user in the test to make it easier for myself
 - Would add some way of showing the user that the image is being uploaded
-- Would implement the socket.io library
-- Would add authentication like GitHub, Google
