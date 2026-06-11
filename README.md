@@ -1,68 +1,97 @@
 # socialhub-backend
 
-# Overview
+> REST API for a full-stack social media platform — handles auth, posts, real-time messaging, and social graph built with Node, Express, Prisma, and PostgreSQL.
 
-This is the backend of the social hub that handles all the CRUD operations from the frontend, which is created with the PERN stack (PostgreSQL, Express, React, Node).
+[![GitHub stars](https://img.shields.io/github/stars/Preslav977/socialhub-backend?style=social)](https://github.com/Preslav977/socialhub-backend)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-# About the project the project
+[![Star History Chart](https://api.star-history.com/svg?repos=Preslav977/socialhub-backend&type=Date)](https://star-history.com/#Preslav977/socialhub-backend&Date)
 
-SocialHub is a full-stack social media clone that allows the users to create user profiles, create posts, like posts, comment on posts, like their comments, create replies to the comments, search for users, create conversations, and much more.
+[Live Site](https://socialhub-frontend-seven.vercel.app/) · [Frontend Repo](https://github.com/Preslav977/socialhub-frontend)
 
-# Live Preview
+---
 
-- [View the live site here](https://socialhub-frontend-seven.vercel.app/)
-- [View the front-end API repository here](https://github.com/Preslav977/socialhub-frontend)
+## ✨ Features
 
-# Features
+| Feature             | Description                                                                                |
+| ------------------- | ------------------------------------------------------------------------------------------ |
+| 🔐 Authentication   | Local login with PassportJS + GitHub OAuth, sessions stored via PrismaSessionStore for 24h |
+| 📝 Posts            | Create posts with text and/or image, like/dislike, comment, reply, and like comments       |
+| 💬 Messaging        | Create conversations, send text and image messages between users via Socket.io             |
+| 👥 Social Graph     | Follow/unfollow users, read following feed, latest users, and most followed users          |
+| 🔍 Search           | Search for users by username                                                               |
+| 🖼️ Image Upload     | Upload images via Multer + Supabase; URL saved to DB after successful upload               |
+| 🧪 Tests            | Unit tests for each controller with happy and bad paths using Jest and Supertest           |
+| 🔒 Route Protection | JWT middleware applied globally via `app.use` to protect all authenticated routes          |
 
-- Live validation
-- The user can update the profile
-- create post with text / image or both
-- like / dislike the post
-- comment on the post
-- like / dislike the post comment
-- reply to the comment
-- search for user
-- read the following user posts
-- read recent posts
-- read liked posts
-- create conversation with another user
-- Send messages like text/images between the users
-- follow / unfollow user
-- read the latest users
-- read the most followed users
-- modal that pops up on created post
-- guest login
-- mobile menu
-- Github authentication
-- live updates (Socket IO)
+---
 
-# Technology Used
+## 🚀 Quick Start
 
-- Prisma with PostgreSQL: creating models and relationships between user, post, comments, chat, messages, and session
-- PassportJS: checking if the user exists and creating the localStrategy for login with username and password
-- Express: provides a robust set of features for web applications.
-- Node: that allows the JavaScript to run more modules, packages, etc.
-- PrismaSessionStore: creating a session and storing it for 24 hours
-- Bcrypt: hashing the passwords for the users
-- Supabase: uploading the images to the cloud and deleting them
-- JWT: token to authorize the user depending on if he or she is logged in
-- Multer: temporarily store the uploaded file until Supabase returns the URL back that would be saved in the database
-- Supertest and Jest: creating unit tests for each controller with happy and bad paths
+### Install
 
-# Lessons Learned
+```bash
+git clone https://github.com/Preslav977/socialhub-backend.git
+cd socialhub-backend
+npm install
+```
 
-- Learned how to deal with relationships between the different parts of the projects by deciding which part of the relation needs to be one-to-many and vice versa
-- Learned that it is better in some cases to include all the relationships in the model so it would be easy to update the state in the front-end
-- Learned that it is a good idea to check each time, for example, if there are posts, in order to make it easy in the front end to check it
-- Learned how to use Supabase; it is not that hard to create a bucket, upload an image, check if it is uploaded, and then get back the URL and save it in the database.
-- Learned that sometimes it is better to perform complex logic in one place, like following a user to update the logged-in user number and also the other user that I am going to follow as well; otherwise, doing that 2 separate times is hard to deal with.
-- Learned about the Prisma ORM operators like increment instead of doing it myself
-- Learned how to include nested relationships with Prisma
-- Learned how to use take in order to get the latest users descending by date and the most followed using the same approach, but this time with calculating the bigger following Number
-- Learned that I can use app.use the auth router in order to make the other routes requiring JWT to authenticate and protect them
+### Configure
 
-# Future Improvements
+Create a `.env` file in the root:
 
-- Would look for an alternative to deal with creating global variables / signing up each user in the test to make it easier for myself
-- Would add some way of showing the user that the image is being uploaded
+```env
+DATABASE_URL=
+JWT_SECRET=
+SESSION_SECRET=
+SUPABASE_URL=
+SUPABASE_KEY=
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+CLIENT_URL=
+```
+
+### Migrate
+
+```bash
+npx prisma migrate dev
+```
+
+### Run
+
+```bash
+npm run dev
+```
+
+> API runs on [http://localhost:3000](http://localhost:3000)
+
+---
+
+## 🏗️ Architecture
+
+```
+src/
+  routes/        # Express route definitions
+  controllers/   # Business logic per resource (user, post, comment, message)
+  middleware/    # JWT auth, Multer file handling
+  prisma/
+    schema.prisma    # Models: User, Post, Comment, Message, Conversation, Session
+    migrations/      # Versioned DB changes
+  socket/        # Socket.io event handlers for real-time messaging
+```
+
+Requests hit Express routes → controllers handle logic → Prisma queries PostgreSQL. Image uploads are temporarily held by Multer, sent to Supabase, and the returned URL is persisted to the DB. Socket.io shares the same JWT auth middleware as HTTP routes.
+
+---
+
+## 🤝 Contributing
+
+1. Reach out to me first
+2. Fork → Branch → PR
+3. Run `npm test` before submitting
+
+---
+
+## 📄 License
+
+MIT © [Preslav977](https://github.com/Preslav977)
